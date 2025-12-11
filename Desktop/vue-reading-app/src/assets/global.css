@@ -1,0 +1,222 @@
+/* src/assets/global.css */
+
+/* 童趣风格全局变量 */
+:root {
+  /* 糖果色系 */
+  --color-pink: #FF6B8B;
+  --color-blue: #118AB2;
+  --color-green: #06D6A0;
+  --color-yellow: #FFD166;
+  --color-purple: #9C27B0;
+  --color-light-pink: #FFE6E6;
+  --color-light-blue: #E6F7FF;
+  --color-light-green: #E6FFF6;
+  --color-light-yellow: #FFF9E6;
+  --color-light-purple: #F3E6FF;
+  
+  /* 字体 */
+  --font-handwriting: 'Kalam', 'Caveat', cursive;
+  --font-body: 'Quicksand', 'Comfortaa', 'Varela Round', sans-serif;
+  
+  /* 圆角 */
+  --radius-large: 32px;
+  --radius-medium: 24px;
+  --radius-small: 16px;
+  
+  /* 阴影 */
+  --shadow-soft: 0 8px 25px rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 12px 30px rgba(0, 0, 0, 0.12);
+  --shadow-hard: 0 16px 40px rgba(0, 0, 0, 0.15);
+  
+  /* 动画 */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* 基础样式 */
+body {
+  font-family: var(--font-body);
+  line-height: 1.6;
+  color: #333;
+  background-color: #f8f9fa;
+  overflow-x: hidden;
+}
+
+/* 标题样式 */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-handwriting);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+/* 段落样式 */
+p {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #666;
+}
+
+/* 链接样式 */
+a {
+  color: var(--color-blue);
+  text-decoration: none;
+  transition: color var(--transition-normal);
+}
+
+a:hover {
+  color: var(--color-pink);
+  text-decoration: underline;
+}
+
+/* 按钮基础样式 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: var(--radius-large);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  border: none;
+  outline: none;
+  text-decoration: none;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-medium);
+}
+
+.btn:active {
+  transform: translateY(-1px);
+}
+
+/* 卡片基础样式 */
+.card {
+  background: white;
+  border-radius: var(--radius-medium);
+  padding: 24px;
+  box-shadow: var(--shadow-soft);
+  transition: all var(--transition-normal);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-medium);
+}
+
+/* 表单元素样式 */
+input, textarea, select {
+  font-family: var(--font-body);
+  border: 2px solid #ddd;
+  border-radius: var(--radius-small);
+  padding: 12px 16px;
+  font-size: 16px;
+  transition: all var(--transition-normal);
+  width: 100%;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-pink);
+  box-shadow: 0 0 0 3px rgba(255, 107, 139, 0.2);
+  outline: none;
+}
+
+/* 工具类 */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+
+.p-1 { padding: 0.5rem; }
+.p-2 { padding: 1rem; }
+.p-3 { padding: 1.5rem; }
+.p-4 { padding: 2rem; }
+
+/* 动画类 */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 15px;
+  }
+  
+  .card {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+  
+  .btn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  
+  .card {
+    padding: 16px;
+  }
+}

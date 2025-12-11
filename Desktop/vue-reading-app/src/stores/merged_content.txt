@@ -1,0 +1,5889 @@
+
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\a.py ---
+-----------------------------------------------------------------------------
+import os
+
+def merge_all_content_to_single_txt(source_directory, output_txt_path):
+    """
+    递归地读取指定目录下所有文件的内容，并将它们合并到一个单独的 txt 文件中，
+    在每段内容前标注原始文件路径。
+
+    Args:
+        source_directory (str): 要读取文件的源目录路径。
+        output_txt_path (str): 合并后的内容将写入的单个 txt 文件路径。
+    """
+    # 确保输出文件所在的目录存在
+    output_dir = os.path.dirname(output_txt_path)
+    if output_dir and not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+        print(f"创建输出目录: {output_dir}")
+
+    try:
+        with open(output_txt_path, 'w', encoding='utf-8') as outfile:
+            print(f"开始将内容写入到: {output_txt_path}")
+
+            for root, _, files in os.walk(source_directory):
+                for file in files:
+                    source_file_path = os.path.join(root, file)
+
+                    # 写入分隔符和原始文件路径
+                    outfile.write(f"\n--- Original File: {source_file_path} ---\n")
+                    outfile.write("-" * (len(f"--- Original File: {source_file_path} ---")) + "\n") # 添加下划线分隔
+
+                    try:
+                        with open(source_file_path, 'r', encoding='utf-8', errors='ignore') as infile:
+                            content = infile.read()
+                            outfile.write(content)
+                        print(f"已处理并追加: {source_file_path}")
+                    except Exception as e:
+                        error_message = f"[ERROR READING FILE: {e}]"
+                        outfile.write(error_message)
+                        print(f"处理文件 '{source_file_path}' 时发生错误: {e} (已记录到输出文件)")
+            print("\n所有文件内容合并完成！")
+
+    except Exception as e:
+        print(f"写入到输出文件 '{output_txt_path}' 时发生错误: {e}")
+
+
+if __name__ == "__main__":
+    # 获取当前脚本所在的目录
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    print(f"脚本所在目录: {script_dir}")
+
+    # --- 用户输入 ---
+    source_directory_to_scan = input(f"请输入要扫描并提取内容的目录路径 (留空则为当前目录): ")
+    if not source_directory_to_scan:
+        source_directory_to_scan = "."
+    source_directory_to_scan = os.path.abspath(source_directory_to_scan) # 转换为绝对路径
+
+    # 默认输出文件名，保存在脚本同目录下
+    default_output_filename = "merged_content.txt"
+    default_output_path = os.path.join(script_dir, default_output_filename)
+
+    user_output_path_choice = input(f"请输入合并后的 txt 文件路径 (留空则使用默认: '{default_output_path}'): ")
+    if user_output_path_choice:
+        final_output_path = os.path.abspath(user_output_path_choice)
+    else:
+        final_output_path = default_output_path
+        print(f"将使用默认输出文件: '{final_output_path}'")
+
+
+    # --- 执行合并 ---
+    if not os.path.isdir(source_directory_to_scan):
+        print(f"错误: 源目录 '{source_directory_to_scan}' 不存在或不是一个有效的目录。")
+    else:
+        print(f"\n开始从 '{source_directory_to_scan}' 提取并合并文件内容...")
+        merge_all_content_to_single_txt(source_directory_to_scan, final_output_path)
+        print("合并过程完成！")
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\auth.store.js ---
+--------------------------------------------------------------------------------------
+// src/stores/auth.store.js
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+import authService from '@/services/auth.service';
+import { getToken } from '@/utils/token';
+
+/**
+ * 认证状态管理
+ * 管理用户登录状态、用户信息、token等
+ */
+export const useAuthStore = defineStore('auth', () => {
+  // ==================== 状态定义 ====================
+  
+  // 用户信息
+  const user = ref(null);
+  
+  // 访问令牌
+  const token = ref(null);
+  
+  // 登录状态
+  const isLoggedIn = ref(false);
+  
+  // 加载状态
+  const loading = ref(false);
+  
+  // 错误信息
+  const error = ref(null);
+  
+  // 记住我状态
+  const rememberMe = ref(false);
+  
+  // 用户偏好设置
+  const preferences = ref({
+    theme: 'light',
+    language: 'zh-CN',
+    notificationEnabled: true,
+    autoSave: true,
+    readingMode: 'normal',
+    fontSize: 16,
+    lineHeight: 1.6,
+  });
+
+  // ==================== 计算属性 ====================
+  
+  /**
+   * 用户ID
+   */
+  const userId = computed(() => user.value?.id || null);
+  
+  /**
+   * 用户名
+   */
+  const username = computed(() => user.value?.username || '');
+  
+  /**
+   * 用户邮箱
+   */
+  const email = computed(() => user.value?.email || '');
+  
+  /**
+   * 用户昵称
+   */
+  const nickname = computed(() => user.value?.nickname || user.value?.username || '');
+  
+  /**
+   * 用户头像
+   */
+  const avatar = computed(() => user.value?.avatar || '');
+  
+  /**
+   * 用户角色
+   */
+  const role = computed(() => user.value?.role || 'user');
+  
+  /**
+   * 是否已验证邮箱
+   */
+  const isVerified = computed(() => user.value?.isVerified || false);
+  
+  /**
+   * 是否管理员
+   */
+  const isAdmin = computed(() => role.value === 'admin');
+  
+  /**
+   * 是否VIP用户
+   */
+  const isVip = computed(() => role.value === 'vip' || role.value === 'admin');
+  
+  /**
+   * 用户创建时间
+   */
+  const createdAt = computed(() => user.value?.createdAt || null);
+  
+  /**
+   * 最后登录时间
+   */
+  const lastLoginAt = computed(() => user.value?.lastLoginAt || null);
+
+  // ==================== Actions ====================
+  
+  /**
+   * 设置用户信息
+   * @param {Object} userData - 用户数据
+   */
+  const setUser = (userData) => {
+    if (!userData) {
+      user.value = null;
+      return;
+    }
+    
+    user.value = {
+      id: userData.id,
+      username: userData.username,
+      email: userData.email,
+      nickname: userData.nickname || userData.username,
+      avatar: userData.avatar || '',
+      role: userData.role || 'user',
+      isVerified: userData.isVerified || false,
+      createdAt: userData.createdAt,
+      lastLoginAt: userData.lastLoginAt,
+      preferences: {
+        ...preferences.value,
+        ...(userData.preferences || {})
+      }
+    };
+    
+    // 更新偏好设置
+    if (userData.preferences) {
+      preferences.value = {
+        ...preferences.value,
+        ...userData.preferences
+      };
+    }
+  };
+  
+  /**
+   * 清除用户信息
+   */
+  const clearUser = () => {
+    user.value = null;
+    token.value = null;
+    isLoggedIn.value = false;
+    error.value = null;
+  };
+  
+  /**
+   * 设置token
+   * @param {string} newToken - 访问令牌
+   */
+  const setToken = (newToken) => {
+    token.value = newToken;
+  };
+  
+  /**
+   * 设置登录状态
+   * @param {boolean} status - 登录状态
+   */
+  const setLoggedIn = (status) => {
+    isLoggedIn.value = status;
+  };
+  
+  /**
+   * 设置记住我状态
+   * @param {boolean} status - 记住我状态
+   */
+  const setRememberMe = (status) => {
+    rememberMe.value = status;
+  };
+  
+  /**
+   * 设置加载状态
+   * @param {boolean} status - 加载状态
+   */
+  const setLoading = (status) => {
+    loading.value = status;
+  };
+  
+  /**
+   * 设置错误信息
+   * @param {string|null} errorMessage - 错误信息
+   */
+  const setError = (errorMessage) => {
+    error.value = errorMessage;
+  };
+  
+  /**
+   * 更新用户偏好设置
+   * @param {Object} newPreferences - 新的偏好设置
+   */
+  const updatePreferences = (newPreferences) => {
+    preferences.value = {
+      ...preferences.value,
+      ...newPreferences
+    };
+    
+    // 如果用户已登录，同时更新用户对象中的偏好设置
+    if (user.value) {
+      user.value.preferences = preferences.value;
+    }
+  };
+  
+  /**
+   * 更新用户信息
+   * @param {Object} updates - 要更新的字段
+   */
+  const updateUser = (updates) => {
+    if (!user.value) return;
+    
+    user.value = {
+      ...user.value,
+      ...updates
+    };
+  };
+  
+  /**
+   * 更新用户头像
+   * @param {string} avatarUrl - 头像URL
+   */
+  const updateAvatar = (avatarUrl) => {
+    if (!user.value) return;
+    
+    user.value.avatar = avatarUrl;
+  };
+  
+  /**
+   * 更新用户昵称
+   * @param {string} newNickname - 新昵称
+   */
+  const updateNickname = (newNickname) => {
+    if (!user.value) return;
+    
+    user.value.nickname = newNickname;
+  };
+  
+  /**
+   * 初始化认证状态
+   * 从本地存储恢复token和用户信息
+   */
+  const initAuth = async () => {
+    try {
+      setLoading(true);
+      
+      // 检查本地是否有token
+      const localToken = getToken();
+      if (localToken) {
+        token.value = localToken;
+        isLoggedIn.value = true;
+        
+        // 尝试获取用户信息
+        await authService.getCurrentUser();
+      }
+    } catch (error) {
+      console.warn('初始化认证状态失败:', error);
+      clearUser();
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 用户登录
+   * @param {Object} credentials - 登录凭证
+   * @param {boolean} remember - 记住我
+   * @returns {Promise<Object>} 用户数据
+   */
+  const login = async (credentials, remember = false) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // 设置记住我状态
+      setRememberMe(remember);
+      
+      // 调用服务层登录
+      const userData = await authService.login(credentials, remember);
+      
+      // 更新状态
+      setUser(userData);
+      setLoggedIn(true);
+      
+      return userData;
+    } catch (err) {
+      setError(err.message || '登录失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 用户注册
+   * @param {Object} userData - 用户注册数据
+   * @returns {Promise<Object>} 注册结果
+   */
+  const register = async (userData) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const result = await authService.register(userData);
+      return result;
+    } catch (err) {
+      setError(err.message || '注册失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 用户登出
+   * @returns {Promise<void>}
+   */
+  const logout = async () => {
+    try {
+      setLoading(true);
+      await authService.logout();
+    } catch (err) {
+      console.warn('登出失败:', err);
+    } finally {
+      clearUser();
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 忘记密码
+   * @param {string} email - 邮箱
+   * @returns {Promise<Object>} 重置结果
+   */
+  const forgotPassword = async (email) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const result = await authService.forgotPassword(email);
+      return result;
+    } catch (err) {
+      setError(err.message || '发送重置邮件失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 重置密码
+   * @param {Object} data - 重置密码数据
+   * @returns {Promise<Object>} 重置结果
+   */
+  const resetPassword = async (data) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const result = await authService.resetPassword(data);
+      return result;
+    } catch (err) {
+      setError(err.message || '重置密码失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 刷新用户信息
+   * @returns {Promise<Object>} 用户信息
+   */
+  const refreshUser = async () => {
+    try {
+      setLoading(true);
+      
+      const userData = await authService.getCurrentUser(true);
+      setUser(userData);
+      
+      return userData;
+    } catch (err) {
+      setError(err.message || '刷新用户信息失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 检查登录状态
+   * @returns {boolean} 是否已登录
+   */
+  const checkLoginStatus = () => {
+    return authService.checkLoginStatus();
+  };
+
+  // ==================== 返回 ====================
+  
+  return {
+    // 状态
+    user,
+    token,
+    isLoggedIn,
+    loading,
+    error,
+    rememberMe,
+    preferences,
+    
+    // 计算属性
+    userId,
+    username,
+    email,
+    nickname,
+    avatar,
+    role,
+    isVerified,
+    isAdmin,
+    isVip,
+    createdAt,
+    lastLoginAt,
+    
+    // Actions
+    setUser,
+    clearUser,
+    setToken,
+    setLoggedIn,
+    setRememberMe,
+    setLoading,
+    setError,
+    updatePreferences,
+    updateUser,
+    updateAvatar,
+    updateNickname,
+    initAuth,
+    login,
+    register,
+    logout,
+    forgotPassword,
+    resetPassword,
+    refreshUser,
+    checkLoginStatus,
+  };
+});
+
+// 导出默认实例
+export default useAuthStore;
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\counter.ts ---
+-----------------------------------------------------------------------------------
+import { ref, computed } from 'vue'
+import { defineStore } from 'pinia'
+
+export const useCounterStore = defineStore('counter', () => {
+  const count = ref(0)
+  const doubleCount = computed(() => count.value * 2)
+  function increment() {
+    count.value++
+  }
+
+  return { count, doubleCount, increment }
+})
+
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\document.store.js ---
+------------------------------------------------------------------------------------------
+// src/stores/document.store.js
+import { defineStore } from 'pinia';
+import { ref, computed, reactive } from 'vue';
+import documentService from '@/services/document.service';
+
+/**
+ * 文档状态管理
+ * 管理文档列表、当前文档、搜索状态、上传状态等
+ */
+export const useDocumentStore = defineStore('document', () => {
+  // ==================== 状态定义 ====================
+  
+  // 文档列表
+  const documents = ref([]);
+  
+  // 当前选中的文档
+  const currentDocument = ref(null);
+  
+  // 搜索结果的文档列表
+  const searchResults = ref([]);
+  
+  // 分页信息
+  const pagination = reactive({
+    page: 1,
+    pageSize: 20,
+    total: 0,
+    totalPages: 0
+  });
+  
+  // 搜索分页信息
+  const searchPagination = reactive({
+    page: 1,
+    pageSize: 20,
+    total: 0,
+    totalPages: 0
+  });
+  
+  // 加载状态
+  const loading = ref(false);
+  
+  // 上传状态
+  const uploading = ref(false);
+  
+  // 错误信息
+  const error = ref(null);
+  
+  // 筛选条件
+  const filters = reactive({
+    search: '',
+    tags: [],
+    language: '',
+    status: '',
+    sortBy: 'created_at',
+    sortOrder: 'desc'
+  });
+  
+  // 文档统计信息
+  const stats = ref(null);
+  
+  // 上传队列
+  const uploadQueue = ref([]);
+
+  // ==================== 计算属性 ====================
+  
+  /**
+   * 当前页的文档
+   */
+  const currentPageDocuments = computed(() => {
+    const start = (pagination.page - 1) * pagination.pageSize;
+    const end = start + pagination.pageSize;
+    return documents.value.slice(start, end);
+  });
+  
+  /**
+   * 当前页的搜索结果
+   */
+  const currentPageSearchResults = computed(() => {
+    const start = (searchPagination.page - 1) * searchPagination.pageSize;
+    const end = start + searchPagination.pageSize;
+    return searchResults.value.slice(start, end);
+  });
+  
+  /**
+   * 是否有更多文档
+   */
+  const hasMoreDocuments = computed(() => {
+    return pagination.page < pagination.totalPages;
+  });
+  
+  /**
+   * 是否有更多搜索结果
+   */
+  const hasMoreSearchResults = computed(() => {
+    return searchPagination.page < searchPagination.totalPages;
+  });
+  
+  /**
+   * 文档总数
+   */
+  const totalDocuments = computed(() => pagination.total);
+  
+  /**
+   * 搜索结果总数
+   */
+  const totalSearchResults = computed(() => searchPagination.total);
+  
+  /**
+   * 所有标签（去重）
+   */
+  const allTags = computed(() => {
+    const tagSet = new Set();
+    documents.value.forEach(doc => {
+      if (doc.tags && Array.isArray(doc.tags)) {
+        doc.tags.forEach(tag => tagSet.add(tag));
+      }
+    });
+    return Array.from(tagSet);
+  });
+  
+  /**
+   * 所有语言（去重）
+   */
+  const allLanguages = computed(() => {
+    const langSet = new Set();
+    documents.value.forEach(doc => {
+      if (doc.language) {
+        langSet.add(doc.language);
+      }
+    });
+    return Array.from(langSet);
+  });
+  
+  /**
+   * 按标签分组的文档
+   */
+  const documentsByTag = computed(() => {
+    const grouped = {};
+    documents.value.forEach(doc => {
+      if (doc.tags && Array.isArray(doc.tags)) {
+        doc.tags.forEach(tag => {
+          if (!grouped[tag]) {
+            grouped[tag] = [];
+          }
+          grouped[tag].push(doc);
+        });
+      }
+    });
+    return grouped;
+  });
+  
+  /**
+   * 按语言分组的文档
+   */
+  const documentsByLanguage = computed(() => {
+    const grouped = {};
+    documents.value.forEach(doc => {
+      const lang = doc.language || 'unknown';
+      if (!grouped[lang]) {
+        grouped[lang] = [];
+      }
+      grouped[lang].push(doc);
+    });
+    return grouped;
+  });
+  
+  /**
+   * 最近上传的文档
+   */
+  const recentDocuments = computed(() => {
+    return [...documents.value]
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 10);
+  });
+  
+  /**
+   * 收藏的文档
+   */
+  const favoriteDocuments = computed(() => {
+    return documents.value.filter(doc => doc.isFavorite);
+  });
+  
+  /**
+   * 公开的文档
+   */
+  const publicDocuments = computed(() => {
+    return documents.value.filter(doc => doc.isPublic);
+  });
+
+  // ==================== Actions ====================
+  
+  /**
+   * 设置文档列表
+   * @param {Array} docs - 文档数组
+   */
+  const setDocuments = (docs) => {
+    documents.value = Array.isArray(docs) ? docs : [];
+  };
+  
+  /**
+   * 添加文档
+   * @param {Object} doc - 文档对象
+   */
+  const addDocument = (doc) => {
+    if (doc && doc.id) {
+      // 检查是否已存在
+      const existingIndex = documents.value.findIndex(d => d.id === doc.id);
+      if (existingIndex >= 0) {
+        documents.value[existingIndex] = doc;
+      } else {
+        documents.value.unshift(doc);
+      }
+    }
+  };
+  
+  /**
+   * 更新文档
+   * @param {Object} doc - 更新后的文档对象
+   */
+  const updateDocument = (doc) => {
+    if (doc && doc.id) {
+      const index = documents.value.findIndex(d => d.id === doc.id);
+      if (index >= 0) {
+        documents.value[index] = doc;
+      }
+      
+      // 如果当前文档是更新的文档，也更新它
+      if (currentDocument.value && currentDocument.value.id === doc.id) {
+        currentDocument.value = doc;
+      }
+    }
+  };
+  
+  /**
+   * 删除文档
+   * @param {string|number} id - 文档ID
+   */
+  const removeDocument = (id) => {
+    const index = documents.value.findIndex(doc => doc.id === id);
+    if (index >= 0) {
+      documents.value.splice(index, 1);
+    }
+    
+    // 如果当前文档是被删除的文档，清空它
+    if (currentDocument.value && currentDocument.value.id === id) {
+      currentDocument.value = null;
+    }
+  };
+  
+  /**
+   * 设置当前文档
+   * @param {Object} doc - 文档对象
+   */
+  const setCurrentDocument = (doc) => {
+    currentDocument.value = doc;
+  };
+  
+  /**
+   * 清除当前文档
+   */
+  const clearCurrentDocument = () => {
+    currentDocument.value = null;
+  };
+  
+  /**
+   * 设置搜索结果
+   * @param {Array} results - 搜索结果数组
+   */
+  const setSearchResults = (results) => {
+    searchResults.value = Array.isArray(results) ? results : [];
+  };
+  
+  /**
+   * 清除搜索结果
+   */
+  const clearSearchResults = () => {
+    searchResults.value = [];
+    searchPagination.page = 1;
+    searchPagination.total = 0;
+    searchPagination.totalPages = 0;
+  };
+  
+  /**
+   * 设置分页信息
+   * @param {Object} paginationData - 分页数据
+   */
+  const setPagination = (paginationData) => {
+    if (paginationData) {
+      pagination.page = paginationData.page || 1;
+      pagination.pageSize = paginationData.pageSize || 20;
+      pagination.total = paginationData.total || 0;
+      pagination.totalPages = paginationData.totalPages || 0;
+    }
+  };
+  
+  /**
+   * 设置搜索分页信息
+   * @param {Object} paginationData - 分页数据
+   */
+  const setSearchPagination = (paginationData) => {
+    if (paginationData) {
+      searchPagination.page = paginationData.page || 1;
+      searchPagination.pageSize = paginationData.pageSize || 20;
+      searchPagination.total = paginationData.total || 0;
+      searchPagination.totalPages = paginationData.totalPages || 0;
+    }
+  };
+  
+  /**
+   * 设置加载状态
+   * @param {boolean} status - 加载状态
+   */
+  const setLoading = (status) => {
+    loading.value = status;
+  };
+  
+  /**
+   * 设置上传状态
+   * @param {boolean} status - 上传状态
+   */
+  const setUploading = (status) => {
+    uploading.value = status;
+  };
+  
+  /**
+   * 设置错误信息
+   * @param {string|null} errorMessage - 错误信息
+   */
+  const setError = (errorMessage) => {
+    error.value = errorMessage;
+  };
+  
+  /**
+   * 设置筛选条件
+   * @param {Object} newFilters - 新的筛选条件
+   */
+  const setFilters = (newFilters) => {
+    if (newFilters) {
+      Object.assign(filters, newFilters);
+    }
+  };
+  
+  /**
+   * 重置筛选条件
+   */
+  const resetFilters = () => {
+    filters.search = '';
+    filters.tags = [];
+    filters.language = '';
+    filters.status = '';
+    filters.sortBy = 'created_at';
+    filters.sortOrder = 'desc';
+  };
+  
+  /**
+   * 设置统计信息
+   * @param {Object} statsData - 统计信息
+   */
+  const setStats = (statsData) => {
+    stats.value = statsData;
+  };
+  
+  /**
+   * 设置上传队列
+   * @param {Array} queue - 上传队列
+   */
+  const setUploadQueue = (queue) => {
+    uploadQueue.value = Array.isArray(queue) ? queue : [];
+  };
+  
+  /**
+   * 更新文档阅读进度
+   * @param {string|number} id - 文档ID
+   * @param {number} progress - 阅读进度 (0-100)
+   * @param {number} [currentPage] - 当前页码
+   */
+  const updateDocumentProgress = (id, progress, currentPage = null) => {
+    const index = documents.value.findIndex(doc => doc.id === id);
+    if (index >= 0) {
+      documents.value[index].readProgress = progress;
+      if (currentPage !== null) {
+        documents.value[index].currentPage = currentPage;
+      }
+    }
+    
+    // 如果当前文档是更新的文档，也更新它
+    if (currentDocument.value && currentDocument.value.id === id) {
+      currentDocument.value.readProgress = progress;
+      if (currentPage !== null) {
+        currentDocument.value.currentPage = currentPage;
+      }
+    }
+  };
+  
+  /**
+   * 切换文档收藏状态
+   * @param {string|number} id - 文档ID
+   */
+  const toggleDocumentFavorite = (id) => {
+    const index = documents.value.findIndex(doc => doc.id === id);
+    if (index >= 0) {
+      documents.value[index].isFavorite = !documents.value[index].isFavorite;
+    }
+    
+    // 如果当前文档是更新的文档，也更新它
+    if (currentDocument.value && currentDocument.value.id === id) {
+      currentDocument.value.isFavorite = !currentDocument.value.isFavorite;
+    }
+  };
+  
+  /**
+   * 切换文档公开状态
+   * @param {string|number} id - 文档ID
+   */
+  const toggleDocumentPublic = (id) => {
+    const index = documents.value.findIndex(doc => doc.id === id);
+    if (index >= 0) {
+      documents.value[index].isPublic = !documents.value[index].isPublic;
+    }
+    
+    // 如果当前文档是更新的文档，也更新它
+    if (currentDocument.value && currentDocument.value.id === id) {
+      currentDocument.value.isPublic = !currentDocument.value.isPublic;
+    }
+  };
+  
+  /**
+   * 为文档添加标签
+   * @param {string|number} id - 文档ID
+   * @param {string|Array} tags - 标签或标签数组
+   */
+  const addDocumentTags = (id, tags) => {
+    const tagArray = Array.isArray(tags) ? tags : [tags];
+    const index = documents.value.findIndex(doc => doc.id === id);
+    
+    if (index >= 0) {
+      if (!documents.value[index].tags) {
+        documents.value[index].tags = [];
+      }
+      
+      tagArray.forEach(tag => {
+        if (!documents.value[index].tags.includes(tag)) {
+          documents.value[index].tags.push(tag);
+        }
+      });
+    }
+    
+    // 如果当前文档是更新的文档，也更新它
+    if (currentDocument.value && currentDocument.value.id === id) {
+      if (!currentDocument.value.tags) {
+        currentDocument.value.tags = [];
+      }
+      
+      tagArray.forEach(tag => {
+        if (!currentDocument.value.tags.includes(tag)) {
+          currentDocument.value.tags.push(tag);
+        }
+      });
+    }
+  };
+  
+  /**
+   * 从文档移除标签
+   * @param {string|number} id - 文档ID
+   * @param {string|Array} tags - 标签或标签数组
+   */
+  const removeDocumentTags = (id, tags) => {
+    const tagArray = Array.isArray(tags) ? tags : [tags];
+    const index = documents.value.findIndex(doc => doc.id === id);
+    
+    if (index >= 0 && documents.value[index].tags) {
+      documents.value[index].tags = documents.value[index].tags.filter(
+        tag => !tagArray.includes(tag)
+      );
+    }
+    
+    // 如果当前文档是更新的文档，也更新它
+    if (currentDocument.value && currentDocument.value.id === id && currentDocument.value.tags) {
+      currentDocument.value.tags = currentDocument.value.tags.filter(
+        tag => !tagArray.includes(tag)
+      );
+    }
+  };
+  
+  /**
+   * 获取文档详情
+   * @param {string|number} id - 文档ID
+   * @returns {Object|null} 文档对象
+   */
+  const getDocumentById = (id) => {
+    return documents.value.find(doc => doc.id === id) || null;
+  };
+  
+  /**
+   * 根据标题搜索文档
+   * @param {string} title - 文档标题
+   * @returns {Array} 匹配的文档
+   */
+  const searchDocumentsByTitle = (title) => {
+    if (!title) return [];
+    
+    const searchTerm = title.toLowerCase();
+    return documents.value.filter(doc => 
+      doc.title && doc.title.toLowerCase().includes(searchTerm)
+    );
+  };
+  
+  /**
+   * 根据标签搜索文档
+   * @param {string|Array} tags - 标签或标签数组
+   * @returns {Array} 匹配的文档
+   */
+  const searchDocumentsByTags = (tags) => {
+    const tagArray = Array.isArray(tags) ? tags : [tags];
+    if (tagArray.length === 0) return [];
+    
+    return documents.value.filter(doc => 
+      doc.tags && tagArray.some(tag => doc.tags.includes(tag))
+    );
+  };
+  
+  /**
+   * 清空所有文档状态
+   */
+  const clearAll = () => {
+    documents.value = [];
+    currentDocument.value = null;
+    searchResults.value = [];
+    pagination.page = 1;
+    pagination.total = 0;
+    pagination.totalPages = 0;
+    searchPagination.page = 1;
+    searchPagination.total = 0;
+    searchPagination.totalPages = 0;
+    loading.value = false;
+    uploading.value = false;
+    error.value = null;
+    stats.value = null;
+    uploadQueue.value = [];
+    resetFilters();
+  };
+  
+  /**
+   * 刷新文档列表
+   * @returns {Promise<Object>} 文档列表数据
+   */
+  const refreshDocuments = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const params = {
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+        sortBy: filters.sortBy,
+        sortOrder: filters.sortOrder,
+        search: filters.search,
+        tags: filters.tags,
+        language: filters.language,
+        status: filters.status
+      };
+      
+      const result = await documentService.getDocuments(params);
+      return result;
+    } catch (err) {
+      setError(err.message || '刷新文档列表失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 加载更多文档
+   * @returns {Promise<Object>} 更多文档数据
+   */
+  const loadMoreDocuments = async () => {
+    if (!hasMoreDocuments.value) {
+      return { documents: [], pagination };
+    }
+    
+    try {
+      setLoading(true);
+      
+      const nextPage = pagination.page + 1;
+      const params = {
+        page: nextPage,
+        pageSize: pagination.pageSize,
+        sortBy: filters.sortBy,
+        sortOrder: filters.sortOrder,
+        search: filters.search,
+        tags: filters.tags,
+        language: filters.language,
+        status: filters.status
+      };
+      
+      const result = await documentService.getDocuments(params);
+      
+      // 合并文档列表
+      documents.value = [...documents.value, ...result.documents];
+      
+      // 更新分页信息
+      setPagination(result.pagination);
+      
+      return result;
+    } catch (err) {
+      setError(err.message || '加载更多文档失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 加载更多搜索结果
+   * @returns {Promise<Object>} 更多搜索结果
+   */
+  const loadMoreSearchResults = async (query) => {
+    if (!hasMoreSearchResults.value) {
+      return { documents: [], pagination: searchPagination };
+    }
+    
+    try {
+      setLoading(true);
+      
+      const nextPage = searchPagination.page + 1;
+      const params = {
+        page: nextPage,
+        pageSize: searchPagination.pageSize
+      };
+      
+      const result = await documentService.searchDocuments(query, params);
+      
+      // 合并搜索结果
+      searchResults.value = [...searchResults.value, ...result.documents];
+      
+      // 更新分页信息
+      setSearchPagination(result.pagination);
+      
+      return result;
+    } catch (err) {
+      setError(err.message || '加载更多搜索结果失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ==================== 返回 ====================
+  
+  return {
+    // 状态
+    documents,
+    currentDocument,
+    searchResults,
+    pagination,
+    searchPagination,
+    loading,
+    uploading,
+    error,
+    filters,
+    stats,
+    uploadQueue,
+    
+    // 计算属性
+    currentPageDocuments,
+    currentPageSearchResults,
+    hasMoreDocuments,
+    hasMoreSearchResults,
+    totalDocuments,
+    totalSearchResults,
+    allTags,
+    allLanguages,
+    documentsByTag,
+    documentsByLanguage,
+    recentDocuments,
+    favoriteDocuments,
+    publicDocuments,
+    
+    // Actions
+    setDocuments,
+    addDocument,
+    updateDocument,
+    removeDocument,
+    setCurrentDocument,
+    clearCurrentDocument,
+    setSearchResults,
+    clearSearchResults,
+    setPagination,
+    setSearchPagination,
+    setLoading,
+    setUploading,
+    setError,
+    setFilters,
+    resetFilters,
+    setStats,
+    setUploadQueue,
+    updateDocumentProgress,
+    toggleDocumentFavorite,
+    toggleDocumentPublic,
+    addDocumentTags,
+    removeDocumentTags,
+    getDocumentById,
+    searchDocumentsByTitle,
+    searchDocumentsByTags,
+    clearAll,
+    refreshDocuments,
+    loadMoreDocuments,
+    loadMoreSearchResults,
+  };
+});
+
+// 导出默认实例
+export default useDocumentStore;
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\export.store.js ---
+----------------------------------------------------------------------------------------
+// src/stores/export.store.js
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+
+export const useExportStore = defineStore('export', () => {
+  // ==================== 状态定义 ====================
+  
+  // 导出历史
+  const exportHistory = ref([]);
+  const historyLoading = ref(false);
+  const historyError = ref(null);
+  
+  // 导出模板
+  const exportTemplates = ref([]);
+  const templatesLoading = ref(false);
+  const templatesError = ref(null);
+  
+  // 支持的导出格式
+  const supportedFormats = ref({});
+  const formatsLoading = ref(false);
+  const formatsError = ref(null);
+  
+  // 当前导出任务
+  const currentExportTask = ref(null);
+  const exportProgress = ref(0);
+  const isExporting = ref(false);
+  const exportError = ref(null);
+  
+  // 导出统计
+  const exportStats = ref(null);
+  const statsLoading = ref(false);
+  const statsError = ref(null);
+  
+  // ==================== 计算属性 ====================
+  
+  // 导出历史总数
+  const totalHistoryCount = computed(() => exportHistory.value.length);
+  
+  // 最近导出记录
+  const recentExports = computed(() => 
+    exportHistory.value
+      .slice()
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 5)
+  );
+  
+  // 导出文件总大小
+  const totalExportSize = computed(() => 
+    exportHistory.value.reduce((total, item) => total + (item.fileSize || 0), 0)
+  );
+  
+  // 默认模板
+  const defaultTemplates = computed(() => 
+    exportTemplates.value.filter(template => template.isDefault)
+  );
+  
+  // 用户自定义模板
+  const customTemplates = computed(() => 
+    exportTemplates.value.filter(template => !template.isDefault)
+  );
+  
+  // 导出任务状态
+  const exportStatus = computed(() => {
+    if (isExporting.value) {
+      return exportProgress.value < 100 ? 'processing' : 'completed';
+    }
+    return exportError.value ? 'failed' : 'idle';
+  });
+  
+  // ==================== 动作方法 ====================
+  
+  /**
+   * 设置导出历史
+   * @param {Array} history - 导出历史数组
+   */
+  const setExportHistory = (history) => {
+    exportHistory.value = Array.isArray(history) ? history : [];
+    historyError.value = null;
+  };
+  
+  /**
+   * 添加导出历史记录
+   * @param {Object} record - 导出记录
+   */
+  const addExportHistory = (record) => {
+    if (record && typeof record === 'object') {
+      exportHistory.value.unshift(record);
+    }
+  };
+  
+  /**
+   * 移除导出历史记录
+   * @param {string} historyId - 历史记录ID
+   */
+  const removeExportHistory = (historyId) => {
+    const index = exportHistory.value.findIndex(item => item.id === historyId);
+    if (index !== -1) {
+      exportHistory.value.splice(index, 1);
+    }
+  };
+  
+  /**
+   * 清空导出历史
+   */
+  const clearExportHistory = () => {
+    exportHistory.value = [];
+    historyError.value = null;
+  };
+  
+  /**
+   * 设置导出模板
+   * @param {Array} templates - 导出模板数组
+   */
+  const setExportTemplates = (templates) => {
+    exportTemplates.value = Array.isArray(templates) ? templates : [];
+    templatesError.value = null;
+  };
+  
+  /**
+   * 添加导出模板
+   * @param {Object} template - 导出模板
+   */
+  const addExportTemplate = (template) => {
+    if (template && typeof template === 'object') {
+      exportTemplates.value.push(template);
+    }
+  };
+  
+  /**
+   * 移除导出模板
+   * @param {string} templateId - 模板ID
+   */
+  const removeExportTemplate = (templateId) => {
+    const index = exportTemplates.value.findIndex(item => item.id === templateId);
+    if (index !== -1) {
+      exportTemplates.value.splice(index, 1);
+    }
+  };
+  
+  /**
+   * 设置支持的导出格式
+   * @param {Object} formats - 按类型组织的格式对象
+   */
+  const setSupportedFormats = (formats) => {
+    if (formats && typeof formats === 'object') {
+      supportedFormats.value = formats;
+    } else {
+      supportedFormats.value = {};
+    }
+    formatsError.value = null;
+  };
+  
+  /**
+   * 获取特定类型的支持格式
+   * @param {string} exportType - 导出类型
+   * @returns {Array} 格式列表
+   */
+  const getFormatsByType = (exportType) => {
+    return supportedFormats.value[exportType] || [];
+  };
+  
+  /**
+   * 设置当前导出任务
+   * @param {Object} task - 导出任务
+   */
+  const setCurrentExportTask = (task) => {
+    currentExportTask.value = task;
+    isExporting.value = true;
+    exportProgress.value = 0;
+    exportError.value = null;
+  };
+  
+  /**
+   * 更新导出进度
+   * @param {number} progress - 进度百分比
+   */
+  const updateExportProgress = (progress) => {
+    exportProgress.value = Math.min(100, Math.max(0, progress));
+  };
+  
+  /**
+   * 完成导出任务
+   * @param {Object} result - 导出结果
+   */
+  const completeExportTask = (result) => {
+    isExporting.value = false;
+    exportProgress.value = 100;
+    currentExportTask.value = null;
+    
+    // 如果有结果，添加到历史
+    if (result && result.filename) {
+      addExportHistory({
+        id: `export_${Date.now()}`,
+        type: currentExportTask.value?.type || 'unknown',
+        format: currentExportTask.value?.format || 'unknown',
+        filename: result.filename,
+        fileSize: result.fileSize || 0,
+        itemCount: result.itemCount || 0,
+        createdAt: new Date().toISOString(),
+        status: 'completed'
+      });
+    }
+  };
+  
+  /**
+   * 取消导出任务
+   */
+  const cancelExportTask = () => {
+    isExporting.value = false;
+    exportProgress.value = 0;
+    exportError.value = '导出已取消';
+    currentExportTask.value = null;
+  };
+  
+  /**
+   * 设置导出错误
+   * @param {string|Error} error - 错误信息
+   */
+  const setExportError = (error) => {
+    isExporting.value = false;
+    exportError.value = error instanceof Error ? error.message : error;
+    
+    // 记录失败的历史
+    if (currentExportTask.value) {
+      addExportHistory({
+        id: `export_${Date.now()}`,
+        type: currentExportTask.value.type || 'unknown',
+        format: currentExportTask.value.format || 'unknown',
+        filename: '导出失败',
+        fileSize: 0,
+        itemCount: 0,
+        createdAt: new Date().toISOString(),
+        status: 'failed',
+        errorMessage: exportError.value
+      });
+    }
+    
+    currentExportTask.value = null;
+  };
+  
+  /**
+   * 设置导出统计
+   * @param {Object} stats - 导出统计数据
+   */
+  const setExportStats = (stats) => {
+    exportStats.value = stats && typeof stats === 'object' ? stats : null;
+    statsError.value = null;
+  };
+  
+  /**
+   * 清空导出错误
+   */
+  const clearExportError = () => {
+    exportError.value = null;
+  };
+  
+  /**
+   * 重置导出状态
+   */
+  const resetExportState = () => {
+    isExporting.value = false;
+    exportProgress.value = 0;
+    exportError.value = null;
+    currentExportTask.value = null;
+  };
+  
+  /**
+   * 获取导出历史分页
+   * @param {number} page - 页码
+   * @param {number} pageSize - 每页大小
+   * @returns {Array} 分页后的历史记录
+   */
+  const getPaginatedHistory = (page = 1, pageSize = 10) => {
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return exportHistory.value.slice(startIndex, endIndex);
+  };
+  
+  /**
+   * 根据类型筛选导出历史
+   * @param {string} type - 导出类型
+   * @returns {Array} 筛选后的历史记录
+   */
+  const filterHistoryByType = (type) => {
+    return exportHistory.value.filter(item => item.type === type);
+  };
+  
+  /**
+   * 根据日期范围筛选导出历史
+   * @param {Date} startDate - 开始日期
+   * @param {Date} endDate - 结束日期
+   * @returns {Array} 筛选后的历史记录
+   */
+  const filterHistoryByDateRange = (startDate, endDate = new Date()) => {
+    return exportHistory.value.filter(item => {
+      const itemDate = new Date(item.createdAt);
+      return itemDate >= startDate && itemDate <= endDate;
+    });
+  };
+  
+  return {
+    // 状态
+    exportHistory,
+    historyLoading,
+    historyError,
+    exportTemplates,
+    templatesLoading,
+    templatesError,
+    supportedFormats,
+    formatsLoading,
+    formatsError,
+    currentExportTask,
+    exportProgress,
+    isExporting,
+    exportError,
+    exportStats,
+    statsLoading,
+    statsError,
+    
+    // 计算属性
+    totalHistoryCount,
+    recentExports,
+    totalExportSize,
+    defaultTemplates,
+    customTemplates,
+    exportStatus,
+    
+    // 动作方法
+    setExportHistory,
+    addExportHistory,
+    removeExportHistory,
+    clearExportHistory,
+    setExportTemplates,
+    addExportTemplate,
+    removeExportTemplate,
+    setSupportedFormats,
+    getFormatsByType,
+    setCurrentExportTask,
+    updateExportProgress,
+    completeExportTask,
+    cancelExportTask,
+    setExportError,
+    setExportStats,
+    clearExportError,
+    resetExportState,
+    getPaginatedHistory,
+    filterHistoryByType,
+    filterHistoryByDateRange
+  };
+});
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\feedback.store.js ---
+------------------------------------------------------------------------------------------
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+
+export const useFeedbackStore = defineStore('feedback', () => {
+  // ==================== 状态定义 ====================
+  
+  // 反馈列表
+  const feedbackList = ref([]);
+  
+  // 我的反馈列表
+  const myFeedback = ref([]);
+  
+  // 当前查看的反馈详情
+  const currentFeedback = ref(null);
+  
+  // 反馈类型列表
+  const feedbackTypes = ref([]);
+  
+  // 反馈统计
+  const statistics = ref({});
+  
+  // 加载状态
+  const loading = ref(false);
+  
+  // 错误信息
+  const error = ref(null);
+  
+  // ==================== 计算属性 ====================
+  
+  // 反馈总数
+  const totalCount = computed(() => feedbackList.value.length);
+  
+  // 我的反馈数量
+  const myFeedbackCount = computed(() => myFeedback.value.length);
+  
+  // 待处理反馈数量
+  const pendingCount = computed(() => 
+    feedbackList.value.filter(f => f.status === 'pending').length
+  );
+  
+  // 进行中反馈数量
+  const inProgressCount = computed(() => 
+    feedbackList.value.filter(f => f.status === 'in_progress').length
+  );
+  
+  // 已完成反馈数量
+  const completedCount = computed(() => 
+    feedbackList.value.filter(f => f.status === 'completed').length
+  );
+  
+  // 按类型统计
+  const countByType = computed(() => {
+    const counts = {};
+    feedbackList.value.forEach(feedback => {
+      counts[feedback.type] = (counts[feedback.type] || 0) + 1;
+    });
+    return counts;
+  });
+  
+  // ==================== 动作方法 ====================
+  
+  /**
+   * 设置反馈列表
+   * @param {Array} list - 反馈列表
+   */
+  const setFeedbackList = (list) => {
+    feedbackList.value = Array.isArray(list) ? list : [];
+  };
+  
+  /**
+   * 设置我的反馈列表
+   * @param {Array} list - 我的反馈列表
+   */
+  const setMyFeedback = (list) => {
+    myFeedback.value = Array.isArray(list) ? list : [];
+  };
+  
+  /**
+   * 添加反馈
+   * @param {Object} feedback - 反馈对象
+   */
+  const addFeedback = (feedback) => {
+    if (feedback) {
+      feedbackList.value.unshift(feedback);
+      myFeedback.value.unshift(feedback);
+    }
+  };
+  
+  /**
+   * 更新反馈
+   * @param {string} feedbackId - 反馈ID
+   * @param {Object} updateData - 更新数据
+   */
+  const updateFeedback = (feedbackId, updateData) => {
+    if (!feedbackId || !updateData) return;
+    
+    // 更新反馈列表中的对应项
+    const index = feedbackList.value.findIndex(f => f.id === feedbackId);
+    if (index !== -1) {
+      feedbackList.value[index] = { 
+        ...feedbackList.value[index], 
+        ...updateData,
+        updatedAt: new Date().toISOString()
+      };
+    }
+    
+    // 更新我的反馈列表中的对应项
+    const myIndex = myFeedback.value.findIndex(f => f.id === feedbackId);
+    if (myIndex !== -1) {
+      myFeedback.value[myIndex] = { 
+        ...myFeedback.value[myIndex], 
+        ...updateData,
+        updatedAt: new Date().toISOString()
+      };
+    }
+    
+    // 更新当前查看的反馈
+    if (currentFeedback.value?.id === feedbackId) {
+      currentFeedback.value = { 
+        ...currentFeedback.value, 
+        ...updateData,
+        updatedAt: new Date().toISOString()
+      };
+    }
+  };
+  
+  /**
+   * 删除反馈
+   * @param {string} feedbackId - 反馈ID
+   */
+  const removeFeedback = (feedbackId) => {
+    if (!feedbackId) return;
+    
+    // 从反馈列表中移除
+    feedbackList.value = feedbackList.value.filter(f => f.id !== feedbackId);
+    
+    // 从我的反馈列表中移除
+    myFeedback.value = myFeedback.value.filter(f => f.id !== feedbackId);
+    
+    // 如果当前查看的是被删除的反馈，清空当前反馈
+    if (currentFeedback.value?.id === feedbackId) {
+      currentFeedback.value = null;
+    }
+  };
+  
+  /**
+   * 根据ID获取反馈
+   * @param {string} feedbackId - 反馈ID
+   * @returns {Object|null} 反馈对象
+   */
+  const getFeedbackById = (feedbackId) => {
+    if (!feedbackId) return null;
+    
+    // 先从当前列表查找
+    let feedback = feedbackList.value.find(f => f.id === feedbackId);
+    
+    // 如果没找到，从我的反馈中查找
+    if (!feedback) {
+      feedback = myFeedback.value.find(f => f.id === feedbackId);
+    }
+    
+    return feedback || null;
+  };
+  
+  /**
+   * 设置当前查看的反馈
+   * @param {Object} feedback - 反馈对象
+   */
+  const setCurrentFeedback = (feedback) => {
+    currentFeedback.value = feedback;
+  };
+  
+  /**
+   * 添加评论到反馈
+   * @param {string} feedbackId - 反馈ID
+   * @param {Object} comment - 评论对象
+   */
+  const addComment = (feedbackId, comment) => {
+    if (!feedbackId || !comment) return;
+    
+    const feedback = getFeedbackById(feedbackId);
+    if (feedback) {
+      // 初始化评论数组
+      if (!feedback.comments) {
+        feedback.comments = [];
+      }
+      
+      // 添加评论
+      feedback.comments.push(comment);
+      
+      // 更新反馈
+      updateFeedback(feedbackId, { 
+        comments: feedback.comments,
+        commentCount: feedback.comments.length
+      });
+    }
+  };
+  
+  /**
+   * 设置反馈类型列表
+   * @param {Array} types - 反馈类型列表
+   */
+  const setFeedbackTypes = (types) => {
+    feedbackTypes.value = Array.isArray(types) ? types : [];
+  };
+  
+  /**
+   * 设置反馈统计
+   * @param {Object} stats - 统计对象
+   */
+  const setStatistics = (stats) => {
+    statistics.value = stats || {};
+  };
+  
+  /**
+   * 清除错误信息
+   */
+  const clearError = () => {
+    error.value = null;
+  };
+  
+  /**
+   * 设置加载状态
+   * @param {boolean} isLoading - 是否加载中
+   */
+  const setLoading = (isLoading) => {
+    loading.value = isLoading;
+  };
+  
+  /**
+   * 设置错误信息
+   * @param {string|Error} err - 错误信息或对象
+   */
+  const setError = (err) => {
+    if (err instanceof Error) {
+      error.value = err.message;
+    } else {
+      error.value = err;
+    }
+  };
+  
+  /**
+   * 重置Store状态
+   */
+  const reset = () => {
+    feedbackList.value = [];
+    myFeedback.value = [];
+    currentFeedback.value = null;
+    feedbackTypes.value = [];
+    statistics.value = {};
+    loading.value = false;
+    error.value = null;
+  };
+  
+  /**
+   * 投票反馈
+   * @param {string} feedbackId - 反馈ID
+   * @param {string} voteType - 投票类型（upvote/downvote）
+   * @param {string} userId - 用户ID
+   */
+  const voteFeedback = (feedbackId, voteType, userId) => {
+    if (!feedbackId || !voteType || !userId) return;
+    
+    const feedback = getFeedbackById(feedbackId);
+    if (!feedback) return;
+    
+    let updatedFeedback = { ...feedback };
+    
+    if (voteType === 'upvote') {
+      // 如果之前投了反对票，先移除
+      if (updatedFeedback.downvotedBy?.includes(userId)) {
+        updatedFeedback.downvotedBy = updatedFeedback.downvotedBy.filter(id => id !== userId);
+        updatedFeedback.downvotes = Math.max(0, (updatedFeedback.downvotes || 0) - 1);
+      }
+      
+      // 如果还没投赞成票，添加
+      if (!updatedFeedback.upvotedBy?.includes(userId)) {
+        updatedFeedback.upvotedBy = [...(updatedFeedback.upvotedBy || []), userId];
+        updatedFeedback.upvotes = (updatedFeedback.upvotes || 0) + 1;
+      }
+    } else if (voteType === 'downvote') {
+      // 如果之前投了赞成票，先移除
+      if (updatedFeedback.upvotedBy?.includes(userId)) {
+        updatedFeedback.upvotedBy = updatedFeedback.upvotedBy.filter(id => id !== userId);
+        updatedFeedback.upvotes = Math.max(0, (updatedFeedback.upvotes || 0) - 1);
+      }
+      
+      // 如果还没投反对票，添加
+      if (!updatedFeedback.downvotedBy?.includes(userId)) {
+        updatedFeedback.downvotedBy = [...(updatedFeedback.downvotedBy || []), userId];
+        updatedFeedback.downvotes = (updatedFeedback.downvotes || 0) + 1;
+      }
+    }
+    
+    // 更新反馈
+    updateFeedback(feedbackId, updatedFeedback);
+  };
+  
+  /**
+   * 过滤反馈列表
+   * @param {Object} filters - 过滤条件
+   * @returns {Array} 过滤后的列表
+   */
+  const filterFeedback = (filters = {}) => {
+    let filtered = [...feedbackList.value];
+    
+    // 按类型过滤
+    if (filters.type) {
+      filtered = filtered.filter(f => f.type === filters.type);
+    }
+    
+    // 按状态过滤
+    if (filters.status) {
+      filtered = filtered.filter(f => f.status === filters.status);
+    }
+    
+    // 按优先级过滤
+    if (filters.priority) {
+      filtered = filtered.filter(f => f.priority === filters.priority);
+    }
+    
+    // 按搜索关键词过滤
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      filtered = filtered.filter(f => 
+        f.title.toLowerCase().includes(searchTerm) ||
+        f.content.toLowerCase().includes(searchTerm) ||
+        f.userName.toLowerCase().includes(searchTerm)
+      );
+    }
+    
+    // 排序
+    if (filters.sortBy) {
+      const sortOrder = filters.sortOrder === 'asc' ? 1 : -1;
+      filtered.sort((a, b) => {
+        if (a[filters.sortBy] < b[filters.sortBy]) return -1 * sortOrder;
+        if (a[filters.sortBy] > b[filters.sortBy]) return 1 * sortOrder;
+        return 0;
+      });
+    }
+    
+    return filtered;
+  };
+  
+  return {
+    // ==================== 状态 ====================
+    feedbackList,
+    myFeedback,
+    currentFeedback,
+    feedbackTypes,
+    statistics,
+    loading,
+    error,
+    
+    // ==================== 计算属性 ====================
+    totalCount,
+    myFeedbackCount,
+    pendingCount,
+    inProgressCount,
+    completedCount,
+    countByType,
+    
+    // ==================== 动作方法 ====================
+    setFeedbackList,
+    setMyFeedback,
+    addFeedback,
+    updateFeedback,
+    removeFeedback,
+    getFeedbackById,
+    setCurrentFeedback,
+    addComment,
+    setFeedbackTypes,
+    setStatistics,
+    clearError,
+    setLoading,
+    setError,
+    reset,
+    voteFeedback,
+    filterFeedback,
+  };
+});
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\index.js ---
+---------------------------------------------------------------------------------
+
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\merged_content.txt ---
+-------------------------------------------------------------------------------------------
+
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\a.py ---
+-----------------------------------------------------------------------------
+import os
+
+def merge_all_content_to_single_txt(source_directory, output_txt_path):
+    """
+    递归地读取指定目录下所有文件的内容，并将它们合并到一个单独的 txt 文件中，
+    在每段内容前标注原始文件路径。
+
+    Args:
+        source_directory (str): 要读取文件的源目录路径。
+        output_txt_path (str): 合并后的内容将写入的单个 txt 文件路径。
+    """
+    # 确保输出文件所在的目录存在
+    output_dir = os.path.dirname(output_txt_path)
+    if output_dir and not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+        print(f"创建输出目录: {output_dir}")
+
+    try:
+        with open(output_txt_path, 'w', encoding='utf-8') as outfile:
+            print(f"开始将内容写入到: {output_txt_path}")
+
+            for root, _, files in os.walk(source_directory):
+                for file in files:
+                    source_file_path = os.path.join(root, file)
+
+                    # 写入分隔符和原始文件路径
+                    outfile.write(f"\n--- Original File: {source_file_path} ---\n")
+                    outfile.write("-" * (len(f"--- Original File: {source_file_path} ---")) + "\n") # 添加下划线分隔
+
+                    try:
+                        with open(source_file_path, 'r', encoding='utf-8', errors='ignore') as infile:
+                            content = infile.read()
+                            outfile.write(content)
+                        print(f"已处理并追加: {source_file_path}")
+                    except Exception as e:
+                        error_message = f"[ERROR READING FILE: {e}]"
+                        outfile.write(error_message)
+                        print(f"处理文件 '{source_file_path}' 时发生错误: {e} (已记录到输出文件)")
+            print("\n所有文件内容合并完成！")
+
+    except Exception as e:
+        print(f"写入到输出文件 '{output_txt_path}' 时发生错误: {e}")
+
+
+if __name__ == "__main__":
+    # 获取当前脚本所在的目录
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    print(f"脚本所在目录: {script_dir}")
+
+    # --- 用户输入 ---
+    source_directory_to_scan = input(f"请输入要扫描并提取内容的目录路径 (留空则为当前目录): ")
+    if not source_directory_to_scan:
+        source_directory_to_scan = "."
+    source_directory_to_scan = os.path.abspath(source_directory_to_scan) # 转换为绝对路径
+
+    # 默认输出文件名，保存在脚本同目录下
+    default_output_filename = "merged_content.txt"
+    default_output_path = os.path.join(script_dir, default_output_filename)
+
+    user_output_path_choice = input(f"请输入合并后的 txt 文件路径 (留空则使用默认: '{default_output_path}'): ")
+    if user_output_path_choice:
+        final_output_path = os.path.abspath(user_output_path_choice)
+    else:
+        final_output_path = default_output_path
+        print(f"将使用默认输出文件: '{final_output_path}'")
+
+
+    # --- 执行合并 ---
+    if not os.path.isdir(source_directory_to_scan):
+        print(f"错误: 源目录 '{source_directory_to_scan}' 不存在或不是一个有效的目录。")
+    else:
+        print(f"\n开始从 '{source_directory_to_scan}' 提取并合并文件内容...")
+        merge_all_content_to_single_txt(source_directory_to_scan, final_output_path)
+        print("合并过程完成！")
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\auth.store.js ---
+--------------------------------------------------------------------------------------
+// src/stores/auth.store.js
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+import authService from '@/services/auth.service';
+import { getToken } from '@/utils/token';
+
+/**
+ * 认证状态管理
+ * 管理用户登录状态、用户信息、token等
+ */
+export const useAuthStore = defineStore('auth', () => {
+  // ==================== 状态定义 ====================
+  
+  // 用户信息
+  const user = ref(null);
+  
+  // 访问令牌
+  const token = ref(null);
+  
+  // 登录状态
+  const isLoggedIn = ref(false);
+  
+  // 加载状态
+  const loading = ref(false);
+  
+  // 错误信息
+  const error = ref(null);
+  
+  // 记住我状态
+  const rememberMe = ref(false);
+  
+  // 用户偏好设置
+  const preferences = ref({
+    theme: 'light',
+    language: 'zh-CN',
+    notificationEnabled: true,
+    autoSave: true,
+    readingMode: 'normal',
+    fontSize: 16,
+    lineHeight: 1.6,
+  });
+
+  // ==================== 计算属性 ====================
+  
+  /**
+   * 用户ID
+   */
+  const userId = computed(() => user.value?.id || null);
+  
+  /**
+   * 用户名
+   */
+  const username = computed(() => user.value?.username || '');
+  
+  /**
+   * 用户邮箱
+   */
+  const email = computed(() => user.value?.email || '');
+  
+  /**
+   * 用户昵称
+   */
+  const nickname = computed(() => user.value?.nickname || user.value?.username || '');
+  
+  /**
+   * 用户头像
+   */
+  const avatar = computed(() => user.value?.avatar || '');
+  
+  /**
+   * 用户角色
+   */
+  const role = computed(() => user.value?.role || 'user');
+  
+  /**
+   * 是否已验证邮箱
+   */
+  const isVerified = computed(() => user.value?.isVerified || false);
+  
+  /**
+   * 是否管理员
+   */
+  const isAdmin = computed(() => role.value === 'admin');
+  
+  /**
+   * 是否VIP用户
+   */
+  const isVip = computed(() => role.value === 'vip' || role.value === 'admin');
+  
+  /**
+   * 用户创建时间
+   */
+  const createdAt = computed(() => user.value?.createdAt || null);
+  
+  /**
+   * 最后登录时间
+   */
+  const lastLoginAt = computed(() => user.value?.lastLoginAt || null);
+
+  // ==================== Actions ====================
+  
+  /**
+   * 设置用户信息
+   * @param {Object} userData - 用户数据
+   */
+  const setUser = (userData) => {
+    if (!userData) {
+      user.value = null;
+      return;
+    }
+    
+    user.value = {
+      id: userData.id,
+      username: userData.username,
+      email: userData.email,
+      nickname: userData.nickname || userData.username,
+      avatar: userData.avatar || '',
+      role: userData.role || 'user',
+      isVerified: userData.isVerified || false,
+      createdAt: userData.createdAt,
+      lastLoginAt: userData.lastLoginAt,
+      preferences: {
+        ...preferences.value,
+        ...(userData.preferences || {})
+      }
+    };
+    
+    // 更新偏好设置
+    if (userData.preferences) {
+      preferences.value = {
+        ...preferences.value,
+        ...userData.preferences
+      };
+    }
+  };
+  
+  /**
+   * 清除用户信息
+   */
+  const clearUser = () => {
+    user.value = null;
+    token.value = null;
+    isLoggedIn.value = false;
+    error.value = null;
+  };
+  
+  /**
+   * 设置token
+   * @param {string} newToken - 访问令牌
+   */
+  const setToken = (newToken) => {
+    token.value = newToken;
+  };
+  
+  /**
+   * 设置登录状态
+   * @param {boolean} status - 登录状态
+   */
+  const setLoggedIn = (status) => {
+    isLoggedIn.value = status;
+  };
+  
+  /**
+   * 设置记住我状态
+   * @param {boolean} status - 记住我状态
+   */
+  const setRememberMe = (status) => {
+    rememberMe.value = status;
+  };
+  
+  /**
+   * 设置加载状态
+   * @param {boolean} status - 加载状态
+   */
+  const setLoading = (status) => {
+    loading.value = status;
+  };
+  
+  /**
+   * 设置错误信息
+   * @param {string|null} errorMessage - 错误信息
+   */
+  const setError = (errorMessage) => {
+    error.value = errorMessage;
+  };
+  
+  /**
+   * 更新用户偏好设置
+   * @param {Object} newPreferences - 新的偏好设置
+   */
+  const updatePreferences = (newPreferences) => {
+    preferences.value = {
+      ...preferences.value,
+      ...newPreferences
+    };
+    
+    // 如果用户已登录，同时更新用户对象中的偏好设置
+    if (user.value) {
+      user.value.preferences = preferences.value;
+    }
+  };
+  
+  /**
+   * 更新用户信息
+   * @param {Object} updates - 要更新的字段
+   */
+  const updateUser = (updates) => {
+    if (!user.value) return;
+    
+    user.value = {
+      ...user.value,
+      ...updates
+    };
+  };
+  
+  /**
+   * 更新用户头像
+   * @param {string} avatarUrl - 头像URL
+   */
+  const updateAvatar = (avatarUrl) => {
+    if (!user.value) return;
+    
+    user.value.avatar = avatarUrl;
+  };
+  
+  /**
+   * 更新用户昵称
+   * @param {string} newNickname - 新昵称
+   */
+  const updateNickname = (newNickname) => {
+    if (!user.value) return;
+    
+    user.value.nickname = newNickname;
+  };
+  
+  /**
+   * 初始化认证状态
+   * 从本地存储恢复token和用户信息
+   */
+  const initAuth = async () => {
+    try {
+      setLoading(true);
+      
+      // 检查本地是否有token
+      const localToken = getToken();
+      if (localToken) {
+        token.value = localToken;
+        isLoggedIn.value = true;
+        
+        // 尝试获取用户信息
+        await authService.getCurrentUser();
+      }
+    } catch (error) {
+      console.warn('初始化认证状态失败:', error);
+      clearUser();
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 用户登录
+   * @param {Object} credentials - 登录凭证
+   * @param {boolean} remember - 记住我
+   * @returns {Promise<Object>} 用户数据
+   */
+  const login = async (credentials, remember = false) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // 设置记住我状态
+      setRememberMe(remember);
+      
+      // 调用服务层登录
+      const userData = await authService.login(credentials, remember);
+      
+      // 更新状态
+      setUser(userData);
+      setLoggedIn(true);
+      
+      return userData;
+    } catch (err) {
+      setError(err.message || '登录失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 用户注册
+   * @param {Object} userData - 用户注册数据
+   * @returns {Promise<Object>} 注册结果
+   */
+  const register = async (userData) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const result = await authService.register(userData);
+      return result;
+    } catch (err) {
+      setError(err.message || '注册失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 用户登出
+   * @returns {Promise<void>}
+   */
+  const logout = async () => {
+    try {
+      setLoading(true);
+      await authService.logout();
+    } catch (err) {
+      console.warn('登出失败:', err);
+    } finally {
+      clearUser();
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 忘记密码
+   * @param {string} email - 邮箱
+   * @returns {Promise<Object>} 重置结果
+   */
+  const forgotPassword = async (email) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const result = await authService.forgotPassword(email);
+      return result;
+    } catch (err) {
+      setError(err.message || '发送重置邮件失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 重置密码
+   * @param {Object} data - 重置密码数据
+   * @returns {Promise<Object>} 重置结果
+   */
+  const resetPassword = async (data) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const result = await authService.resetPassword(data);
+      return result;
+    } catch (err) {
+      setError(err.message || '重置密码失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 刷新用户信息
+   * @returns {Promise<Object>} 用户信息
+   */
+  const refreshUser = async () => {
+    try {
+      setLoading(true);
+      
+      const userData = await authService.getCurrentUser(true);
+      setUser(userData);
+      
+      return userData;
+    } catch (err) {
+      setError(err.message || '刷新用户信息失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 检查登录状态
+   * @returns {boolean} 是否已登录
+   */
+  const checkLoginStatus = () => {
+    return authService.checkLoginStatus();
+  };
+
+  // ==================== 返回 ====================
+  
+  return {
+    // 状态
+    user,
+    token,
+    isLoggedIn,
+    loading,
+    error,
+    rememberMe,
+    preferences,
+    
+    // 计算属性
+    userId,
+    username,
+    email,
+    nickname,
+    avatar,
+    role,
+    isVerified,
+    isAdmin,
+    isVip,
+    createdAt,
+    lastLoginAt,
+    
+    // Actions
+    setUser,
+    clearUser,
+    setToken,
+    setLoggedIn,
+    setRememberMe,
+    setLoading,
+    setError,
+    updatePreferences,
+    updateUser,
+    updateAvatar,
+    updateNickname,
+    initAuth,
+    login,
+    register,
+    logout,
+    forgotPassword,
+    resetPassword,
+    refreshUser,
+    checkLoginStatus,
+  };
+});
+
+// 导出默认实例
+export default useAuthStore;
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\counter.ts ---
+-----------------------------------------------------------------------------------
+import { ref, computed } from 'vue'
+import { defineStore } from 'pinia'
+
+export const useCounterStore = defineStore('counter', () => {
+  const count = ref(0)
+  const doubleCount = computed(() => count.value * 2)
+  function increment() {
+    count.value++
+  }
+
+  return { count, doubleCount, increment }
+})
+
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\document.store.js ---
+------------------------------------------------------------------------------------------
+// src/stores/document.store.js
+import { defineStore } from 'pinia';
+import { ref, computed, reactive } from 'vue';
+import documentService from '@/services/document.service';
+
+/**
+ * 文档状态管理
+ * 管理文档列表、当前文档、搜索状态、上传状态等
+ */
+export const useDocumentStore = defineStore('document', () => {
+  // ==================== 状态定义 ====================
+  
+  // 文档列表
+  const documents = ref([]);
+  
+  // 当前选中的文档
+  const currentDocument = ref(null);
+  
+  // 搜索结果的文档列表
+  const searchResults = ref([]);
+  
+  // 分页信息
+  const pagination = reactive({
+    page: 1,
+    pageSize: 20,
+    total: 0,
+    totalPages: 0
+  });
+  
+  // 搜索分页信息
+  const searchPagination = reactive({
+    page: 1,
+    pageSize: 20,
+    total: 0,
+    totalPages: 0
+  });
+  
+  // 加载状态
+  const loading = ref(false);
+  
+  // 上传状态
+  const uploading = ref(false);
+  
+  // 错误信息
+  const error = ref(null);
+  
+  // 筛选条件
+  const filters = reactive({
+    search: '',
+    tags: [],
+    language: '',
+    status: '',
+    sortBy: 'created_at',
+    sortOrder: 'desc'
+  });
+  
+  // 文档统计信息
+  const stats = ref(null);
+  
+  // 上传队列
+  const uploadQueue = ref([]);
+
+  // ==================== 计算属性 ====================
+  
+  /**
+   * 当前页的文档
+   */
+  const currentPageDocuments = computed(() => {
+    const start = (pagination.page - 1) * pagination.pageSize;
+    const end = start + pagination.pageSize;
+    return documents.value.slice(start, end);
+  });
+  
+  /**
+   * 当前页的搜索结果
+   */
+  const currentPageSearchResults = computed(() => {
+    const start = (searchPagination.page - 1) * searchPagination.pageSize;
+    const end = start + searchPagination.pageSize;
+    return searchResults.value.slice(start, end);
+  });
+  
+  /**
+   * 是否有更多文档
+   */
+  const hasMoreDocuments = computed(() => {
+    return pagination.page < pagination.totalPages;
+  });
+  
+  /**
+   * 是否有更多搜索结果
+   */
+  const hasMoreSearchResults = computed(() => {
+    return searchPagination.page < searchPagination.totalPages;
+  });
+  
+  /**
+   * 文档总数
+   */
+  const totalDocuments = computed(() => pagination.total);
+  
+  /**
+   * 搜索结果总数
+   */
+  const totalSearchResults = computed(() => searchPagination.total);
+  
+  /**
+   * 所有标签（去重）
+   */
+  const allTags = computed(() => {
+    const tagSet = new Set();
+    documents.value.forEach(doc => {
+      if (doc.tags && Array.isArray(doc.tags)) {
+        doc.tags.forEach(tag => tagSet.add(tag));
+      }
+    });
+    return Array.from(tagSet);
+  });
+  
+  /**
+   * 所有语言（去重）
+   */
+  const allLanguages = computed(() => {
+    const langSet = new Set();
+    documents.value.forEach(doc => {
+      if (doc.language) {
+        langSet.add(doc.language);
+      }
+    });
+    return Array.from(langSet);
+  });
+  
+  /**
+   * 按标签分组的文档
+   */
+  const documentsByTag = computed(() => {
+    const grouped = {};
+    documents.value.forEach(doc => {
+      if (doc.tags && Array.isArray(doc.tags)) {
+        doc.tags.forEach(tag => {
+          if (!grouped[tag]) {
+            grouped[tag] = [];
+          }
+          grouped[tag].push(doc);
+        });
+      }
+    });
+    return grouped;
+  });
+  
+  /**
+   * 按语言分组的文档
+   */
+  const documentsByLanguage = computed(() => {
+    const grouped = {};
+    documents.value.forEach(doc => {
+      const lang = doc.language || 'unknown';
+      if (!grouped[lang]) {
+        grouped[lang] = [];
+      }
+      grouped[lang].push(doc);
+    });
+    return grouped;
+  });
+  
+  /**
+   * 最近上传的文档
+   */
+  const recentDocuments = computed(() => {
+    return [...documents.value]
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 10);
+  });
+  
+  /**
+   * 收藏的文档
+   */
+  const favoriteDocuments = computed(() => {
+    return documents.value.filter(doc => doc.isFavorite);
+  });
+  
+  /**
+   * 公开的文档
+   */
+  const publicDocuments = computed(() => {
+    return documents.value.filter(doc => doc.isPublic);
+  });
+
+  // ==================== Actions ====================
+  
+  /**
+   * 设置文档列表
+   * @param {Array} docs - 文档数组
+   */
+  const setDocuments = (docs) => {
+    documents.value = Array.isArray(docs) ? docs : [];
+  };
+  
+  /**
+   * 添加文档
+   * @param {Object} doc - 文档对象
+   */
+  const addDocument = (doc) => {
+    if (doc && doc.id) {
+      // 检查是否已存在
+      const existingIndex = documents.value.findIndex(d => d.id === doc.id);
+      if (existingIndex >= 0) {
+        documents.value[existingIndex] = doc;
+      } else {
+        documents.value.unshift(doc);
+      }
+    }
+  };
+  
+  /**
+   * 更新文档
+   * @param {Object} doc - 更新后的文档对象
+   */
+  const updateDocument = (doc) => {
+    if (doc && doc.id) {
+      const index = documents.value.findIndex(d => d.id === doc.id);
+      if (index >= 0) {
+        documents.value[index] = doc;
+      }
+      
+      // 如果当前文档是更新的文档，也更新它
+      if (currentDocument.value && currentDocument.value.id === doc.id) {
+        currentDocument.value = doc;
+      }
+    }
+  };
+  
+  /**
+   * 删除文档
+   * @param {string|number} id - 文档ID
+   */
+  const removeDocument = (id) => {
+    const index = documents.value.findIndex(doc => doc.id === id);
+    if (index >= 0) {
+      documents.value.splice(index, 1);
+    }
+    
+    // 如果当前文档是被删除的文档，清空它
+    if (currentDocument.value && currentDocument.value.id === id) {
+      currentDocument.value = null;
+    }
+  };
+  
+  /**
+   * 设置当前文档
+   * @param {Object} doc - 文档对象
+   */
+  const setCurrentDocument = (doc) => {
+    currentDocument.value = doc;
+  };
+  
+  /**
+   * 清除当前文档
+   */
+  const clearCurrentDocument = () => {
+    currentDocument.value = null;
+  };
+  
+  /**
+   * 设置搜索结果
+   * @param {Array} results - 搜索结果数组
+   */
+  const setSearchResults = (results) => {
+    searchResults.value = Array.isArray(results) ? results : [];
+  };
+  
+  /**
+   * 清除搜索结果
+   */
+  const clearSearchResults = () => {
+    searchResults.value = [];
+    searchPagination.page = 1;
+    searchPagination.total = 0;
+    searchPagination.totalPages = 0;
+  };
+  
+  /**
+   * 设置分页信息
+   * @param {Object} paginationData - 分页数据
+   */
+  const setPagination = (paginationData) => {
+    if (paginationData) {
+      pagination.page = paginationData.page || 1;
+      pagination.pageSize = paginationData.pageSize || 20;
+      pagination.total = paginationData.total || 0;
+      pagination.totalPages = paginationData.totalPages || 0;
+    }
+  };
+  
+  /**
+   * 设置搜索分页信息
+   * @param {Object} paginationData - 分页数据
+   */
+  const setSearchPagination = (paginationData) => {
+    if (paginationData) {
+      searchPagination.page = paginationData.page || 1;
+      searchPagination.pageSize = paginationData.pageSize || 20;
+      searchPagination.total = paginationData.total || 0;
+      searchPagination.totalPages = paginationData.totalPages || 0;
+    }
+  };
+  
+  /**
+   * 设置加载状态
+   * @param {boolean} status - 加载状态
+   */
+  const setLoading = (status) => {
+    loading.value = status;
+  };
+  
+  /**
+   * 设置上传状态
+   * @param {boolean} status - 上传状态
+   */
+  const setUploading = (status) => {
+    uploading.value = status;
+  };
+  
+  /**
+   * 设置错误信息
+   * @param {string|null} errorMessage - 错误信息
+   */
+  const setError = (errorMessage) => {
+    error.value = errorMessage;
+  };
+  
+  /**
+   * 设置筛选条件
+   * @param {Object} newFilters - 新的筛选条件
+   */
+  const setFilters = (newFilters) => {
+    if (newFilters) {
+      Object.assign(filters, newFilters);
+    }
+  };
+  
+  /**
+   * 重置筛选条件
+   */
+  const resetFilters = () => {
+    filters.search = '';
+    filters.tags = [];
+    filters.language = '';
+    filters.status = '';
+    filters.sortBy = 'created_at';
+    filters.sortOrder = 'desc';
+  };
+  
+  /**
+   * 设置统计信息
+   * @param {Object} statsData - 统计信息
+   */
+  const setStats = (statsData) => {
+    stats.value = statsData;
+  };
+  
+  /**
+   * 设置上传队列
+   * @param {Array} queue - 上传队列
+   */
+  const setUploadQueue = (queue) => {
+    uploadQueue.value = Array.isArray(queue) ? queue : [];
+  };
+  
+  /**
+   * 更新文档阅读进度
+   * @param {string|number} id - 文档ID
+   * @param {number} progress - 阅读进度 (0-100)
+   * @param {number} [currentPage] - 当前页码
+   */
+  const updateDocumentProgress = (id, progress, currentPage = null) => {
+    const index = documents.value.findIndex(doc => doc.id === id);
+    if (index >= 0) {
+      documents.value[index].readProgress = progress;
+      if (currentPage !== null) {
+        documents.value[index].currentPage = currentPage;
+      }
+    }
+    
+    // 如果当前文档是更新的文档，也更新它
+    if (currentDocument.value && currentDocument.value.id === id) {
+      currentDocument.value.readProgress = progress;
+      if (currentPage !== null) {
+        currentDocument.value.currentPage = currentPage;
+      }
+    }
+  };
+  
+  /**
+   * 切换文档收藏状态
+   * @param {string|number} id - 文档ID
+   */
+  const toggleDocumentFavorite = (id) => {
+    const index = documents.value.findIndex(doc => doc.id === id);
+    if (index >= 0) {
+      documents.value[index].isFavorite = !documents.value[index].isFavorite;
+    }
+    
+    // 如果当前文档是更新的文档，也更新它
+    if (currentDocument.value && currentDocument.value.id === id) {
+      currentDocument.value.isFavorite = !currentDocument.value.isFavorite;
+    }
+  };
+  
+  /**
+   * 切换文档公开状态
+   * @param {string|number} id - 文档ID
+   */
+  const toggleDocumentPublic = (id) => {
+    const index = documents.value.findIndex(doc => doc.id === id);
+    if (index >= 0) {
+      documents.value[index].isPublic = !documents.value[index].isPublic;
+    }
+    
+    // 如果当前文档是更新的文档，也更新它
+    if (currentDocument.value && currentDocument.value.id === id) {
+      currentDocument.value.isPublic = !currentDocument.value.isPublic;
+    }
+  };
+  
+  /**
+   * 为文档添加标签
+   * @param {string|number} id - 文档ID
+   * @param {string|Array} tags - 标签或标签数组
+   */
+  const addDocumentTags = (id, tags) => {
+    const tagArray = Array.isArray(tags) ? tags : [tags];
+    const index = documents.value.findIndex(doc => doc.id === id);
+    
+    if (index >= 0) {
+      if (!documents.value[index].tags) {
+        documents.value[index].tags = [];
+      }
+      
+      tagArray.forEach(tag => {
+        if (!documents.value[index].tags.includes(tag)) {
+          documents.value[index].tags.push(tag);
+        }
+      });
+    }
+    
+    // 如果当前文档是更新的文档，也更新它
+    if (currentDocument.value && currentDocument.value.id === id) {
+      if (!currentDocument.value.tags) {
+        currentDocument.value.tags = [];
+      }
+      
+      tagArray.forEach(tag => {
+        if (!currentDocument.value.tags.includes(tag)) {
+          currentDocument.value.tags.push(tag);
+        }
+      });
+    }
+  };
+  
+  /**
+   * 从文档移除标签
+   * @param {string|number} id - 文档ID
+   * @param {string|Array} tags - 标签或标签数组
+   */
+  const removeDocumentTags = (id, tags) => {
+    const tagArray = Array.isArray(tags) ? tags : [tags];
+    const index = documents.value.findIndex(doc => doc.id === id);
+    
+    if (index >= 0 && documents.value[index].tags) {
+      documents.value[index].tags = documents.value[index].tags.filter(
+        tag => !tagArray.includes(tag)
+      );
+    }
+    
+    // 如果当前文档是更新的文档，也更新它
+    if (currentDocument.value && currentDocument.value.id === id && currentDocument.value.tags) {
+      currentDocument.value.tags = currentDocument.value.tags.filter(
+        tag => !tagArray.includes(tag)
+      );
+    }
+  };
+  
+  /**
+   * 获取文档详情
+   * @param {string|number} id - 文档ID
+   * @returns {Object|null} 文档对象
+   */
+  const getDocumentById = (id) => {
+    return documents.value.find(doc => doc.id === id) || null;
+  };
+  
+  /**
+   * 根据标题搜索文档
+   * @param {string} title - 文档标题
+   * @returns {Array} 匹配的文档
+   */
+  const searchDocumentsByTitle = (title) => {
+    if (!title) return [];
+    
+    const searchTerm = title.toLowerCase();
+    return documents.value.filter(doc => 
+      doc.title && doc.title.toLowerCase().includes(searchTerm)
+    );
+  };
+  
+  /**
+   * 根据标签搜索文档
+   * @param {string|Array} tags - 标签或标签数组
+   * @returns {Array} 匹配的文档
+   */
+  const searchDocumentsByTags = (tags) => {
+    const tagArray = Array.isArray(tags) ? tags : [tags];
+    if (tagArray.length === 0) return [];
+    
+    return documents.value.filter(doc => 
+      doc.tags && tagArray.some(tag => doc.tags.includes(tag))
+    );
+  };
+  
+  /**
+   * 清空所有文档状态
+   */
+  const clearAll = () => {
+    documents.value = [];
+    currentDocument.value = null;
+    searchResults.value = [];
+    pagination.page = 1;
+    pagination.total = 0;
+    pagination.totalPages = 0;
+    searchPagination.page = 1;
+    searchPagination.total = 0;
+    searchPagination.totalPages = 0;
+    loading.value = false;
+    uploading.value = false;
+    error.value = null;
+    stats.value = null;
+    uploadQueue.value = [];
+    resetFilters();
+  };
+  
+  /**
+   * 刷新文档列表
+   * @returns {Promise<Object>} 文档列表数据
+   */
+  const refreshDocuments = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const params = {
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+        sortBy: filters.sortBy,
+        sortOrder: filters.sortOrder,
+        search: filters.search,
+        tags: filters.tags,
+        language: filters.language,
+        status: filters.status
+      };
+      
+      const result = await documentService.getDocuments(params);
+      return result;
+    } catch (err) {
+      setError(err.message || '刷新文档列表失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 加载更多文档
+   * @returns {Promise<Object>} 更多文档数据
+   */
+  const loadMoreDocuments = async () => {
+    if (!hasMoreDocuments.value) {
+      return { documents: [], pagination };
+    }
+    
+    try {
+      setLoading(true);
+      
+      const nextPage = pagination.page + 1;
+      const params = {
+        page: nextPage,
+        pageSize: pagination.pageSize,
+        sortBy: filters.sortBy,
+        sortOrder: filters.sortOrder,
+        search: filters.search,
+        tags: filters.tags,
+        language: filters.language,
+        status: filters.status
+      };
+      
+      const result = await documentService.getDocuments(params);
+      
+      // 合并文档列表
+      documents.value = [...documents.value, ...result.documents];
+      
+      // 更新分页信息
+      setPagination(result.pagination);
+      
+      return result;
+    } catch (err) {
+      setError(err.message || '加载更多文档失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  /**
+   * 加载更多搜索结果
+   * @returns {Promise<Object>} 更多搜索结果
+   */
+  const loadMoreSearchResults = async (query) => {
+    if (!hasMoreSearchResults.value) {
+      return { documents: [], pagination: searchPagination };
+    }
+    
+    try {
+      setLoading(true);
+      
+      const nextPage = searchPagination.page + 1;
+      const params = {
+        page: nextPage,
+        pageSize: searchPagination.pageSize
+      };
+      
+      const result = await documentService.searchDocuments(query, params);
+      
+      // 合并搜索结果
+      searchResults.value = [...searchResults.value, ...result.documents];
+      
+      // 更新分页信息
+      setSearchPagination(result.pagination);
+      
+      return result;
+    } catch (err) {
+      setError(err.message || '加载更多搜索结果失败');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ==================== 返回 ====================
+  
+  return {
+    // 状态
+    documents,
+    currentDocument,
+    searchResults,
+    pagination,
+    searchPagination,
+    loading,
+    uploading,
+    error,
+    filters,
+    stats,
+    uploadQueue,
+    
+    // 计算属性
+    currentPageDocuments,
+    currentPageSearchResults,
+    hasMoreDocuments,
+    hasMoreSearchResults,
+    totalDocuments,
+    totalSearchResults,
+    allTags,
+    allLanguages,
+    documentsByTag,
+    documentsByLanguage,
+    recentDocuments,
+    favoriteDocuments,
+    publicDocuments,
+    
+    // Actions
+    setDocuments,
+    addDocument,
+    updateDocument,
+    removeDocument,
+    setCurrentDocument,
+    clearCurrentDocument,
+    setSearchResults,
+    clearSearchResults,
+    setPagination,
+    setSearchPagination,
+    setLoading,
+    setUploading,
+    setError,
+    setFilters,
+    resetFilters,
+    setStats,
+    setUploadQueue,
+    updateDocumentProgress,
+    toggleDocumentFavorite,
+    toggleDocumentPublic,
+    addDocumentTags,
+    removeDocumentTags,
+    getDocumentById,
+    searchDocumentsByTitle,
+    searchDocumentsByTags,
+    clearAll,
+    refreshDocuments,
+    loadMoreDocuments,
+    loadMoreSearchResults,
+  };
+});
+
+// 导出默认实例
+export default useDocumentStore;
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\export.store.js ---
+----------------------------------------------------------------------------------------
+// src/stores/export.store.js
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+
+export const useExportStore = defineStore('export', () => {
+  // ==================== 状态定义 ====================
+  
+  // 导出历史
+  const exportHistory = ref([]);
+  const historyLoading = ref(false);
+  const historyError = ref(null);
+  
+  // 导出模板
+  const exportTemplates = ref([]);
+  const templatesLoading = ref(false);
+  const templatesError = ref(null);
+  
+  // 支持的导出格式
+  const supportedFormats = ref({});
+  const formatsLoading = ref(false);
+  const formatsError = ref(null);
+  
+  // 当前导出任务
+  const currentExportTask = ref(null);
+  const exportProgress = ref(0);
+  const isExporting = ref(false);
+  const exportError = ref(null);
+  
+  // 导出统计
+  const exportStats = ref(null);
+  const statsLoading = ref(false);
+  const statsError = ref(null);
+  
+  // ==================== 计算属性 ====================
+  
+  // 导出历史总数
+  const totalHistoryCount = computed(() => exportHistory.value.length);
+  
+  // 最近导出记录
+  const recentExports = computed(() => 
+    exportHistory.value
+      .slice()
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 5)
+  );
+  
+  // 导出文件总大小
+  const totalExportSize = computed(() => 
+    exportHistory.value.reduce((total, item) => total + (item.fileSize || 0), 0)
+  );
+  
+  // 默认模板
+  const defaultTemplates = computed(() => 
+    exportTemplates.value.filter(template => template.isDefault)
+  );
+  
+  // 用户自定义模板
+  const customTemplates = computed(() => 
+    exportTemplates.value.filter(template => !template.isDefault)
+  );
+  
+  // 导出任务状态
+  const exportStatus = computed(() => {
+    if (isExporting.value) {
+      return exportProgress.value < 100 ? 'processing' : 'completed';
+    }
+    return exportError.value ? 'failed' : 'idle';
+  });
+  
+  // ==================== 动作方法 ====================
+  
+  /**
+   * 设置导出历史
+   * @param {Array} history - 导出历史数组
+   */
+  const setExportHistory = (history) => {
+    exportHistory.value = Array.isArray(history) ? history : [];
+    historyError.value = null;
+  };
+  
+  /**
+   * 添加导出历史记录
+   * @param {Object} record - 导出记录
+   */
+  const addExportHistory = (record) => {
+    if (record && typeof record === 'object') {
+      exportHistory.value.unshift(record);
+    }
+  };
+  
+  /**
+   * 移除导出历史记录
+   * @param {string} historyId - 历史记录ID
+   */
+  const removeExportHistory = (historyId) => {
+    const index = exportHistory.value.findIndex(item => item.id === historyId);
+    if (index !== -1) {
+      exportHistory.value.splice(index, 1);
+    }
+  };
+  
+  /**
+   * 清空导出历史
+   */
+  const clearExportHistory = () => {
+    exportHistory.value = [];
+    historyError.value = null;
+  };
+  
+  /**
+   * 设置导出模板
+   * @param {Array} templates - 导出模板数组
+   */
+  const setExportTemplates = (templates) => {
+    exportTemplates.value = Array.isArray(templates) ? templates : [];
+    templatesError.value = null;
+  };
+  
+  /**
+   * 添加导出模板
+   * @param {Object} template - 导出模板
+   */
+  const addExportTemplate = (template) => {
+    if (template && typeof template === 'object') {
+      exportTemplates.value.push(template);
+    }
+  };
+  
+  /**
+   * 移除导出模板
+   * @param {string} templateId - 模板ID
+   */
+  const removeExportTemplate = (templateId) => {
+    const index = exportTemplates.value.findIndex(item => item.id === templateId);
+    if (index !== -1) {
+      exportTemplates.value.splice(index, 1);
+    }
+  };
+  
+  /**
+   * 设置支持的导出格式
+   * @param {Object} formats - 按类型组织的格式对象
+   */
+  const setSupportedFormats = (formats) => {
+    if (formats && typeof formats === 'object') {
+      supportedFormats.value = formats;
+    } else {
+      supportedFormats.value = {};
+    }
+    formatsError.value = null;
+  };
+  
+  /**
+   * 获取特定类型的支持格式
+   * @param {string} exportType - 导出类型
+   * @returns {Array} 格式列表
+   */
+  const getFormatsByType = (exportType) => {
+    return supportedFormats.value[exportType] || [];
+  };
+  
+  /**
+   * 设置当前导出任务
+   * @param {Object} task - 导出任务
+   */
+  const setCurrentExportTask = (task) => {
+    currentExportTask.value = task;
+    isExporting.value = true;
+    exportProgress.value = 0;
+    exportError.value = null;
+  };
+  
+  /**
+   * 更新导出进度
+   * @param {number} progress - 进度百分比
+   */
+  const updateExportProgress = (progress) => {
+    exportProgress.value = Math.min(100, Math.max(0, progress));
+  };
+  
+  /**
+   * 完成导出任务
+   * @param {Object} result - 导出结果
+   */
+  const completeExportTask = (result) => {
+    isExporting.value = false;
+    exportProgress.value = 100;
+    currentExportTask.value = null;
+    
+    // 如果有结果，添加到历史
+    if (result && result.filename) {
+      addExportHistory({
+        id: `export_${Date.now()}`,
+        type: currentExportTask.value?.type || 'unknown',
+        format: currentExportTask.value?.format || 'unknown',
+        filename: result.filename,
+        fileSize: result.fileSize || 0,
+        itemCount: result.itemCount || 0,
+        createdAt: new Date().toISOString(),
+        status: 'completed'
+      });
+    }
+  };
+  
+  /**
+   * 取消导出任务
+   */
+  const cancelExportTask = () => {
+    isExporting.value = false;
+    exportProgress.value = 0;
+    exportError.value = '导出已取消';
+    currentExportTask.value = null;
+  };
+  
+  /**
+   * 设置导出错误
+   * @param {string|Error} error - 错误信息
+   */
+  const setExportError = (error) => {
+    isExporting.value = false;
+    exportError.value = error instanceof Error ? error.message : error;
+    
+    // 记录失败的历史
+    if (currentExportTask.value) {
+      addExportHistory({
+        id: `export_${Date.now()}`,
+        type: currentExportTask.value.type || 'unknown',
+        format: currentExportTask.value.format || 'unknown',
+        filename: '导出失败',
+        fileSize: 0,
+        itemCount: 0,
+        createdAt: new Date().toISOString(),
+        status: 'failed',
+        errorMessage: exportError.value
+      });
+    }
+    
+    currentExportTask.value = null;
+  };
+  
+  /**
+   * 设置导出统计
+   * @param {Object} stats - 导出统计数据
+   */
+  const setExportStats = (stats) => {
+    exportStats.value = stats && typeof stats === 'object' ? stats : null;
+    statsError.value = null;
+  };
+  
+  /**
+   * 清空导出错误
+   */
+  const clearExportError = () => {
+    exportError.value = null;
+  };
+  
+  /**
+   * 重置导出状态
+   */
+  const resetExportState = () => {
+    isExporting.value = false;
+    exportProgress.value = 0;
+    exportError.value = null;
+    currentExportTask.value = null;
+  };
+  
+  /**
+   * 获取导出历史分页
+   * @param {number} page - 页码
+   * @param {number} pageSize - 每页大小
+   * @returns {Array} 分页后的历史记录
+   */
+  const getPaginatedHistory = (page = 1, pageSize = 10) => {
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return exportHistory.value.slice(startIndex, endIndex);
+  };
+  
+  /**
+   * 根据类型筛选导出历史
+   * @param {string} type - 导出类型
+   * @returns {Array} 筛选后的历史记录
+   */
+  const filterHistoryByType = (type) => {
+    return exportHistory.value.filter(item => item.type === type);
+  };
+  
+  /**
+   * 根据日期范围筛选导出历史
+   * @param {Date} startDate - 开始日期
+   * @param {Date} endDate - 结束日期
+   * @returns {Array} 筛选后的历史记录
+   */
+  const filterHistoryByDateRange = (startDate, endDate = new Date()) => {
+    return exportHistory.value.filter(item => {
+      const itemDate = new Date(item.createdAt);
+      return itemDate >= startDate && itemDate <= endDate;
+    });
+  };
+  
+  return {
+    // 状态
+    exportHistory,
+    historyLoading,
+    historyError,
+    exportTemplates,
+    templatesLoading,
+    templatesError,
+    supportedFormats,
+    formatsLoading,
+    formatsError,
+    currentExportTask,
+    exportProgress,
+    isExporting,
+    exportError,
+    exportStats,
+    statsLoading,
+    statsError,
+    
+    // 计算属性
+    totalHistoryCount,
+    recentExports,
+    totalExportSize,
+    defaultTemplates,
+    customTemplates,
+    exportStatus,
+    
+    // 动作方法
+    setExportHistory,
+    addExportHistory,
+    removeExportHistory,
+    clearExportHistory,
+    setExportTemplates,
+    addExportTemplate,
+    removeExportTemplate,
+    setSupportedFormats,
+    getFormatsByType,
+    setCurrentExportTask,
+    updateExportProgress,
+    completeExportTask,
+    cancelExportTask,
+    setExportError,
+    setExportStats,
+    clearExportError,
+    resetExportState,
+    getPaginatedHistory,
+    filterHistoryByType,
+    filterHistoryByDateRange
+  };
+});
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\feedback.store.js ---
+------------------------------------------------------------------------------------------
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+
+export const useFeedbackStore = defineStore('feedback', () => {
+  // ==================== 状态定义 ====================
+  
+  // 反馈列表
+  const feedbackList = ref([]);
+  
+  // 我的反馈列表
+  const myFeedback = ref([]);
+  
+  // 当前查看的反馈详情
+  const currentFeedback = ref(null);
+  
+  // 反馈类型列表
+  const feedbackTypes = ref([]);
+  
+  // 反馈统计
+  const statistics = ref({});
+  
+  // 加载状态
+  const loading = ref(false);
+  
+  // 错误信息
+  const error = ref(null);
+  
+  // ==================== 计算属性 ====================
+  
+  // 反馈总数
+  const totalCount = computed(() => feedbackList.value.length);
+  
+  // 我的反馈数量
+  const myFeedbackCount = computed(() => myFeedback.value.length);
+  
+  // 待处理反馈数量
+  const pendingCount = computed(() => 
+    feedbackList.value.filter(f => f.status === 'pending').length
+  );
+  
+  // 进行中反馈数量
+  const inProgressCount = computed(() => 
+    feedbackList.value.filter(f => f.status === 'in_progress').length
+  );
+  
+  // 已完成反馈数量
+  const completedCount = computed(() => 
+    feedbackList.value.filter(f => f.status === 'completed').length
+  );
+  
+  // 按类型统计
+  const countByType = computed(() => {
+    const counts = {};
+    feedbackList.value.forEach(feedback => {
+      counts[feedback.type] = (counts[feedback.type] || 0) + 1;
+    });
+    return counts;
+  });
+  
+  // ==================== 动作方法 ====================
+  
+  /**
+   * 设置反馈列表
+   * @param {Array} list - 反馈列表
+   */
+  const setFeedbackList = (list) => {
+    feedbackList.value = Array.isArray(list) ? list : [];
+  };
+  
+  /**
+   * 设置我的反馈列表
+   * @param {Array} list - 我的反馈列表
+   */
+  const setMyFeedback = (list) => {
+    myFeedback.value = Array.isArray(list) ? list : [];
+  };
+  
+  /**
+   * 添加反馈
+   * @param {Object} feedback - 反馈对象
+   */
+  const addFeedback = (feedback) => {
+    if (feedback) {
+      feedbackList.value.unshift(feedback);
+      myFeedback.value.unshift(feedback);
+    }
+  };
+  
+  /**
+   * 更新反馈
+   * @param {string} feedbackId - 反馈ID
+   * @param {Object} updateData - 更新数据
+   */
+  const updateFeedback = (feedbackId, updateData) => {
+    if (!feedbackId || !updateData) return;
+    
+    // 更新反馈列表中的对应项
+    const index = feedbackList.value.findIndex(f => f.id === feedbackId);
+    if (index !== -1) {
+      feedbackList.value[index] = { 
+        ...feedbackList.value[index], 
+        ...updateData,
+        updatedAt: new Date().toISOString()
+      };
+    }
+    
+    // 更新我的反馈列表中的对应项
+    const myIndex = myFeedback.value.findIndex(f => f.id === feedbackId);
+    if (myIndex !== -1) {
+      myFeedback.value[myIndex] = { 
+        ...myFeedback.value[myIndex], 
+        ...updateData,
+        updatedAt: new Date().toISOString()
+      };
+    }
+    
+    // 更新当前查看的反馈
+    if (currentFeedback.value?.id === feedbackId) {
+      currentFeedback.value = { 
+        ...currentFeedback.value, 
+        ...updateData,
+        updatedAt: new Date().toISOString()
+      };
+    }
+  };
+  
+  /**
+   * 删除反馈
+   * @param {string} feedbackId - 反馈ID
+   */
+  const removeFeedback = (feedbackId) => {
+    if (!feedbackId) return;
+    
+    // 从反馈列表中移除
+    feedbackList.value = feedbackList.value.filter(f => f.id !== feedbackId);
+    
+    // 从我的反馈列表中移除
+    myFeedback.value = myFeedback.value.filter(f => f.id !== feedbackId);
+    
+    // 如果当前查看的是被删除的反馈，清空当前反馈
+    if (currentFeedback.value?.id === feedbackId) {
+      currentFeedback.value = null;
+    }
+  };
+  
+  /**
+   * 根据ID获取反馈
+   * @param {string} feedbackId - 反馈ID
+   * @returns {Object|null} 反馈对象
+   */
+  const getFeedbackById = (feedbackId) => {
+    if (!feedbackId) return null;
+    
+    // 先从当前列表查找
+    let feedback = feedbackList.value.find(f => f.id === feedbackId);
+    
+    // 如果没找到，从我的反馈中查找
+    if (!feedback) {
+      feedback = myFeedback.value.find(f => f.id === feedbackId);
+    }
+    
+    return feedback || null;
+  };
+  
+  /**
+   * 设置当前查看的反馈
+   * @param {Object} feedback - 反馈对象
+   */
+  const setCurrentFeedback = (feedback) => {
+    currentFeedback.value = feedback;
+  };
+  
+  /**
+   * 添加评论到反馈
+   * @param {string} feedbackId - 反馈ID
+   * @param {Object} comment - 评论对象
+   */
+  const addComment = (feedbackId, comment) => {
+    if (!feedbackId || !comment) return;
+    
+    const feedback = getFeedbackById(feedbackId);
+    if (feedback) {
+      // 初始化评论数组
+      if (!feedback.comments) {
+        feedback.comments = [];
+      }
+      
+      // 添加评论
+      feedback.comments.push(comment);
+      
+      // 更新反馈
+      updateFeedback(feedbackId, { 
+        comments: feedback.comments,
+        commentCount: feedback.comments.length
+      });
+    }
+  };
+  
+  /**
+   * 设置反馈类型列表
+   * @param {Array} types - 反馈类型列表
+   */
+  const setFeedbackTypes = (types) => {
+    feedbackTypes.value = Array.isArray(types) ? types : [];
+  };
+  
+  /**
+   * 设置反馈统计
+   * @param {Object} stats - 统计对象
+   */
+  const setStatistics = (stats) => {
+    statistics.value = stats || {};
+  };
+  
+  /**
+   * 清除错误信息
+   */
+  const clearError = () => {
+    error.value = null;
+  };
+  
+  /**
+   * 设置加载状态
+   * @param {boolean} isLoading - 是否加载中
+   */
+  const setLoading = (isLoading) => {
+    loading.value = isLoading;
+  };
+  
+  /**
+   * 设置错误信息
+   * @param {string|Error} err - 错误信息或对象
+   */
+  const setError = (err) => {
+    if (err instanceof Error) {
+      error.value = err.message;
+    } else {
+      error.value = err;
+    }
+  };
+  
+  /**
+   * 重置Store状态
+   */
+  const reset = () => {
+    feedbackList.value = [];
+    myFeedback.value = [];
+    currentFeedback.value = null;
+    feedbackTypes.value = [];
+    statistics.value = {};
+    loading.value = false;
+    error.value = null;
+  };
+  
+  /**
+   * 投票反馈
+   * @param {string} feedbackId - 反馈ID
+   * @param {string} voteType - 投票类型（upvote/downvote）
+   * @param {string} userId - 用户ID
+   */
+  const voteFeedback = (feedbackId, voteType, userId) => {
+    if (!feedbackId || !voteType || !userId) return;
+    
+    const feedback = getFeedbackById(feedbackId);
+    if (!feedback) return;
+    
+    let updatedFeedback = { ...feedback };
+    
+    if (voteType === 'upvote') {
+      // 如果之前投了反对票，先移除
+      if (updatedFeedback.downvotedBy?.includes(userId)) {
+        updatedFeedback.downvotedBy = updatedFeedback.downvotedBy.filter(id => id !== userId);
+        updatedFeedback.downvotes = Math.max(0, (updatedFeedback.downvotes || 0) - 1);
+      }
+      
+      // 如果还没投赞成票，添加
+      if (!updatedFeedback.upvotedBy?.includes(userId)) {
+        updatedFeedback.upvotedBy = [...(updatedFeedback.upvotedBy || []), userId];
+        updatedFeedback.upvotes = (updatedFeedback.upvotes || 0) + 1;
+      }
+    } else if (voteType === 'downvote') {
+      // 如果之前投了赞成票，先移除
+      if (updatedFeedback.upvotedBy?.includes(userId)) {
+        updatedFeedback.upvotedBy = updatedFeedback.upvotedBy.filter(id => id !== userId);
+        updatedFeedback.upvotes = Math.max(0, (updatedFeedback.upvotes || 0) - 1);
+      }
+      
+      // 如果还没投反对票，添加
+      if (!updatedFeedback.downvotedBy?.includes(userId)) {
+        updatedFeedback.downvotedBy = [...(updatedFeedback.downvotedBy || []), userId];
+        updatedFeedback.downvotes = (updatedFeedback.downvotes || 0) + 1;
+      }
+    }
+    
+    // 更新反馈
+    updateFeedback(feedbackId, updatedFeedback);
+  };
+  
+  /**
+   * 过滤反馈列表
+   * @param {Object} filters - 过滤条件
+   * @returns {Array} 过滤后的列表
+   */
+  const filterFeedback = (filters = {}) => {
+    let filtered = [...feedbackList.value];
+    
+    // 按类型过滤
+    if (filters.type) {
+      filtered = filtered.filter(f => f.type === filters.type);
+    }
+    
+    // 按状态过滤
+    if (filters.status) {
+      filtered = filtered.filter(f => f.status === filters.status);
+    }
+    
+    // 按优先级过滤
+    if (filters.priority) {
+      filtered = filtered.filter(f => f.priority === filters.priority);
+    }
+    
+    // 按搜索关键词过滤
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      filtered = filtered.filter(f => 
+        f.title.toLowerCase().includes(searchTerm) ||
+        f.content.toLowerCase().includes(searchTerm) ||
+        f.userName.toLowerCase().includes(searchTerm)
+      );
+    }
+    
+    // 排序
+    if (filters.sortBy) {
+      const sortOrder = filters.sortOrder === 'asc' ? 1 : -1;
+      filtered.sort((a, b) => {
+        if (a[filters.sortBy] < b[filters.sortBy]) return -1 * sortOrder;
+        if (a[filters.sortBy] > b[filters.sortBy]) return 1 * sortOrder;
+        return 0;
+      });
+    }
+    
+    return filtered;
+  };
+  
+  return {
+    // ==================== 状态 ====================
+    feedbackList,
+    myFeedback,
+    currentFeedback,
+    feedbackTypes,
+    statistics,
+    loading,
+    error,
+    
+    // ==================== 计算属性 ====================
+    totalCount,
+    myFeedbackCount,
+    pendingCount,
+    inProgressCount,
+    completedCount,
+    countByType,
+    
+    // ==================== 动作方法 ====================
+    setFeedbackList,
+    setMyFeedback,
+    addFeedback,
+    updateFeedback,
+    removeFeedback,
+    getFeedbackById,
+    setCurrentFeedback,
+    addComment,
+    setFeedbackTypes,
+    setStatistics,
+    clearError,
+    setLoading,
+    setError,
+    reset,
+    voteFeedback,
+    filterFeedback,
+  };
+});
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\notification.store.js ---
+----------------------------------------------------------------------------------------------
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+
+export const useNotificationStore = defineStore('notification', () => {
+  // 状态定义
+  const notifications = ref([]);
+  const unreadCount = ref(0);
+  const loading = ref(false);
+  const error = ref(null);
+  const pagination = ref({
+    page: 1,
+    pageSize: 20,
+    total: 0,
+    totalPages: 0
+  });
+  
+  // 计算属性
+  const unreadNotifications = computed(() => 
+    notifications.value.filter(n => !n.read)
+  );
+  
+  const recentNotifications = computed(() => 
+    notifications.value.slice(0, 5)
+  );
+  
+  const totalCount = computed(() => notifications.value.length);
+  
+  // 动作
+  const setNotifications = (newNotifications) => {
+    notifications.value = newNotifications;
+  };
+  
+  const addNotification = (notification) => {
+    notifications.value.unshift(notification);
+  };
+  
+  const updateNotification = (id, updates) => {
+    const index = notifications.value.findIndex(n => n.id === id);
+    if (index !== -1) {
+      notifications.value[index] = { ...notifications.value[index], ...updates };
+    }
+  };
+  
+  const removeNotification = (id) => {
+    const index = notifications.value.findIndex(n => n.id === id);
+    if (index !== -1) {
+      notifications.value.splice(index, 1);
+    }
+  };
+  
+  const clearNotifications = () => {
+    notifications.value = [];
+  };
+  
+  const setUnreadCount = (count) => {
+    unreadCount.value = count;
+  };
+  
+  const incrementUnreadCount = () => {
+    unreadCount.value += 1;
+  };
+  
+  const decrementUnreadCount = () => {
+    if (unreadCount.value > 0) {
+      unreadCount.value -= 1;
+    }
+  };
+  
+  const setPagination = (newPagination) => {
+    pagination.value = { ...pagination.value, ...newPagination };
+  };
+  
+  const setLoading = (isLoading) => {
+    loading.value = isLoading;
+  };
+  
+  const setError = (err) => {
+    error.value = err;
+  };
+  
+  const clearError = () => {
+    error.value = null;
+  };
+  
+  return {
+    // 状态
+    notifications,
+    unreadCount,
+    loading,
+    error,
+    pagination,
+    
+    // 计算属性
+    unreadNotifications,
+    recentNotifications,
+    totalCount,
+    
+    // 动作
+    setNotifications,
+    addNotification,
+    updateNotification,
+    removeNotification,
+    clearNotifications,
+    setUnreadCount,
+    incrementUnreadCount,
+    decrementUnreadCount,
+    setPagination,
+    setLoading,
+    setError,
+    clearError
+  };
+});
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\offline.store.js ---
+-----------------------------------------------------------------------------------------
+// src/stores/offline.store.js
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+
+export const useOfflineStore = defineStore('offline', () => {
+  // ==================== 状态定义 ====================
+  
+  // 离线文档列表
+  const offlineDocuments = ref([]);
+  
+  // 离线词汇列表
+  const offlineVocabulary = ref([]);
+  
+  // 离线复习记录
+  const offlineReviews = ref([]);
+  
+  // 离线笔记
+  const offlineNotes = ref([]);
+  
+  // 离线高亮
+  const offlineHighlights = ref([]);
+  
+  // 同步队列
+  const syncQueue = ref([]);
+  
+  // 同步状态
+  const syncStatus = ref({
+    isSyncing: false,
+    lastSyncTime: null,
+    syncProgress: 0,
+    syncError: null,
+    pendingOperations: 0
+  });
+  
+  // 离线设置
+  const offlineSettings = ref({
+    offlineMode: false,
+    autoSync: true,
+    syncInterval: 5, // 分钟
+    storageLimit: 1024, // MB
+    wifiOnly: true
+  });
+  
+  // 离线统计
+  const offlineStats = ref({
+    totalSize: 0,
+    documentCount: 0,
+    vocabularyCount: 0,
+    reviewCount: 0,
+    noteCount: 0,
+    highlightCount: 0
+  });
+  
+  // 加载状态
+  const loading = ref(false);
+  
+  // 错误信息
+  const error = ref(null);
+  
+  // ==================== 计算属性 ====================
+  
+  // 离线数据总量
+  const totalOfflineData = computed(() => 
+    offlineStats.value.totalSize
+  );
+  
+  // 未同步操作数量
+  const unsyncedOperations = computed(() => 
+    syncQueue.value.filter(op => !op.isSynced).length
+  );
+  
+  // 离线模式状态
+  const isOfflineMode = computed(() => 
+    offlineSettings.value.offlineMode
+  );
+  
+  // 自动同步状态
+  const isAutoSync = computed(() => 
+    offlineSettings.value.autoSync
+  );
+  
+  // 存储使用率
+  const storageUsage = computed(() => {
+    const limit = offlineSettings.value.storageLimit * 1024 * 1024; // 转换为字节
+    return limit > 0 ? (offlineStats.value.totalSize / limit) * 100 : 0;
+  });
+  
+  // 存储是否已满
+  const isStorageFull = computed(() => 
+    storageUsage.value >= 95
+  );
+  
+  // ==================== 动作方法 ====================
+  
+  /**
+   * 设置离线文档列表
+   * @param {Array} documents - 文档列表
+   */
+  const setOfflineDocuments = (documents) => {
+    offlineDocuments.value = Array.isArray(documents) ? documents : [];
+    offlineStats.value.documentCount = offlineDocuments.value.length;
+  };
+  
+  /**
+   * 添加离线文档
+   * @param {Object} document - 文档对象
+   */
+  const addOfflineDocument = (document) => {
+    if (document) {
+      offlineDocuments.value.unshift(document);
+      offlineStats.value.documentCount = offlineDocuments.value.length;
+    }
+  };
+  
+  /**
+   * 更新离线文档
+   * @param {string} documentId - 文档ID
+   * @param {Object} updateData - 更新数据
+   */
+  const updateOfflineDocument = (documentId, updateData) => {
+    const index = offlineDocuments.value.findIndex(doc => doc.id === documentId);
+    if (index !== -1) {
+      offlineDocuments.value[index] = { 
+        ...offlineDocuments.value[index], 
+        ...updateData 
+      };
+    }
+  };
+  
+  /**
+   * 删除离线文档
+   * @param {string} documentId - 文档ID
+   */
+  const removeOfflineDocument = (documentId) => {
+    offlineDocuments.value = offlineDocuments.value.filter(doc => doc.id !== documentId);
+    offlineStats.value.documentCount = offlineDocuments.value.length;
+  };
+  
+  /**
+   * 清除所有离线文档
+   */
+  const clearOfflineDocuments = () => {
+    offlineDocuments.value = [];
+    offlineStats.value.documentCount = 0;
+  };
+  
+  /**
+   * 设置离线词汇列表
+   * @param {Array} vocabulary - 词汇列表
+   */
+  const setOfflineVocabulary = (vocabulary) => {
+    offlineVocabulary.value = Array.isArray(vocabulary) ? vocabulary : [];
+    offlineStats.value.vocabularyCount = offlineVocabulary.value.length;
+  };
+  
+  /**
+   * 添加离线词汇
+   * @param {Object} vocabulary - 词汇对象
+   */
+  const addOfflineVocabulary = (vocabulary) => {
+    if (vocabulary) {
+      offlineVocabulary.value.unshift(vocabulary);
+      offlineStats.value.vocabularyCount = offlineVocabulary.value.length;
+    }
+  };
+  
+  /**
+   * 更新离线词汇
+   * @param {string} vocabularyId - 词汇ID
+   * @param {Object} updateData - 更新数据
+   */
+  const updateOfflineVocabulary = (vocabularyId, updateData) => {
+    const index = offlineVocabulary.value.findIndex(voc => voc.id === vocabularyId);
+    if (index !== -1) {
+      offlineVocabulary.value[index] = { 
+        ...offlineVocabulary.value[index], 
+        ...updateData 
+      };
+    }
+  };
+  
+  /**
+   * 清除所有离线词汇
+   */
+  const clearOfflineVocabulary = () => {
+    offlineVocabulary.value = [];
+    offlineStats.value.vocabularyCount = 0;
+  };
+  
+  /**
+   * 设置离线复习记录
+   * @param {Array} reviews - 复习记录列表
+   */
+  const setOfflineReviews = (reviews) => {
+    offlineReviews.value = Array.isArray(reviews) ? reviews : [];
+    offlineStats.value.reviewCount = offlineReviews.value.length;
+  };
+  
+  /**
+   * 添加离线复习记录
+   * @param {Object} review - 复习记录对象
+   */
+  const addOfflineReview = (review) => {
+    if (review) {
+      offlineReviews.value.unshift(review);
+      offlineStats.value.reviewCount = offlineReviews.value.length;
+    }
+  };
+  
+  /**
+   * 更新离线复习记录
+   * @param {string} reviewId - 复习记录ID
+   * @param {Object} updateData - 更新数据
+   */
+  const updateOfflineReview = (reviewId, updateData) => {
+    const index = offlineReviews.value.findIndex(rev => rev.id === reviewId);
+    if (index !== -1) {
+      offlineReviews.value[index] = { 
+        ...offlineReviews.value[index], 
+        ...updateData 
+      };
+    }
+  };
+  
+  /**
+   * 清除所有离线复习记录
+   */
+  const clearOfflineReviews = () => {
+    offlineReviews.value = [];
+    offlineStats.value.reviewCount = 0;
+  };
+  
+  /**
+   * 设置离线笔记
+   * @param {Array} notes - 笔记列表
+   */
+  const setOfflineNotes = (notes) => {
+    offlineNotes.value = Array.isArray(notes) ? notes : [];
+    offlineStats.value.noteCount = offlineNotes.value.length;
+  };
+  
+  /**
+   * 添加离线笔记
+   * @param {Object} note - 笔记对象
+   */
+  const addOfflineNote = (note) => {
+    if (note) {
+      offlineNotes.value.unshift(note);
+      offlineStats.value.noteCount = offlineNotes.value.length;
+    }
+  };
+  
+  /**
+   * 更新离线笔记
+   * @param {string} noteId - 笔记ID
+   * @param {Object} updateData - 更新数据
+   */
+  const updateOfflineNote = (noteId, updateData) => {
+    const index = offlineNotes.value.findIndex(n => n.id === noteId);
+    if (index !== -1) {
+      offlineNotes.value[index] = { 
+        ...offlineNotes.value[index], 
+        ...updateData 
+      };
+    }
+  };
+  
+  /**
+   * 清除所有离线笔记
+   */
+  const clearOfflineNotes = () => {
+    offlineNotes.value = [];
+    offlineStats.value.noteCount = 0;
+  };
+  
+  /**
+   * 设置离线高亮
+   * @param {Array} highlights - 高亮列表
+   */
+  const setOfflineHighlights = (highlights) => {
+    offlineHighlights.value = Array.isArray(highlights) ? highlights : [];
+    offlineStats.value.highlightCount = offlineHighlights.value.length;
+  };
+  
+  /**
+   * 添加离线高亮
+   * @param {Object} highlight - 高亮对象
+   */
+  const addOfflineHighlight = (highlight) => {
+    if (highlight) {
+      offlineHighlights.value.unshift(highlight);
+      offlineStats.value.highlightCount = offlineHighlights.value.length;
+    }
+  };
+  
+  /**
+   * 更新离线高亮
+   * @param {string} highlightId - 高亮ID
+   * @param {Object} updateData - 更新数据
+   */
+  const updateOfflineHighlight = (highlightId, updateData) => {
+    const index = offlineHighlights.value.findIndex(h => h.id === highlightId);
+    if (index !== -1) {
+      offlineHighlights.value[index] = { 
+        ...offlineHighlights.value[index], 
+        ...updateData 
+      };
+    }
+  };
+  
+  /**
+   * 清除所有离线高亮
+   */
+  const clearOfflineHighlights = () => {
+    offlineHighlights.value = [];
+    offlineStats.value.highlightCount = 0;
+  };
+  
+  /**
+   * 设置同步队列
+   * @param {Array} queue - 同步队列
+   */
+  const setSyncQueue = (queue) => {
+    syncQueue.value = Array.isArray(queue) ? queue : [];
+    syncStatus.value.pendingOperations = syncQueue.value.length;
+  };
+  
+  /**
+   * 添加到同步队列
+   * @param {Object} operation - 同步操作
+   */
+  const addToSyncQueue = (operation) => {
+    if (operation) {
+      syncQueue.value.push(operation);
+      syncStatus.value.pendingOperations = syncQueue.value.length;
+    }
+  };
+  
+  /**
+   * 从同步队列移除
+   * @param {string} operationId - 操作ID
+   */
+  const removeFromSyncQueue = (operationId) => {
+    syncQueue.value = syncQueue.value.filter(op => op.id !== operationId);
+    syncStatus.value.pendingOperations = syncQueue.value.length;
+  };
+  
+  /**
+   * 清除同步队列
+   */
+  const clearSyncQueue = () => {
+    syncQueue.value = [];
+    syncStatus.value.pendingOperations = 0;
+  };
+  
+  /**
+   * 设置同步状态
+   * @param {Object} status - 同步状态
+   */
+  const setSyncStatus = (status) => {
+    syncStatus.value = { ...syncStatus.value, ...status };
+  };
+  
+  /**
+   * 设置同步中状态
+   * @param {boolean} isSyncing - 是否正在同步
+   */
+  const setSyncing = (isSyncing) => {
+    syncStatus.value.isSyncing = isSyncing;
+  };
+  
+  /**
+   * 设置最后同步时间
+   * @param {string} time - 时间字符串
+   */
+  const setLastSyncTime = (time) => {
+    syncStatus.value.lastSyncTime = time;
+  };
+  
+  /**
+   * 设置同步进度
+   * @param {number} progress - 进度百分比
+   */
+  const setSyncProgress = (progress) => {
+    syncStatus.value.syncProgress = progress;
+  };
+  
+  /**
+   * 设置同步错误
+   * @param {string|null} error - 错误信息
+   */
+  const setSyncError = (error) => {
+    syncStatus.value.syncError = error;
+  };
+  
+  /**
+   * 设置离线设置
+   * @param {Object} settings - 离线设置
+   */
+  const setOfflineSettings = (settings) => {
+    offlineSettings.value = { ...offlineSettings.value, ...settings };
+  };
+  
+  /**
+   * 设置离线模式
+   * @param {boolean} enabled - 是否启用离线模式
+   */
+  const setOfflineMode = (enabled) => {
+    offlineSettings.value.offlineMode = enabled;
+  };
+  
+  /**
+   * 设置自动同步
+   * @param {boolean} enabled - 是否启用自动同步
+   */
+  const setAutoSync = (enabled) => {
+    offlineSettings.value.autoSync = enabled;
+  };
+  
+  /**
+   * 设置同步间隔
+   * @param {number} minutes - 同步间隔（分钟）
+   */
+  const setSyncInterval = (minutes) => {
+    offlineSettings.value.syncInterval = minutes;
+  };
+  
+  /**
+   * 设置存储限制
+   * @param {number} limitMB - 存储限制（MB）
+   */
+  const setStorageLimit = (limitMB) => {
+    offlineSettings.value.storageLimit = limitMB;
+  };
+  
+  /**
+   * 设置离线统计
+   * @param {Object} stats - 离线统计
+   */
+  const setOfflineStats = (stats) => {
+    offlineStats.value = { ...offlineStats.value, ...stats };
+  };
+  
+  /**
+   * 设置离线数据大小
+   * @param {number} size - 数据大小（字节）
+   */
+  const setOfflineDataSize = (size) => {
+    offlineStats.value.totalSize = size;
+  };
+  
+  /**
+   * 设置待处理操作数量
+   * @param {number} count - 操作数量
+   */
+  const setPendingOperations = (count) => {
+    syncStatus.value.pendingOperations = count;
+  };
+  
+  /**
+   * 设置在线状态
+   * @param {boolean} isOnline - 是否在线
+   */
+  const setOnline = (isOnline) => {
+    console.log('网络状态变化:', isOnline ? '在线' : '离线');
+  };
+  
+  /**
+   * 设置加载状态
+   * @param {boolean} isLoading - 是否加载中
+   */
+  const setLoading = (isLoading) => {
+    loading.value = isLoading;
+  };
+  
+  /**
+   * 设置错误信息
+   * @param {string|null} err - 错误信息
+   */
+  const setError = (err) => {
+    error.value = err;
+  };
+  
+  /**
+   * 重置Store状态
+   */
+  const reset = () => {
+    offlineDocuments.value = [];
+    offlineVocabulary.value = [];
+    offlineReviews.value = [];
+    offlineNotes.value = [];
+    offlineHighlights.value = [];
+    syncQueue.value = [];
+    syncStatus.value = {
+      isSyncing: false,
+      lastSyncTime: null,
+      syncProgress: 0,
+      syncError: null,
+      pendingOperations: 0
+    };
+    offlineSettings.value = {
+      offlineMode: false,
+      autoSync: true,
+      syncInterval: 5,
+      storageLimit: 1024,
+      wifiOnly: true
+    };
+    offlineStats.value = {
+      totalSize: 0,
+      documentCount: 0,
+      vocabularyCount: 0,
+      reviewCount: 0,
+      noteCount: 0,
+      highlightCount: 0
+    };
+    loading.value = false;
+    error.value = null;
+  };
+  
+  return {
+    // ==================== 状态 ====================
+    offlineDocuments,
+    offlineVocabulary,
+    offlineReviews,
+    offlineNotes,
+    offlineHighlights,
+    syncQueue,
+    syncStatus,
+    offlineSettings,
+    offlineStats,
+    loading,
+    error,
+    
+    // ==================== 计算属性 ====================
+    totalOfflineData,
+    unsyncedOperations,
+    isOfflineMode,
+    isAutoSync,
+    storageUsage,
+    isStorageFull,
+    
+    // ==================== 动作方法 ====================
+    // 文档管理
+    setOfflineDocuments,
+    addOfflineDocument,
+    updateOfflineDocument,
+    removeOfflineDocument,
+    clearOfflineDocuments,
+    
+    // 词汇管理
+    setOfflineVocabulary,
+    addOfflineVocabulary,
+    updateOfflineVocabulary,
+    clearOfflineVocabulary,
+    
+    // 复习记录管理
+    setOfflineReviews,
+    addOfflineReview,
+    updateOfflineReview,
+    clearOfflineReviews,
+    
+    // 笔记管理
+    setOfflineNotes,
+    addOfflineNote,
+    updateOfflineNote,
+    clearOfflineNotes,
+    
+    // 高亮管理
+    setOfflineHighlights,
+    addOfflineHighlight,
+    updateOfflineHighlight,
+    clearOfflineHighlights,
+    
+    // 同步管理
+    setSyncQueue,
+    addToSyncQueue,
+    removeFromSyncQueue,
+    clearSyncQueue,
+    setSyncStatus,
+    setSyncing,
+    setLastSyncTime,
+    setSyncProgress,
+    setSyncError,
+    
+    // 设置管理
+    setOfflineSettings,
+    setOfflineMode,
+    setAutoSync,
+    setSyncInterval,
+    setStorageLimit,
+    
+    // 统计管理
+    setOfflineStats,
+    setOfflineDataSize,
+    setPendingOperations,
+    
+    // 通用管理
+    setOnline,
+    setLoading,
+    setError,
+    reset,
+  };
+});
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\reader.store.js ---
+----------------------------------------------------------------------------------------
+// src/stores/reader.store.js
+import { defineStore } from 'pinia';
+import { ref, computed, reactive } from 'vue';
+
+/**
+ * 阅读器状态管理
+ * 管理当前阅读的文档、页面、高亮、笔记等
+ */
+export const useReaderStore = defineStore('reader', () => {
+  // ==================== 状态定义 ====================
+  
+  // 当前文档ID
+  const currentDocumentId = ref(null);
+  
+  // 当前页面内容
+  const currentPage = ref(null);
+  
+  // 当前页码
+  const currentPageNumber = ref(1);
+  
+  // 高亮列表
+  const highlights = ref([]);
+  
+  // 笔记列表
+  const notes = ref([]);
+  
+  // 阅读时间（秒）
+  const readingTime = ref(0);
+  
+  // 加载状态
+  const loading = ref(false);
+  
+  // 错误信息
+  const error = ref(null);
+  
+  // 阅读设置
+  const settings = reactive({
+    fontSize: 16,
+    lineHeight: 1.6,
+    theme: 'light',
+    fontFamily: 'system-ui',
+    showHighlights: true,
+    showNotes: true,
+    autoScroll: false,
+    scrollSpeed: 1
+  });
+
+  // ==================== 计算属性 ====================
+  
+  /**
+   * 当前页面的高亮
+   */
+  const currentPageHighlights = computed(() => {
+    if (!currentPageNumber.value || !highlights.value.length) {
+      return [];
+    }
+    
+    return highlights.value.filter(highlight => 
+      highlight.page === currentPageNumber.value
+    );
+  });
+  
+  /**
+   * 当前页面的笔记
+   */
+  const currentPageNotes = computed(() => {
+    if (!currentPageNumber.value || !notes.value.length) {
+      return [];
+    }
+    
+    return notes.value.filter(note => 
+      note.page === currentPageNumber.value
+    );
+  });
+  
+  /**
+   * 当前文档的所有高亮数量
+   */
+  const totalHighlights = computed(() => highlights.value.length);
+  
+  /**
+   * 当前文档的所有笔记数量
+   */
+  const totalNotes = computed(() => notes.value.length);
+  
+  /**
+   * 格式化的阅读时间
+   */
+  const formattedReadingTime = computed(() => {
+    const hours = Math.floor(readingTime.value / 3600);
+    const minutes = Math.floor((readingTime.value % 3600) / 60);
+    const seconds = readingTime.value % 60;
+    
+    if (hours > 0) {
+      return `${hours}小时${minutes}分钟`;
+    } else if (minutes > 0) {
+      return `${minutes}分钟${seconds}秒`;
+    } else {
+      return `${seconds}秒`;
+    }
+  });
+
+  // ==================== Actions ====================
+  
+  /**
+   * 设置当前文档ID
+   * @param {string|number} id - 文档ID
+   */
+  const setCurrentDocumentId = (id) => {
+    currentDocumentId.value = id;
+  };
+  
+  /**
+   * 设置当前页面内容
+   * @param {Object} page - 页面内容
+   */
+  const setCurrentPage = (page) => {
+    currentPage.value = page;
+  };
+  
+  /**
+   * 设置当前页码
+   * @param {number} pageNumber - 页码
+   */
+  const setCurrentPageNumber = (pageNumber) => {
+    currentPageNumber.value = pageNumber;
+  };
+  
+  /**
+   * 设置高亮列表
+   * @param {Array} highlightList - 高亮数组
+   */
+  const setHighlights = (highlightList) => {
+    highlights.value = Array.isArray(highlightList) ? highlightList : [];
+  };
+  
+  /**
+   * 添加高亮
+   * @param {Object} highlight - 高亮对象
+   */
+  const addHighlight = (highlight) => {
+    if (highlight && highlight.id) {
+      highlights.value.push(highlight);
+    }
+  };
+  
+  /**
+   * 更新高亮
+   * @param {string|number} highlightId - 高亮ID
+   * @param {Object} updates - 更新数据
+   */
+  const updateHighlight = (highlightId, updates) => {
+    const index = highlights.value.findIndex(h => h.id === highlightId);
+    if (index >= 0) {
+      highlights.value[index] = { ...highlights.value[index], ...updates };
+    }
+  };
+  
+  /**
+   * 删除高亮
+   * @param {string|number} highlightId - 高亮ID
+   */
+  const removeHighlight = (highlightId) => {
+    const index = highlights.value.findIndex(h => h.id === highlightId);
+    if (index >= 0) {
+      highlights.value.splice(index, 1);
+    }
+  };
+  
+  /**
+   * 设置笔记列表
+   * @param {Array} noteList - 笔记数组
+   */
+  const setNotes = (noteList) => {
+    notes.value = Array.isArray(noteList) ? noteList : [];
+  };
+  
+  /**
+   * 添加笔记
+   * @param {Object} note - 笔记对象
+   */
+  const addNote = (note) => {
+    if (note && note.id) {
+      notes.value.push(note);
+    }
+  };
+  
+  /**
+   * 更新笔记
+   * @param {string|number} noteId - 笔记ID
+   * @param {Object} updates - 更新数据
+   */
+  const updateNote = (noteId, updates) => {
+    const index = notes.value.findIndex(n => n.id === noteId);
+    if (index >= 0) {
+      notes.value[index] = { ...notes.value[index], ...updates };
+    }
+  };
+  
+  /**
+   * 删除笔记
+   * @param {string|number} noteId - 笔记ID
+   */
+  const removeNote = (noteId) => {
+    const index = notes.value.findIndex(n => n.id === noteId);
+    if (index >= 0) {
+      notes.value.splice(index, 1);
+    }
+  };
+  
+  /**
+   * 设置阅读时间
+   * @param {number} time - 阅读时间（秒）
+   */
+  const setReadingTime = (time) => {
+    readingTime.value = time;
+  };
+  
+  /**
+   * 设置加载状态
+   * @param {boolean} status - 加载状态
+   */
+  const setLoading = (status) => {
+    loading.value = status;
+  };
+  
+  /**
+   * 设置错误信息
+   * @param {string|null} errorMessage - 错误信息
+   */
+  const setError = (errorMessage) => {
+    error.value = errorMessage;
+  };
+  
+  /**
+   * 更新阅读设置
+   * @param {Object} newSettings - 新设置
+   */
+  const updateSettings = (newSettings) => {
+    Object.assign(settings, newSettings);
+  };
+  
+  /**
+   * 重置阅读器状态
+   */
+  const resetReader = () => {
+    currentDocumentId.value = null;
+    currentPage.value = null;
+    currentPageNumber.value = 1;
+    highlights.value = [];
+    notes.value = [];
+    readingTime.value = 0;
+    loading.value = false;
+    error.value = null;
+  };
+  
+  /**
+   * 获取指定页面的高亮
+   * @param {number} pageNumber - 页码
+   * @returns {Array} 高亮数组
+   */
+  const getHighlightsByPage = (pageNumber) => {
+    return highlights.value.filter(highlight => highlight.page === pageNumber);
+  };
+  
+  /**
+   * 获取指定页面的笔记
+   * @param {number} pageNumber - 页码
+   * @returns {Array} 笔记数组
+   */
+  const getNotesByPage = (pageNumber) => {
+    return notes.value.filter(note => note.page === pageNumber);
+  };
+  
+  /**
+   * 获取指定高亮的笔记
+   * @param {string|number} highlightId - 高亮ID
+   * @returns {Array} 笔记数组
+   */
+  const getNotesByHighlight = (highlightId) => {
+    return notes.value.filter(note => note.highlightId === highlightId);
+  };
+
+  // ==================== 返回 ====================
+  
+  return {
+    // 状态
+    currentDocumentId,
+    currentPage,
+    currentPageNumber,
+    highlights,
+    notes,
+    readingTime,
+    loading,
+    error,
+    settings,
+    
+    // 计算属性
+    currentPageHighlights,
+    currentPageNotes,
+    totalHighlights,
+    totalNotes,
+    formattedReadingTime,
+    
+    // Actions
+    setCurrentDocumentId,
+    setCurrentPage,
+    setCurrentPageNumber,
+    setHighlights,
+    addHighlight,
+    updateHighlight,
+    removeHighlight,
+    setNotes,
+    addNote,
+    updateNote,
+    removeNote,
+    setReadingTime,
+    setLoading,
+    setError,
+    updateSettings,
+    resetReader,
+    getHighlightsByPage,
+    getNotesByPage,
+    getNotesByHighlight,
+  };
+});
+
+// 导出默认实例
+export default useReaderStore;
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\review.store.js ---
+----------------------------------------------------------------------------------------
+// src/stores/review.store.js
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+
+export const useReviewStore = defineStore('review', () => {
+  // 状态
+  const dueWords = ref([]); // 待复习单词列表
+  const currentSession = ref(null); // 当前复习会话
+  const stats = ref(null); // 复习统计
+  const history = ref([]); // 复习历史
+  const historyPagination = ref({
+    page: 1,
+    pageSize: 20,
+    total: 0,
+    totalPages: 0
+  });
+  const loading = ref(false);
+  const error = ref(null);
+
+  // 计算属性
+  const dueWordsCount = computed(() => dueWords.value.length);
+  const todayStats = computed(() => {
+    if (!stats.value) return null;
+    return {
+      reviews: stats.value.todayReviews,
+      accuracy: stats.value.todayAccuracy
+    };
+  });
+  const weeklyStats = computed(() => {
+    if (!stats.value) return null;
+    return {
+      reviews: stats.value.weeklyReviews,
+      accuracy: stats.value.weeklyAccuracy
+    };
+  });
+
+  // 动作
+  const setDueWords = (words) => {
+    dueWords.value = words;
+  };
+
+  const setCurrentSession = (session) => {
+    currentSession.value = session;
+  };
+
+  const updateCurrentSession = (updates) => {
+    if (currentSession.value) {
+      currentSession.value = { ...currentSession.value, ...updates };
+    }
+  };
+
+  const clearCurrentSession = () => {
+    currentSession.value = null;
+  };
+
+  const setStats = (newStats) => {
+    stats.value = newStats;
+  };
+
+  const setHistory = (sessions) => {
+    history.value = sessions;
+  };
+
+  const setHistoryPagination = (pagination) => {
+    historyPagination.value = { ...historyPagination.value, ...pagination };
+  };
+
+  const setLoading = (isLoading) => {
+    loading.value = isLoading;
+  };
+
+  const setError = (err) => {
+    error.value = err;
+  };
+
+  const clearError = () => {
+    error.value = null;
+  };
+
+  const reset = () => {
+    dueWords.value = [];
+    currentSession.value = null;
+    stats.value = null;
+    history.value = [];
+    historyPagination.value = {
+      page: 1,
+      pageSize: 20,
+      total: 0,
+      totalPages: 0
+    };
+    loading.value = false;
+    error.value = null;
+  };
+
+  return {
+    // 状态
+    dueWords,
+    currentSession,
+    stats,
+    history,
+    historyPagination,
+    loading,
+    error,
+
+    // 计算属性
+    dueWordsCount,
+    todayStats,
+    weeklyStats,
+
+    // 动作
+    setDueWords,
+    setCurrentSession,
+    updateCurrentSession,
+    clearCurrentSession,
+    setStats,
+    setHistory,
+    setHistoryPagination,
+    setLoading,
+    setError,
+    clearError,
+    reset
+  };
+});
+
+export default useReviewStore;
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\search.store.js ---
+----------------------------------------------------------------------------------------
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+
+export const useSearchStore = defineStore('search', () => {
+  // 状态定义
+  const searchResults = ref({});
+  const documentResults = ref({});
+  const vocabularyResults = ref({});
+  const advancedResults = ref({});
+  const searchHistory = ref([]);
+  const savedSearches = ref([]);
+  const searching = ref(false);
+  const voiceSearching = ref(false);
+  const voiceSearchResult = ref(null);
+  const currentKeyword = ref('');
+  const currentType = ref('all');
+
+  // 计算属性
+  const hasSearchResults = computed(() => {
+    return searchResults.value.items && searchResults.value.items.length > 0;
+  });
+
+  const hasDocumentResults = computed(() => {
+    return documentResults.value.items && documentResults.value.items.length > 0;
+  });
+
+  const hasVocabularyResults = computed(() => {
+    return vocabularyResults.value.items && vocabularyResults.value.items.length > 0;
+  });
+
+  const hasAdvancedResults = computed(() => {
+    return advancedResults.value.items && advancedResults.value.items.length > 0;
+  });
+
+  // 动作
+  const setSearchResults = (results) => {
+    searchResults.value = results;
+  };
+
+  const setDocumentResults = (results) => {
+    documentResults.value = results;
+  };
+
+  const setVocabularyResults = (results) => {
+    vocabularyResults.value = results;
+  };
+
+  const setAdvancedResults = (results) => {
+    advancedResults.value = results;
+  };
+
+  const setSearchHistory = (history) => {
+    searchHistory.value = history;
+  };
+
+  const addSearchHistory = (record) => {
+    // 避免重复
+    const index = searchHistory.value.findIndex(
+      item => item.keyword === record.keyword && item.type === record.type
+    );
+    if (index !== -1) {
+      searchHistory.value.splice(index, 1);
+    }
+    searchHistory.value.unshift(record);
+    // 限制数量
+    if (searchHistory.value.length > 50) {
+      searchHistory.value = searchHistory.value.slice(0, 50);
+    }
+  };
+
+  const clearSearchHistory = () => {
+    searchHistory.value = [];
+  };
+
+  const setSavedSearches = (saved) => {
+    savedSearches.value = saved;
+  };
+
+  const addSavedSearch = (saved) => {
+    savedSearches.value.push(saved);
+  };
+
+  const removeSavedSearch = (savedSearchId) => {
+    const index = savedSearches.value.findIndex(item => item.id === savedSearchId);
+    if (index !== -1) {
+      savedSearches.value.splice(index, 1);
+    }
+  };
+
+  const setSearching = (isSearching) => {
+    searching.value = isSearching;
+  };
+
+  const setVoiceSearching = (isVoiceSearching) => {
+    voiceSearching.value = isVoiceSearching;
+  };
+
+  const setVoiceSearchResult = (result) => {
+    voiceSearchResult.value = result;
+  };
+
+  const setCurrentKeyword = (keyword) => {
+    currentKeyword.value = keyword;
+  };
+
+  const setCurrentType = (type) => {
+    currentType.value = type;
+  };
+
+  return {
+    // 状态
+    searchResults,
+    documentResults,
+    vocabularyResults,
+    advancedResults,
+    searchHistory,
+    savedSearches,
+    searching,
+    voiceSearching,
+    voiceSearchResult,
+    currentKeyword,
+    currentType,
+
+    // 计算属性
+    hasSearchResults,
+    hasDocumentResults,
+    hasVocabularyResults,
+    hasAdvancedResults,
+
+    // 动作
+    setSearchResults,
+    setDocumentResults,
+    setVocabularyResults,
+    setAdvancedResults,
+    setSearchHistory,
+    addSearchHistory,
+    clearSearchHistory,
+    setSavedSearches,
+    addSavedSearch,
+    removeSavedSearch,
+    setSearching,
+    setVoiceSearching,
+    setVoiceSearchResult,
+    setCurrentKeyword,
+    setCurrentType,
+  };
+});
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\settings.store.js ---
+------------------------------------------------------------------------------------------
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+
+export const useSettingsStore = defineStore('settings', () => {
+  // 状态定义
+  const settings = ref({});
+  const readingSettings = ref({});
+  const reviewSettings = ref({});
+  const notificationSettings = ref({});
+  const loading = ref(false);
+  const error = ref(null);
+
+  // 计算属性
+  const hasSettings = computed(() => Object.keys(settings.value).length > 0);
+  const hasReadingSettings = computed(() => Object.keys(readingSettings.value).length > 0);
+  const hasReviewSettings = computed(() => Object.keys(reviewSettings.value).length > 0);
+  const hasNotificationSettings = computed(() => Object.keys(notificationSettings.value).length > 0);
+
+  // 动作
+  const updateSettings = (newSettings) => {
+    settings.value = { ...settings.value, ...newSettings };
+  };
+
+  const updateReadingSettings = (newReadingSettings) => {
+    readingSettings.value = { ...readingSettings.value, ...newReadingSettings };
+  };
+
+  const updateReviewSettings = (newReviewSettings) => {
+    reviewSettings.value = { ...reviewSettings.value, ...newReviewSettings };
+  };
+
+  const updateNotificationSettings = (newNotificationSettings) => {
+    notificationSettings.value = { ...notificationSettings.value, ...newNotificationSettings };
+  };
+
+  const setLoading = (isLoading) => {
+    loading.value = isLoading;
+  };
+
+  const setError = (err) => {
+    error.value = err;
+  };
+
+  const clearError = () => {
+    error.value = null;
+  };
+
+  // 重置所有设置
+  const resetAllSettings = () => {
+    settings.value = {};
+    readingSettings.value = {};
+    reviewSettings.value = {};
+    notificationSettings.value = {};
+  };
+
+  return {
+    // 状态
+    settings,
+    readingSettings,
+    reviewSettings,
+    notificationSettings,
+    loading,
+    error,
+
+    // 计算属性
+    hasSettings,
+    hasReadingSettings,
+    hasReviewSettings,
+    hasNotificationSettings,
+
+    // 动作
+    updateSettings,
+    updateReadingSettings,
+    updateReviewSettings,
+    updateNotificationSettings,
+    setLoading,
+    setError,
+    clearError,
+    resetAllSettings,
+  };
+});
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\tag.store.js ---
+-------------------------------------------------------------------------------------
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+
+export const useTagStore = defineStore('tag', () => {
+  // 状态定义
+  const tags = ref([]);
+  const loading = ref(false);
+  const error = ref(null);
+
+  // 计算属性
+  const tagCount = computed(() => tags.value.length);
+  const popularTags = computed(() => 
+    tags.value.slice().sort((a, b) => b.documentCount - a.documentCount).slice(0, 10)
+  );
+
+  // 动作
+  const setTags = (newTags) => {
+    tags.value = newTags;
+  };
+
+  const addTag = (tag) => {
+    tags.value.push(tag);
+  };
+
+  const updateTag = (tagId, updates) => {
+    const index = tags.value.findIndex(t => t.id === tagId);
+    if (index !== -1) {
+      tags.value[index] = { ...tags.value[index], ...updates };
+    }
+  };
+
+  const removeTag = (tagId) => {
+    const index = tags.value.findIndex(t => t.id === tagId);
+    if (index !== -1) {
+      tags.value.splice(index, 1);
+    }
+  };
+
+  const getTagById = (tagId) => {
+    return tags.value.find(t => t.id === tagId);
+  };
+
+  const incrementTagUsage = (tagId, count = 1) => {
+    const tag = getTagById(tagId);
+    if (tag) {
+      tag.documentCount += count;
+    }
+  };
+
+  const decrementTagUsage = (tagId, count = 1) => {
+    const tag = getTagById(tagId);
+    if (tag) {
+      tag.documentCount = Math.max(0, tag.documentCount - count);
+    }
+  };
+
+  const setLoading = (isLoading) => {
+    loading.value = isLoading;
+  };
+
+  const setError = (err) => {
+    error.value = err;
+  };
+
+  const clearError = () => {
+    error.value = null;
+  };
+
+  return {
+    // 状态
+    tags,
+    loading,
+    error,
+
+    // 计算属性
+    tagCount,
+    popularTags,
+
+    // 动作
+    setTags,
+    addTag,
+    updateTag,
+    removeTag,
+    getTagById,
+    incrementTagUsage,
+    decrementTagUsage,
+    setLoading,
+    setError,
+    clearError,
+  };
+});
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\user.store.js ---
+--------------------------------------------------------------------------------------
+// src/stores/user.store.js
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+
+export const useUserStore = defineStore('user', () => {
+  // 状态
+  const profile = ref(null); // 用户信息
+  const learningStats = ref(null); // 学习统计
+  const achievements = ref([]); // 用户成就
+  const activity = ref([]); // 用户活动日志
+  const activityPagination = ref({
+    page: 1,
+    pageSize: 20,
+    total: 0,
+    totalPages: 0
+  });
+  const learningReport = ref(null); // 学习报告
+  const pointsAndLevel = ref(null); // 积分等级信息
+  const learningCalendar = ref(null); // 学习日历
+  const loading = ref(false);
+  const error = ref(null);
+
+  // 计算属性
+  const isPremium = computed(() => {
+    if (!profile.value) return false;
+    return profile.value.subscription?.type === 'premium' || 
+           profile.value.subscription?.status === 'active';
+  });
+
+  const joinDuration = computed(() => {
+    if (!profile.value?.joinDate) return '';
+    const joinDate = new Date(profile.value.joinDate);
+    const now = new Date();
+    const diffMs = now - joinDate;
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    
+    if (diffDays < 30) {
+      return `${diffDays}天`;
+    } else if (diffDays < 365) {
+      const months = Math.floor(diffDays / 30);
+      return `${months}个月`;
+    } else {
+      const years = Math.floor(diffDays / 365);
+      const remainingMonths = Math.floor((diffDays % 365) / 30);
+      return `${years}年${remainingMonths > 0 ? `${remainingMonths}个月` : ''}`;
+    }
+  });
+
+  const todayActivity = computed(() => {
+    const today = new Date().toISOString().split('T')[0];
+    return activity.value.filter(item => 
+      item.timestamp && item.timestamp.includes(today)
+    );
+  });
+
+  const unlockedAchievementsCount = computed(() => 
+    achievements.value.filter(a => a.unlocked).length
+  );
+
+  const totalAchievementsCount = computed(() => achievements.value.length);
+
+  const achievementProgress = computed(() => {
+    if (totalAchievementsCount.value === 0) return 0;
+    return (unlockedAchievementsCount.value / totalAchievementsCount.value) * 100;
+  });
+
+  // 动作
+  const setProfile = (userProfile) => {
+    profile.value = userProfile;
+  };
+
+  const setLearningStats = (stats) => {
+    learningStats.value = stats;
+  };
+
+  const setAchievements = (achievementList) => {
+    achievements.value = achievementList;
+  };
+
+  const setActivity = (activities) => {
+    activity.value = activities;
+  };
+
+  const setActivityPagination = (pagination) => {
+    activityPagination.value = { ...activityPagination.value, ...pagination };
+  };
+
+  const setLearningReport = (report) => {
+    learningReport.value = report;
+  };
+
+  const setPointsAndLevel = (pointsData) => {
+    pointsAndLevel.value = pointsData;
+  };
+
+  const setLearningCalendar = (calendar) => {
+    learningCalendar.value = calendar;
+  };
+
+  const setLoading = (isLoading) => {
+    loading.value = isLoading;
+  };
+
+  const setError = (err) => {
+    error.value = err;
+  };
+
+  const clearError = () => {
+    error.value = null;
+  };
+
+  const updateProfileField = (field, value) => {
+    if (profile.value) {
+      profile.value[field] = value;
+    }
+  };
+
+  const updatePreferences = (preferences) => {
+    if (profile.value) {
+      profile.value.preferences = { ...profile.value.preferences, ...preferences };
+    }
+  };
+
+  const reset = () => {
+    profile.value = null;
+    learningStats.value = null;
+    achievements.value = [];
+    activity.value = [];
+    activityPagination.value = {
+      page: 1,
+      pageSize: 20,
+      total: 0,
+      totalPages: 0
+    };
+    learningReport.value = null;
+    pointsAndLevel.value = null;
+    learningCalendar.value = null;
+    loading.value = false;
+    error.value = null;
+  };
+
+  return {
+    // 状态
+    profile,
+    learningStats,
+    achievements,
+    activity,
+    activityPagination,
+    learningReport,
+    pointsAndLevel,
+    learningCalendar,
+    loading,
+    error,
+
+    // 计算属性
+    isPremium,
+    joinDuration,
+    todayActivity,
+    unlockedAchievementsCount,
+    totalAchievementsCount,
+    achievementProgress,
+
+    // 动作
+    setProfile,
+    setLearningStats,
+    setAchievements,
+    setActivity,
+    setActivityPagination,
+    setLearningReport,
+    setPointsAndLevel,
+    setLearningCalendar,
+    setLoading,
+    setError,
+    clearError,
+    updateProfileField,
+    updatePreferences,
+    reset
+  };
+});
+
+export default useUserStore;
+--- Original File: C:\Users\shark\Desktop\vue-reading-app\src\stores\vocabulary.store.js ---
+--------------------------------------------------------------------------------------------
+// src/stores/vocabulary.store.js
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+
+export const useVocabularyStore = defineStore('vocabulary', () => {
+  // 状态
+  const currentWord = ref(null); // 当前查询的单词详情
+  const items = ref([]); // 生词本列表
+  const currentItem = ref(null); // 当前选中的生词
+  const pagination = ref({
+    page: 1,
+    pageSize: 50,
+    total: 0,
+    totalPages: 0
+  });
+  const loading = ref(false);
+  const error = ref(null);
+  const searchHistory = ref([]); // 搜索历史
+
+  // 计算属性
+  const masteredWords = computed(() => 
+    items.value.filter(item => item.status === 'mastered').length
+  );
+  
+  const learningWords = computed(() => 
+    items.value.filter(item => item.status === 'learning').length
+  );
+  
+  const newWords = computed(() => 
+    items.value.filter(item => item.status === 'new').length
+  );
+  
+  const totalWords = computed(() => items.value.length);
+  
+  const dueForReview = computed(() => 
+    items.value.filter(item => {
+      if (!item.nextReviewAt) return false;
+      const nextReview = new Date(item.nextReviewAt);
+      const today = new Date();
+      return nextReview <= today;
+    }).length
+  );
+
+  // 动作
+  const setCurrentWord = (word) => {
+    currentWord.value = word;
+  };
+
+  const setItems = (newItems) => {
+    items.value = newItems;
+  };
+
+  const setCurrentItem = (item) => {
+    currentItem.value = item;
+  };
+
+  const setPagination = (newPagination) => {
+    pagination.value = { ...pagination.value, ...newPagination };
+  };
+
+  const addItem = (item) => {
+    // 检查是否已存在
+    const existingIndex = items.value.findIndex(i => i.id === item.id);
+    if (existingIndex !== -1) {
+      items.value[existingIndex] = item;
+    } else {
+      items.value.unshift(item);
+    }
+  };
+
+  const updateItem = (id, updates) => {
+    const index = items.value.findIndex(item => item.id === id);
+    if (index !== -1) {
+      items.value[index] = { ...items.value[index], ...updates };
+    }
+  };
+
+  const removeItem = (id) => {
+    const index = items.value.findIndex(item => item.id === id);
+    if (index !== -1) {
+      items.value.splice(index, 1);
+    }
+  };
+
+  const setLoading = (isLoading) => {
+    loading.value = isLoading;
+  };
+
+  const setError = (err) => {
+    error.value = err;
+  };
+
+  const clearError = () => {
+    error.value = null;
+  };
+
+  const addToSearchHistory = (word, language = 'en') => {
+    // 移除重复项
+    searchHistory.value = searchHistory.value.filter(
+      item => !(item.word === word && item.language === language)
+    );
+    
+    // 添加到开头
+    searchHistory.value.unshift({
+      word,
+      language,
+      timestamp: Date.now(),
+      date: new Date().toISOString()
+    });
+    
+    // 限制历史记录数量
+    if (searchHistory.value.length > 100) {
+      searchHistory.value = searchHistory.value.slice(0, 100);
+    }
+    
+    // 保存到本地存储
+    localStorage.setItem('vocabulary_search_history', JSON.stringify(searchHistory.value));
+  };
+
+  const clearSearchHistory = () => {
+    searchHistory.value = [];
+    localStorage.removeItem('vocabulary_search_history');
+  };
+
+  const loadSearchHistory = () => {
+    try {
+      const saved = localStorage.getItem('vocabulary_search_history');
+      if (saved) {
+        searchHistory.value = JSON.parse(saved);
+      }
+    } catch (err) {
+      console.error('加载搜索历史失败:', err);
+      searchHistory.value = [];
+    }
+  };
+
+  const getWordById = (id) => {
+    return items.value.find(item => item.id === id);
+  };
+
+  const getWordsByStatus = (status) => {
+    return items.value.filter(item => item.status === status);
+  };
+
+  const getWordsByTag = (tag) => {
+    return items.value.filter(item => item.tags.includes(tag));
+  };
+
+  const getWordsByLanguage = (language) => {
+    return items.value.filter(item => item.language === language);
+  };
+
+  const searchWords = (query) => {
+    if (!query) return items.value;
+    
+    const lowerQuery = query.toLowerCase();
+    return items.value.filter(item => 
+      item.word.toLowerCase().includes(lowerQuery) ||
+      item.definition?.toLowerCase().includes(lowerQuery) ||
+      item.tags?.some(tag => tag.toLowerCase().includes(lowerQuery))
+    );
+  };
+
+  const reset = () => {
+    currentWord.value = null;
+    items.value = [];
+    currentItem.value = null;
+    pagination.value = {
+      page: 1,
+      pageSize: 50,
+      total: 0,
+      totalPages: 0
+    };
+    loading.value = false;
+    error.value = null;
+  };
+
+  // 初始化时加载搜索历史
+  loadSearchHistory();
+
+  return {
+    // 状态
+    currentWord,
+    items,
+    currentItem,
+    pagination,
+    loading,
+    error,
+    searchHistory,
+    
+    // 计算属性
+    masteredWords,
+    learningWords,
+    newWords,
+    totalWords,
+    dueForReview,
+    
+    // 动作
+    setCurrentWord,
+    setItems,
+    setCurrentItem,
+    setPagination,
+    addItem,
+    updateItem,
+    removeItem,
+    setLoading,
+    setError,
+    clearError,
+    addToSearchHistory,
+    clearSearchHistory,
+    loadSearchHistory,
+    getWordById,
+    getWordsByStatus,
+    getWordsByTag,
+    getWordsByLanguage,
+    searchWords,
+    reset
+  };
+});
+
+export default useVocabularyStore;

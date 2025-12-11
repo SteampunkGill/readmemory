@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="阅记星(ReadMemo) - 智能英语学习伴侣，让阅读变得有趣，让记忆变得简单">
+  <meta name="keywords" content="英语学习,阅读,记忆,单词,复习,OCR,词典">
+  <meta name="author" content="阅记星团队">
+  
+  <!-- PWA 配置 -->
+  <meta name="theme-color" content="#FF6B8B">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <!-- 图标 -->
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
+  
+  <!-- 字体预加载 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- 社交媒体分享 -->
+  <meta property="og:title" content="阅记星(ReadMemo) - 智能英语学习伴侣">
+  <meta property="og:description" content="让阅读变得有趣，让记忆变得简单">
+  <meta property="og:image" content="/og-image.png">
+  <meta property="og:url" content="https://readmemo.app">
+  <meta property="og:type" content="website">
+  
+  <!-- Twitter卡片 -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="阅记星(ReadMemo) - 智能英语学习伴侣">
+  <meta name="twitter:description" content="让阅读变得有趣，让记忆变得简单">
+  <meta name="twitter:image" content="/twitter-image.png">
+  
+  <!-- 禁止缩放（移动端） -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <!-- 应用标题 -->
+  <title>阅记星(ReadMemo) - 智能英语学习伴侣</title>
+  
+  <!-- 样式预加载 -->
+  <style>
+    /* 预加载关键CSS */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #f8f9fa;
+      color: #333;
+      overflow-x: hidden;
+    }
+    
+    /* 加载动画 */
+    .app-loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #FFE6E6 0%, #E6F7FF 100%);
+      z-index: 9999;
+    }
+    
+    .loading-content {
+      text-align: center;
+      animation: fadeIn 0.8s ease-out;
+    }
+    
+    .loading-logo {
+      font-size: 64px;
+      margin-bottom: 20px;
+      animation: bounce 2s infinite;
+    }
+    
+    .loading-text {
+      font-family: 'Caveat', cursive;
+      font-size: 32px;
+      color: #FF6B8B;
+      margin-bottom: 10px;
+    }
+    
+    .loading-subtext {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 16px;
+      color: #666;
+      opacity: 0.8;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+    
+    /* 防止页面闪烁 */
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- 应用加载动画 -->
+  <div id="app-loading" class="app-loading">
+    <div class="loading-content">
+      <div class="loading-logo">📚</div>
+      <h1 class="loading-text">阅记星</h1>
+      <p class="loading-subtext">智能英语学习伴侣</p>
+    </div>
+  </div>
+
+  <!-- Vue应用挂载点 -->
+  <div id="app" v-cloak></div>
+
+  <!-- 构建脚本会自动注入 -->
+  <script type="module" src="/src/main.js"></script>
+  
+  <!-- 谷歌分析（可选） -->
+  <!--
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXXX-X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-XXXXXXXXX-X');
+  </script>
+  -->
+  
+  <!-- 服务工作者（PWA） -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').then(registration => {
+          console.log('ServiceWorker 注册成功: ', registration.scope);
+        }).catch(error => {
+          console.log('ServiceWorker 注册失败: ', error);
+        });
+      });
+    }
+  </script>
+  
+  <!-- 性能监控 -->
+  <script>
+    // 监控页面加载性能
+    window.addEventListener('load', function() {
+      // 移除加载动画
+      const loadingElement = document.getElementById('app-loading');
+      if (loadingElement) {
+        loadingElement.style.opacity = '0';
+        loadingElement.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => {
+          loadingElement.style.display = 'none';
+        }, 500);
+      }
+      
+      // 记录性能指标
+      if (window.performance && window.performance.timing) {
+        const timing = window.performance.timing;
+        const loadTime = timing.loadEventEnd - timing.navigationStart;
+        console.log('页面加载时间: ' + loadTime + 'ms');
+      }
+    });
+    
+    // 错误监控
+    window.addEventListener('error', function(event) {
+      console.error('全局错误捕获:', event.error);
+      // 这里可以发送错误到服务器
+    });
+    
+    // 未捕获的Promise异常
+    window.addEventListener('unhandledrejection', function(event) {
+      console.error('未处理的Promise异常:', event.reason);
+    });
+  </script>
+</body>
+</html>
