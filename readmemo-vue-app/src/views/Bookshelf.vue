@@ -55,6 +55,15 @@
             <div class="card-actions">
               <button class="icon-btn" @click="editDocument(doc)" title="编辑">✏️</button>
               <button class="icon-btn" @click="deleteDocument(doc.id)" title="删除">🗑️</button>
+              <!-- 手动触发OCR处理按钮 -->
+              <button 
+                class="icon-btn" 
+                @click="triggerOCR(doc.id)" 
+                :disabled="doc.processingStatus === 'processing'"
+                :title="doc.processingStatus === 'processing' ? '正在处理中' : '手动触发OCR处理'"
+              >
+                🔄
+              </button>
             </div>
           </div>
           <div class="card-body">
@@ -110,6 +119,24 @@ import { mockDocumentAPI, mockUserAPI } from '@/mock/api.js'
 
 const router = useRouter()
 
+// 清除认证状态并跳转到登录页
+const clearAuthAndRedirect = () => {
+  showToast('登录已过期，正在跳转到登录页...', 'warning')
+  
+  localStorage.removeItem('token')
+  localStorage.removeItem('refreshToken')
+  localStorage.removeItem('expiresIn')
+  localStorage.removeItem('isAuthenticated')
+  sessionStorage.removeItem('token')
+  sessionStorage.removeItem('refreshToken')
+  sessionStorage.removeItem('expiresIn')
+  sessionStorage.removeItem('isAuthenticated')
+  
+  setTimeout(() => {
+    router.push('/login')
+  }, 2000)
+}
+
 // 用户数据
 const user = reactive({
   avatar: 'https://picsum.photos/seed/avatar/100/100',
@@ -163,7 +190,6 @@ const getStatusText = (doc) => {
 
 // 根据文档属性计算状态
 const getDocumentStatus = (doc) => {
-  // 根据后端返回的processing_status字段判断
   if (doc.processing_status === 'pending' || doc.processingStatus === 'pending') return 'unprocessed'
   if (doc.processing_status === 'processing' || doc.processingStatus === 'processing') return 'processing'
   if (doc.processing_status === 'completed' || doc.processingStatus === 'completed') {
@@ -194,7 +220,6 @@ const updateTabCounts = () => {
 // 从后端API获取文档数据
 const fetchDocumentsFromAPI = async () => {
   try {
-    // 优先从sessionStorage获取，如果没有再从localStorage获取
     const token = sessionStorage.getItem('token') || localStorage.getItem('token')
     
     if (!token) {
@@ -211,7 +236,8 @@ const fetchDocumentsFromAPI = async () => {
 
     if (!response.ok) {
       if (response.status === 401) {
-        throw new Error('登录已过期，请重新登录')
+        clearAuthAndRedirect()
+        return
       }
       throw new Error(`HTTP错误! 状态码: ${response.status}`)
     }
@@ -219,7 +245,6 @@ const fetchDocumentsFromAPI = async () => {
     const result = await response.json()
     
     if (result.success && result.data) {
-      // 转换后端数据为前端格式
       documents.value = result.data.documents.map(doc => ({
         id: doc.id,
         title: doc.title,
@@ -234,7 +259,7 @@ const fetchDocumentsFromAPI = async () => {
         isPublic: doc.isPublic,
         isFavorite: doc.isFavorite,
         uploader: doc.uploader,
-        author: doc.author, // 添加author字段
+        author: doc.author,
         createdAt: doc.createdAt,
         updatedAt: doc.updatedAt,
         thumbnail: doc.thumbnail,
@@ -248,7 +273,6 @@ const fetchDocumentsFromAPI = async () => {
     }
   } catch (error) {
     console.error('从API获取文档失败:', error)
-    // 回退到模拟数据
     await fetchMockDocuments()
     showToast(`使用模拟数据: ${error.message}`, 'warning')
   }
@@ -257,7 +281,6 @@ const fetchDocumentsFromAPI = async () => {
 // 从后端API获取用户信息
 const fetchUserFromAPI = async () => {
   try {
-    // 优先从sessionStorage获取，如果没有再从localStorage获取
     const token = sessionStorage.getItem('token') || localStorage.getItem('token')
     
     if (!token) {
@@ -274,7 +297,8 @@ const fetchUserFromAPI = async () => {
 
     if (!response.ok) {
       if (response.status === 401) {
-        throw new Error('登录已过期，请重新登录')
+        clearAuthAndRedirect()
+        return
       }
       throw new Error(`HTTP错误! 状态码: ${response.status}`)
     }
@@ -291,7 +315,6 @@ const fetchUserFromAPI = async () => {
     }
   } catch (error) {
     console.error('从API获取用户信息失败:', error)
-    // 回退到模拟数据
     await fetchMockUserProfile()
     showToast(`使用模拟用户数据: ${error.message}`, 'warning')
   }
@@ -319,11 +342,54 @@ const fetchMockUserProfile = async () => {
   }
 }
 
+// 手动触发OCR处理
+const triggerOCR = async (documentId) => {
+  try {
+    const token = sessionStorage.getItem('token') || localStorage.getItem('token') || ''
+    if (!token) {
+      throw new Error('未找到认证令牌')
+    }
+
+    const response = await fetch('http://localhost:8080/api/documents/trigger-ocr', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ documentId })
+    })
+
+    if (response.ok) {
+      const result = await response.json()
+      if (result.success) {
+        showToast('已成功触发OCR处理，请稍后查看状态', 'success')
+        // 更新文档状态为处理中
+        const docIndex = documents.value.findIndex(doc => doc.id === documentId)
+        if (docIndex !== -1) {
+          documents.value[docIndex].processingStatus = 'processing'
+          updateTabCounts()
+        }
+      } else {
+        throw new Error(result.message || '触发OCR处理失败')
+      }
+    } else {
+      if (response.status === 401) {
+        clearAuthAndRedirect()
+        return
+      }
+      const errorData = await response.json()
+      throw new Error(errorData.message || '触发OCR处理失败')
+    }
+  } catch (error) {
+    console.error('触发OCR处理失败:', error)
+    showToast('触发OCR处理失败: ' + error.message, 'error')
+  }
+}
+
 // 获取所有数据
 const fetchAllData = async () => {
   loading.value = true
   try {
-    // 并行获取文档和用户数据
     await Promise.all([
       fetchDocumentsFromAPI(),
       fetchUserFromAPI()
@@ -373,12 +439,15 @@ const deleteDocument = async (id) => {
         updateTabCounts()
         showToast('文档已删除', 'success')
       } else {
+        if (response.status === 401) {
+          clearAuthAndRedirect()
+          return
+        }
         const errorData = await response.json()
         throw new Error(errorData.message || '删除失败')
       }
     } catch (error) {
       console.error('删除文档失败:', error)
-      // 回退到模拟删除
       try {
         await mockDocumentAPI.deleteDocument(id)
         documents.value = documents.value.filter(doc => doc.id !== id)
@@ -405,7 +474,6 @@ const showDetails = (doc) => {
 
 onMounted(() => {
   fetchAllData()
-  // 模拟一个通知
   setTimeout(() => {
     showToast('欢迎使用阅记星！', 'info')
   }, 1500)

@@ -147,6 +147,17 @@ const relatedWords = ref([
 ])
 const isFavorite = ref(false)
 
+// 认证 token
+const token = ref('')
+const getToken = () => {
+  token.value = sessionStorage.getItem('token') || localStorage.getItem('token') || ''
+  return token.value
+}
+
+// 初始化 token
+getToken()
+
+
 onMounted(() => {
   // 模拟从路由参数获取单词
   const wordParam = route.params.word || 'father'

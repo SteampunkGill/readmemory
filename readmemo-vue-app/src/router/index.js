@@ -16,6 +16,7 @@ const UserCenter = () => import('@/views/UserCenter.vue')
 const Settings = () => import('@/views/Settings.vue')
 const SearchResults = () => import('@/views/SearchResults.vue')
 const OfflineManagement = () => import('@/views/OfflineManagement.vue') // eslint-disable-line no-unused-vars
+const DocumentDetail = () => import('@/views/DocumentDetail.vue')
 
 const routes = [
   {
@@ -59,6 +60,12 @@ const routes = [
     path: '/reader/:id',
     name: 'Reader',
     component: Reader,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/document/:id',
+    name: 'DocumentDetail',
+    component: DocumentDetail,
     meta: { requiresAuth: true }
   },
   {
@@ -110,7 +117,11 @@ const router = createRouter({
 
 // 模拟认证守卫
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true'
+  // 检查localStorage或sessionStorage中的认证状态
+  const isAuthenticated =
+    localStorage.getItem('isAuthenticated') === 'true' ||
+    sessionStorage.getItem('isAuthenticated') === 'true'
+  
   if (to.meta.requiresAuth && !isAuthenticated) {
     next('/login')
   } else {

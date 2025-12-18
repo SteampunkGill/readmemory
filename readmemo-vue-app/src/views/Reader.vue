@@ -378,6 +378,17 @@ const toggleTheme = () => {
 
 const currentChapter = ref(1)
 
+// 认证 token
+const token = ref('')
+const getToken = () => {
+  token.value = sessionStorage.getItem('token') || localStorage.getItem('token') || ''
+  return token.value
+}
+
+// 初始化 token
+getToken()
+
+
 onMounted(() => {
   // 模拟加载文档
   console.log('Loading document ID:', route.params.id)

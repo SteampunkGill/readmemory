@@ -147,13 +147,29 @@ const storeTokens = (accessToken, refreshToken, expiresIn) => {
   // 根据用户选择决定存储方式
   const storage = form.remember ? localStorage : sessionStorage
   
+  // 清除可能存在的旧数据，避免冲突
+  localStorage.removeItem('token')
+  localStorage.removeItem('refreshToken')
+  localStorage.removeItem('expiresIn')
+  localStorage.removeItem('isAuthenticated')
+  sessionStorage.removeItem('token')
+  sessionStorage.removeItem('refreshToken')
+  sessionStorage.removeItem('expiresIn')
+  sessionStorage.removeItem('isAuthenticated')
+  
+  // 统一存储到选择的storage
   storage.setItem('token', accessToken)
   storage.setItem('refreshToken', refreshToken)
   storage.setItem('expiresIn', expiresIn)
   storage.setItem('isAuthenticated', 'true')
   
-  // 同时也在localStorage备份一份，用于跨页面访问
-  localStorage.setItem('token', accessToken)
+  // 如果勾选"记住我"，在localStorage备份用于跨标签页访问
+  if (form.remember) {
+    localStorage.setItem('token', accessToken)
+    localStorage.setItem('refreshToken', refreshToken)
+    localStorage.setItem('expiresIn', expiresIn)
+    localStorage.setItem('isAuthenticated', 'true')
+  }
 }
 
 // 模拟登录（失败时回退使用）

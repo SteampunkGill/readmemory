@@ -268,6 +268,27 @@ const resetForm = () => {
   document.language = 'zh'
 }
 
+// 清除认证状态并跳转到登录页
+const clearAuthAndRedirect = () => {
+  // 显示提示消息
+  errorMessage.value = '登录已过期，正在跳转到登录页...'
+  
+  // 清除所有认证相关的存储
+  localStorage.removeItem('token')
+  localStorage.removeItem('refreshToken')
+  localStorage.removeItem('expiresIn')
+  localStorage.removeItem('isAuthenticated')
+  sessionStorage.removeItem('token')
+  sessionStorage.removeItem('refreshToken')
+  sessionStorage.removeItem('expiresIn')
+  sessionStorage.removeItem('isAuthenticated')
+  
+  // 延迟跳转到登录页，让用户有时间阅读提示
+  setTimeout(() => {
+    router.push('/login')
+  }, 2000)
+}
+
 const startProcessing = async () => {
   if (!document.title.trim()) {
     alert('请输入文档标题')
@@ -320,6 +341,9 @@ const startProcessing = async () => {
       
       if (response.status === 401) {
         errorMsg = '登录已过期，请重新登录'
+        // 清除认证状态并跳转到登录页
+        clearAuthAndRedirect()
+        return
       } else if (response.status === 500) {
         errorMsg = '服务器内部错误，请稍后重试'
       }
@@ -350,8 +374,9 @@ const startProcessing = async () => {
     // 根据错误类型显示不同的提示
     if (error.message.includes('登录已过期') || error.message.includes('请先登录')) {
       errorMessage.value = '登录已过期，请重新登录'
-      // 可以跳转到登录页
-      // router.push('/login')
+      // 清除认证状态并跳转到登录页
+      clearAuthAndRedirect()
+      return
     } else if (error.message.includes('服务器内部错误')) {
       errorMessage.value = '服务器内部错误，请稍后重试'
     } else {

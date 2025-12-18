@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling; // <-- 添加这个导入
 
 @SpringBootApplication(scanBasePackages = {
     "com.vue.readingapp",
@@ -21,10 +22,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
     "com.vue.readingapp.export",
     "com.vue.readingapp.feedback",
     "com.vue.readingapp.system",
-    "com.vue.readingapp.tags"
+    "com.vue.readingapp.tags",
+    "com.vue.readingapp.scheduler" // <-- 确保 scheduler 包被扫描
 })
 @EntityScan(basePackages = "com.vue.readingapp")
 @EnableJpaRepositories(basePackages = "com.vue.readingapp")
+@EnableScheduling // <-- 添加这个注解
 public class ReadingAppApplication {
     public static void main(String[] args) {
         System.out.println("=== Vue Reading App 后端服务启动中 ===");

@@ -95,7 +95,8 @@ public class DocumentsDelete {
             Integer userId = (Integer) tokenResults.get(0).get("user_id");
 
             // 2. 检查文档是否存在且属于当前用户
-            String checkSql = "SELECT document_id, title FROM documents WHERE document_id = ? AND user_id = ? AND deleted_at IS NULL";
+            // 修改：移除 deleted_at IS NULL 条件，因为表中没有这个字段
+            String checkSql = "SELECT document_id, title FROM documents WHERE document_id = ? AND user_id = ?";
             List<Map<String, Object>> documents = jdbcTemplate.queryForList(checkSql, documentId, userId);
 
             if (documents.isEmpty()) {
@@ -107,12 +108,10 @@ public class DocumentsDelete {
             Map<String, Object> document = documents.get(0);
             String documentTitle = (String) document.get("title");
 
-            // 3. 执行软删除（设置deleted_at字段）
-            LocalDateTime now = LocalDateTime.now();
-            Timestamp timestamp = Timestamp.valueOf(now);
-
-            String deleteSql = "UPDATE documents SET deleted_at = ?, updated_at = ? WHERE document_id = ? AND user_id = ?";
-            int rowsDeleted = jdbcTemplate.update(deleteSql, timestamp, timestamp, documentId, userId);
+            // 3. 执行硬删除（直接删除记录）
+            // 修改：使用 DELETE 语句而不是 UPDATE
+            String deleteSql = "DELETE FROM documents WHERE document_id = ? AND user_id = ?";
+            int rowsDeleted = jdbcTemplate.update(deleteSql, documentId, userId);
 
             if (rowsDeleted == 0) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(

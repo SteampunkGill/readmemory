@@ -1,380 +1,431 @@
 <template>
   <div class="user-center-layout">
-    <div class="user-header">
-      <h1 class="header-title">用户中心</h1>
-      <div class="user-info">
-        <img :src="userProfile.avatar" alt="用户头像" class="user-avatar" />
-        <div class="user-details">
-          <div class="user-name">{{ userProfile.nickname }}</div>
-          <div class="user-email">{{ userProfile.email }}</div>
-        </div>
-      </div>
+    <!-- 全局加载状态 -->
+    <div v-if="isLoading" class="loading-overlay">
+      <div class="loader">同步云端数据中...</div>
     </div>
 
-    <div class="user-content">
-      <aside class="user-nav">
-        <div class="nav-title">导航菜单</div>
-        <div class="nav-list">
-          <div class="nav-item">
-            <div class="nav-link" @click="showPage('dashboard')" :class="{ active: activePage === 'dashboard' }">
-              📊 学习概览
-            </div>
+    <div v-else>
+      <div class="user-header">
+        <h1 class="header-title">用户中心</h1>
+        <div class="user-info">
+          <div class="avatar-wrapper" @click="$refs.avatarInput.click()">
+            <img :src="userProfile.avatar || userProfile.avatarUrl" alt="用户头像" class="user-avatar" />
+            <div class="avatar-mask">更换头像</div>
+            <input type="file" ref="avatarInput" hidden accept="image/*" @change="handleAvatarUpload" />
           </div>
-          <div class="nav-item">
-            <div class="nav-link" @click="showPage('profile')" :class="{ active: activePage === 'profile' }">
-              👤 个人资料
-            </div>
-          </div>
-          <div class="nav-item">
-            <div class="nav-link" @click="showPage('security')" :class="{ active: activePage === 'security' }">
-              🔒 账号安全
-            </div>
-          </div>
-          <div class="nav-item">
-            <div class="nav-link" @click="showPage('subscription')" :class="{ active: activePage === 'subscription' }">
-              💎 订阅管理
-            </div>
-          </div>
-          <div class="nav-item">
-            <div class="nav-link" @click="showPage('notifications')" :class="{ active: activePage === 'notifications' }">
-              🔔 通知设置
-            </div>
-          </div>
-          <div class="nav-item">
-            <div class="nav-link" @click="showPage('stats')" :class="{ active: activePage === 'stats' }">
-              📈 学习统计
-            </div>
-          </div>
-          <div class="nav-item">
-            <div class="nav-link" @click="showPage('badges')" :class="{ active: activePage === 'badges' }">
-              🏆 成就徽章
-            </div>
-          </div>
-          <div class="nav-item">
-            <div class="nav-link" @click="showPage('help')" :class="{ active: activePage === 'help' }">
-              ❓ 帮助与反馈
-            </div>
-          </div>
-          <div class="nav-item">
-            <div class="nav-link" @click="showPage('about')" :class="{ active: activePage === 'about' }">
-              ℹ️ 关于我们
-            </div>
+          <div class="user-details">
+            <div class="user-name">{{ userProfile.nickname }} <span class="role-badge">{{ userProfile.role }}</span></div>
+            <div class="user-email">{{ userProfile.email }}</div>
           </div>
         </div>
-      </aside>
+      </div>
 
-      <main class="user-main">
-        <!-- 学习概览 -->
-        <div v-if="activePage === 'dashboard'" class="user-page">
-          <div class="page-title">学习数据摘要</div>
-          
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div class="stat-icon">📚</div>
-              <div class="stat-value">{{ dashboardStats.documentsRead }}</div>
-              <div class="stat-label">本周阅读文档</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon">⏱️</div>
-              <div class="stat-value">{{ dashboardStats.readingHours }}</div>
-              <div class="stat-label">本周阅读时长(小时)</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon">📝</div>
-              <div class="stat-value">{{ dashboardStats.vocabularyCount }}</div>
-              <div class="stat-label">生词总数</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon">📈</div>
-              <div class="stat-value">{{ dashboardStats.vocabularyGrowth }}</div>
-              <div class="stat-label">词汇量增长</div>
+      <div class="user-content">
+        <aside class="user-nav">
+          <div class="nav-title">个人中心菜单</div>
+          <div class="nav-list">
+            <div class="nav-item" v-for="item in navItems" :key="item.id">
+              <div class="nav-link" @click="showPage(item.id)" :class="{ active: activePage === item.id }">
+                {{ item.icon }} {{ item.label }}
+              </div>
             </div>
           </div>
+        </aside>
 
-          <div class="recent-activity">
-            <div class="section-title">最近活动</div>
-            <div class="activity-list">
-              <div v-for="(activity, index) in recentActivities" :key="index" class="activity-item">
-                <div class="activity-icon">•</div>
-                <div class="activity-text">{{ activity }}</div>
+        <main class="user-main">
+          <!-- 学习概览与目标 -->
+          <div v-if="activePage === 'dashboard'" class="user-page">
+            <div class="page-title">学习数据摘要</div>
+            
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-value">{{ dashboardStats.documentsRead }}</div>
+                <div class="stat-label">本周阅读文档</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-value">{{ dashboardStats.formattedReadingTime || dashboardStats.readingHours }}</div>
+                <div class="stat-label">累计学习时长</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">📝</div>
+                <div class="stat-value">{{ dashboardStats.wordsLearned || dashboardStats.vocabularyCount }}</div>
+                <div class="stat-label">词汇量</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-value">{{ dashboardStats.formattedReviewAccuracy || '+15%' }}</div>
+                <div class="stat-label">复习准确率</div>
+              </div>
+            </div>
+
+            <!-- 学习目标进度 -->
+            <div class="recent-activity" v-if="learningGoals.length > 0">
+              <div class="section-title">当前学习目标</div>
+              <div class="goals-list">
+                <div v-for="goal in learningGoals" :key="goal.goalId" class="activity-item">
+                  <div class="goal-info">
+                    <strong>{{ goal.title }}</strong>: {{ goal.currentValue }} / {{ goal.targetValue }} {{ goal.unit }}
+                    <span class="status-tag">{{ goal.status }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="recent-activity">
+              <div class="section-title">最近活动日志</div>
+              <div class="activity-list">
+                <div v-for="(activity, index) in recentActivities" :key="index" class="activity-item">
+                  <div class="activity-icon">•</div>
+                  <div class="activity-text">{{ activity.action || activity }} - {{ activity.targetName || '' }}</div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="quick-actions">
-            <div class="section-title">快速操作</div>
-            <div class="action-buttons">
-              <button class="btn btn-primary" @click="goToBookshelf">
-                <span class="btn-icon">📖</span> 继续阅读
-              </button>
-              <button class="btn btn-secondary" @click="goToReview">
-                <span class="btn-icon">🔄</span> 开始复习
-              </button>
-              <button class="btn btn-secondary" @click="goToUpload">
-                <span class="btn-icon">📤</span> 上传文档
-              </button>
-              <button class="btn btn-secondary" @click="showPage('profile')">
-                <span class="btn-icon">⚙️</span> 个人设置
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 个人资料 -->
-        <div v-if="activePage === 'profile'" class="user-page">
-          <div class="page-title">个人资料</div>
-          <div class="profile-header">
-            <img :src="userProfile.avatar" alt="Avatar" class="profile-avatar">
-            <div class="profile-name-input">
-              <input type="text" v-model="userProfile.nickname" placeholder="请输入昵称">
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="form-label">电子邮箱</div>
-            <input type="email" :value="userProfile.email" readonly>
-          </div>
-          <div class="form-group">
-            <div class="form-label">个人简介</div>
-            <textarea v-model="userProfile.bio" placeholder="介绍一下自己吧..."></textarea>
-          </div>
-          <button class="btn btn-primary" @click="saveProfile">保存修改</button>
-        </div>
-
-        <!-- 账户安全 -->
-        <div v-if="activePage === 'security'" class="user-page">
-          <div class="page-title">账户安全</div>
-          <div class="section-title">修改密码</div>
-          <div class="form-group">
-            <div class="form-label">旧密码</div>
-            <input type="password" v-model="passwords.old" placeholder="请输入当前密码">
-          </div>
-          <div class="form-group">
-            <div class="form-label">新密码</div>
-            <input type="password" v-model="passwords.new" placeholder="请输入新密码">
-          </div>
-          <div class="form-group">
-            <div class="form-label">确认密码</div>
-            <input type="password" v-model="passwords.confirm" placeholder="请再次输入新密码">
-          </div>
-          <button class="btn btn-primary" @click="updatePassword">更新密码</button>
-          
-          <div class="section-title" style="margin-top: 40px;">登录设备管理</div>
-          <div class="device-list">
-            <div v-for="(device, index) in loginDevices" :key="index" class="device-item">
-              <div class="device-info">
-                <div class="device-name">{{ device.device }}</div>
-                <div class="device-details">{{ device.location }} - {{ device.time }}</div>
-              </div>
-              <button class="btn btn-secondary" @click="logoutDevice(index)">下线</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 订阅管理 -->
-        <div v-if="activePage === 'subscription'" class="user-page">
-          <div class="page-title">订阅管理</div>
-          <div class="subscription-card">
-            <div class="plan-name">{{ subscription.plan }}</div>
-            <div class="plan-detail">到期日期: <span>{{ subscription.expiry }}</span></div>
-            <div class="plan-detail">价格: <span>{{ subscription.price }}</span>/月</div>
-            <div class="plan-actions">
-              <button class="btn btn-primary" @click="switchPlan">切换计划</button>
-              <button class="btn btn-danger" @click="cancelSubscription">取消订阅</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 通知设置 -->
-        <div v-if="activePage === 'notifications'" class="user-page">
-          <div class="page-title">通知设置</div>
-          <div class="notification-list">
-            <div class="notification-item">
-              <div class="notification-label">邮件通知</div>
-              <label class="switch">
-                <input type="checkbox" v-model="notificationSettings.email">
-                <span class="slider"></span>
-              </label>
-            </div>
-            <div class="notification-item">
-              <div class="notification-label">系统推送</div>
-              <label class="switch">
-                <input type="checkbox" v-model="notificationSettings.push">
-                <span class="slider"></span>
-              </label>
-            </div>
-            <div class="notification-item">
-              <div class="notification-label">活动提醒</div>
-              <label class="switch">
-                <input type="checkbox" v-model="notificationSettings.activity">
-                <span class="slider"></span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <!-- 学习统计 -->
-        <div v-if="activePage === 'stats'" class="user-page">
-          <div class="page-title">学习统计</div>
-          <div class="stats-grid">
-            <div v-for="(stat, index) in learningStats" :key="index" class="stat-card">
-              <div class="stat-value">{{ stat.value }}</div>
-              <div class="stat-label">{{ stat.label }}</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 成就徽章 -->
-        <div v-if="activePage === 'badges'" class="user-page">
-          <div class="page-title">成就徽章</div>
-          <div class="badge-grid">
-            <div v-for="(badge, index) in achievementBadges" :key="index" 
-                 :class="['badge-card', { locked: !badge.acquired }]">
-              <img :src="badge.img" :alt="badge.name">
-              <div class="badge-name">{{ badge.name }}</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 帮助与反馈 -->
-        <div v-if="activePage === 'help'" class="user-page">
-          <div class="page-title">帮助与反馈</div>
-          <div class="feedback-form">
+          <!-- 个人资料与偏好设置 -->
+          <div v-if="activePage === 'profile'" class="user-page">
+            <div class="page-title">个人资料与偏好</div>
             <div class="form-group">
-              <div class="form-label">问题类型</div>
+              <div class="form-label">昵称</div>
+              <input type="text" v-model="userProfile.nickname">
+            </div>
+            <div class="form-group">
+              <div class="form-label">个人简介</div>
+              <textarea v-model="userProfile.bio"></textarea>
+            </div>
+
+            <div class="section-title">阅读偏好设置</div>
+            <div class="settings-row">
+              <div class="form-group">
+                <div class="form-label">阅读字体大小 ({{ userProfile.preferences.reading.fontSize }}px)</div>
+                <input type="range" min="12" max="30" v-model="userProfile.preferences.reading.fontSize">
+              </div>
+              <div class="form-group">
+                <div class="form-label">阅读主题</div>
+                <select v-model="userProfile.preferences.reading.theme">
+                  <option value="light">明亮模式</option>
+                  <option value="dark">深色模式</option>
+                  <option value="sepia">护眼模式</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-primary" @click="saveFullProfile">保存所有修改</button>
+          </div>
+
+          <!-- 账户安全 -->
+          <div v-if="activePage === 'security'" class="user-page">
+            <div class="page-title">账户安全</div>
+            <div class="section-title">修改登录密码</div>
+            <div class="form-group">
+              <input type="password" v-model="passwords.old" placeholder="当前密码">
+              <input type="password" v-model="passwords.new" placeholder="新密码" style="margin-top:10px">
+              <input type="password" v-model="passwords.confirm" placeholder="确认新密码" style="margin-top:10px">
+            </div>
+            <button class="btn btn-primary" @click="handleUpdatePassword">更新密码</button>
+            
+            <div class="section-title" style="margin-top: 40px;">敏感操作</div>
+            <div class="danger-zone">
+              <button class="btn btn-secondary" @click="handleExportData" :disabled="isExporting">
+                {{ isExporting ? '导出请求中...' : '📦 导出我的个人数据' }}
+              </button>
+              <button class="btn btn-danger" @click="handleDeleteAccount" style="margin-left: 10px;">
+                🗑️ 注销我的账号
+              </button>
+            </div>
+          </div>
+
+          <!-- 订阅管理 -->
+          <div v-if="activePage === 'subscription'" class="user-page">
+            <div class="page-title">订阅管理</div>
+            <div class="subscription-card" v-if="subscription.plan">
+              <div class="plan-name">{{ subscription.plan.name }}</div>
+              <div class="plan-detail">当前状态: <span>{{ subscription.status }}</span></div>
+              <div class="plan-detail">有效期至: <span>{{ subscription.endDate || '永久有效' }}</span></div>
+              <div class="plan-actions">
+                <button class="btn btn-danger" @click="cancelSubscription">取消订阅</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 学习统计 -->
+          <div v-if="activePage === 'stats'" class="user-page">
+            <div class="page-title">详细统计</div>
+            <div class="stats-grid">
+              <div v-for="(stat, index) in learningStats" :key="index" class="stat-card">
+                <div class="stat-value">{{ stat.value }}</div>
+                <div class="stat-label">{{ stat.label }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 成就徽章 -->
+          <div v-if="activePage === 'badges'" class="user-page">
+            <div class="page-title">成就勋章</div>
+            <div class="badge-grid">
+              <div v-for="(badge, index) in achievementBadges" :key="index" 
+                   :class="['badge-card', { locked: !badge.unlocked }]">
+                <img :src="badge.icon || badge.img" :alt="badge.name">
+                <div class="badge-name">{{ badge.name }}</div>
+                <small v-if="!badge.unlocked">{{ badge.formattedProgress }}</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- 帮助与反馈 -->
+          <div v-if="activePage === 'help'" class="user-page">
+            <div class="page-title">帮助与反馈</div>
+            <div class="feedback-form">
               <select v-model="feedback.type">
-                <option>功能建议</option>
-                <option>Bug反馈</option>
-                <option>内容错误</option>
-                <option>其他</option>
+                <option value="Bug反馈">问题反馈</option>
+                <option value="功能建议">功能建议</option>
               </select>
+              <textarea v-model="feedback.content" placeholder="请详细描述..." style="margin-top:10px"></textarea>
+              <button class="btn btn-primary" @click="submitFeedback">提交反馈</button>
             </div>
-            <div class="form-group">
-              <div class="form-label">反馈内容</div>
-              <textarea v-model="feedback.content" placeholder="请详细描述您的问题或建议..." required></textarea>
-            </div>
-            <button class="btn btn-primary" @click="submitFeedback">提交反馈</button>
           </div>
-        </div>
 
-        <!-- 关于我们 -->
-        <div v-if="activePage === 'about'" class="user-page">
-          <div class="page-title">关于我们</div>
-          <div class="about-section">
-            <img src="@/assets/logo.png" alt="App Logo" class="app-logo">
-            <div class="app-name">ReadMemo</div>
-            <div class="app-version">版本 V1.0.0</div>
-            <div class="app-description">
-              这是一款致力于帮助用户高效阅读和记忆的应用程序。通过智能文档解析和个性化学习计划，帮助您更好地掌握知识。
+          <!-- 关于我们 -->
+          <div v-if="activePage === 'about'" class="user-page">
+            <div class="page-title">关于 ReadMemo</div>
+            <div class="about-section" style="text-align:center">
+              <img src="@/assets/logo.png" alt="App Logo" class="app-logo">
+              <div class="app-version">Version 1.0.0 (Build 20241218)</div>
+              <p>您的个人智能阅读伴侣</p>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const activePage = ref('dashboard');
+const isLoading = ref(false);
+const isExporting = ref(false);
+const token = localStorage.getItem('token') || '';
 
-const showPage = (page) => {
-  activePage.value = page;
-};
+const navItems = [
+  { id: 'dashboard', label: '学习概览', icon: '📊' },
+  { id: 'profile', label: '个人资料', icon: '👤' },
+  { id: 'security', label: '账号安全', icon: '🔒' },
+  { id: 'subscription', label: '订阅管理', icon: '💎' },
+  { id: 'stats', label: '学习统计', icon: '📈' },
+  { id: 'badges', label: '成就徽章', icon: '🏆' },
+  { id: 'help', label: '帮助与反馈', icon: '❓' },
+  { id: 'about', label: '关于我们', icon: 'ℹ️' }
+];
 
-// 用户资料
+// --- 状态数据 ---
 const userProfile = ref({
-  nickname: '小明同学',
-  email: 'xiaoming@example.com',
-  bio: '一名热爱阅读和编程的前端开发者。',
-  avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d'
+  nickname: '加载中...',
+  email: '',
+  bio: '',
+  avatar: 'https://i.pravatar.cc/150',
+  preferences: {
+    reading: { fontSize: 16, theme: 'light', lineHeight: 1.6 },
+    review: { dailyGoal: 20, reminderTime: '20:00' },
+    notification: { email: true, push: true }
+  }
 });
 
-const saveProfile = () => {
-  alert('个人资料已保存');
-};
-
-// 学习概览数据
-const dashboardStats = ref({
-  documentsRead: 12,
-  readingHours: 8.5,
-  vocabularyCount: 42,
-  vocabularyGrowth: '+15%'
-});
-
-const recentActivities = ref([
-  '刚刚添加了单词 "serendipity" 到生词本',
-  '2小时前完成了《傲慢与偏见》第3章阅读',
-  '昨天复习了20个单词',
-  '3天前上传了文档 "经济学原理.pdf"'
-]);
-
-// 账户安全
+const dashboardStats = ref({ documentsRead: 0, wordsLearned: 0, formattedReadingTime: '0' });
+const recentActivities = ref([]);
+const learningGoals = ref([]);
+const achievementBadges = ref([]);
+const subscription = ref({ plan: {}, status: '' });
+const learningStats = ref([]);
 const passwords = ref({ old: '', new: '', confirm: '' });
-const loginDevices = ref([
-  { device: 'Chrome on Windows', location: '上海', time: '2025-12-16 10:30' },
-  { device: 'iPhone 15 Pro', location: '北京', time: '2025-12-15 20:05' },
-  { device: 'Safari on MacBook Pro', location: '上海', time: '2025-12-14 11:12' }
-]);
+const feedback = ref({ type: 'Bug反馈', content: '' });
 
-const updatePassword = () => {
-  passwords.value = { old: '', new: '', confirm: '' };
-  alert('密码更新成功');
+// --- API 请求集合 ---
+
+const fetchAllData = async () => {
+  isLoading.value = true;
+  const headers = { 'Authorization': `Bearer ${token}` };
+
+  try {
+    // 1. 获取核心资料与偏好
+    const profileRes = await fetch('http://localhost:8080/api/v1/user/profile', { headers });
+    const profileData = await profileRes.json();
+    if (profileData.success) {
+      userProfile.value = profileData.user;
+    }
+
+    // 2. 获取统计摘要
+    const statsRes = await fetch('http://localhost:8080/api/v1/user/learning-stats', { headers });
+    const statsData = await statsRes.json();
+    if (statsData.success) {
+      dashboardStats.value = statsData.data;
+      learningStats.value = [
+        { label: '累计学习时长', value: statsData.data.formattedReadingTime },
+        { label: '完成文档', value: statsData.data.documentsRead },
+        { label: '词汇总量', value: statsData.data.wordsLearned }
+      ];
+    }
+
+    // 3. 获取学习目标
+    const goalsRes = await fetch('http://localhost:8080/api/v1/user/goals', { headers });
+    const goalsData = await goalsRes.json();
+    if (goalsData.success) {
+      learningGoals.value = goalsData.goals;
+    }
+
+    // 4. 获取活动日志
+    const actRes = await fetch('http://localhost:8080/api/v1/user/activity-log?pageSize=5', { headers });
+    const actData = await actRes.json();
+    if (actData.success) {
+      recentActivities.value = actData.activities;
+    }
+
+    // 5. 获取勋章
+    const badgeRes = await fetch('http://localhost:8080/api/v1/user/achievements', { headers });
+    const badgeData = await badgeRes.json();
+    if (badgeData.success) {
+      achievementBadges.value = badgeData.achievements;
+    }
+
+    // 6. 订阅信息
+    const subRes = await fetch('http://localhost:8080/api/v1/user/subscription', { headers });
+    const subData = await subRes.json();
+    if (subData.success) {
+      subscription.value = subData.subscription;
+    }
+
+  } catch (err) {
+    console.error("同步数据失败，显示缓存/模拟数据", err);
+  } finally {
+    isLoading.value = false;
+  }
 };
 
-const logoutDevice = (index) => {
-  loginDevices.value.splice(index, 1);
-  alert('设备已下线');
+// --- 功能操作 ---
+
+const handleAvatarUpload = async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const formData = new FormData();
+  formData.append('avatar', file);
+
+  try {
+    const res = await fetch('http://localhost:8080/api/v1/user/avatar', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` },
+      body: formData
+    });
+    const result = await res.json();
+    if (result.success) {
+      userProfile.value.avatar = result.user.avatar;
+      alert('头像上传成功');
+    }
+  } catch (err) { alert('上传失败'); }
 };
 
-// 订阅管理
-const subscription = ref({
-  plan: '高级会员',
-  expiry: '2026-12-31',
-  price: '¥25'
-});
-
-const switchPlan = () => alert('切换计划功能暂未开放。');
-const cancelSubscription = () => alert('您已取消订阅。');
-
-// 通知设置
-const notificationSettings = ref({
-  email: true,
-  push: true,
-  activity: false
-});
-
-// 学习统计
-const learningStats = ref([
-  { label: '累计学习时长', value: '128 小时' },
-  { label: '完成课程数', value: '32 门' },
-  { label: '连续学习天数', value: '78 天' },
-  { label: '阅读文档数', value: '156 篇' }
-]);
-
-// 成就徽章
-const achievementBadges = ref([
-  { name: '初学者', img: 'https://img.icons8.com/color/96/000000/laurel-wreath.png', acquired: true },
-  { name: '阅读达人', img: 'https://img.icons8.com/color/96/000000/medal2.png', acquired: true },
-  { name: '学霸', img: 'https://img.icons8.com/color/96/000000/trophy.png', acquired: true },
-  { name: '评论家', img: 'https://img.icons8.com/color/96/000000/filled-star.png', acquired: true },
-  { name: '夜猫子', img: 'https://img.icons8.com/color/96/000000/crescent-moon.png', acquired: false },
-  { name: '全勤奖', img: 'https://img.icons8.com/color/96/000000/calendar-plus.png', acquired: false }
-]);
-
-// 帮助与反馈
-const feedback = ref({ type: '功能建议', content: '' });
-const submitFeedback = () => {
-  feedback.value = { type: '功能建议', content: '' };
-  alert('反馈已提交，感谢您的支持！');
+const saveFullProfile = async () => {
+  try {
+    // 同时更新基本资料和偏好设置
+    const res = await fetch('http://localhost:8080/api/v1/user/preferences', {
+      method: 'PUT',
+      headers: { 
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify(userProfile.value.preferences)
+    });
+    const result = await res.json();
+    if (result.success) alert('设置已同步到云端');
+  } catch (err) { alert('同步失败'); }
 };
 
-// 导航函数
-const goToBookshelf = () => router.push('/bookshelf');
-const goToReview = () => router.push('/review');
-const goToUpload = () => router.push('/upload');
+const handleUpdatePassword = async () => {
+  if (passwords.value.new !== passwords.value.confirm) return alert('新密码不一致');
+  
+  try {
+    const res = await fetch('http://localhost:8080/api/v1/auth/password', {
+      method: 'PUT',
+      headers: { 
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify({
+        current_password: passwords.value.old,
+        new_password: passwords.value.new,
+        new_password_confirmation: passwords.value.confirm
+      })
+    });
+    const result = await res.json();
+    if (result.success) {
+      alert('密码修改成功，请重新登录');
+      router.push('/login');
+    } else {
+      alert(result.message);
+    }
+  } catch (err) { alert('操作失败'); }
+};
+
+const handleExportData = async () => {
+  isExporting.value = true;
+  try {
+    const res = await fetch('http://localhost:8080/api/v1/user/export-data?format=json', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const result = await res.json();
+    alert(result.message);
+  } finally { isExporting.value = false; }
+};
+
+const handleDeleteAccount = async () => {
+  const pwd = prompt('注销账号是永久性操作，请输入密码确认：');
+  if (!pwd) return;
+
+  try {
+    const res = await fetch('http://localhost:8080/api/v1/user/account', {
+      method: 'DELETE',
+      headers: { 
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify({ password: pwd })
+    });
+    const result = await res.json();
+    if (result.success) {
+      alert('账号已注销');
+      router.push('/register');
+    }
+  } catch (err) { alert('注销失败'); }
+};
+
+const submitFeedback = async () => {
+  try {
+    const res = await fetch('http://localhost:8080/api/v1/system/bug-report', {
+      method: 'POST',
+      headers: { 
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify({
+        title: feedback.value.type,
+        description: feedback.value.content
+      })
+    });
+    if (res.ok) {
+      alert('提交成功');
+      feedback.value.content = '';
+    }
+  } catch (err) { alert('提交异常'); }
+};
+
+const showPage = (page) => activePage.value = page;
+
+onMounted(() => fetchAllData());
 </script>
 
 <style scoped>

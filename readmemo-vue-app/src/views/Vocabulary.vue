@@ -161,6 +161,7 @@ export default {
         { id: 55, word: 'fastidious', phonetic: '/fæˈstɪdiəs/', definition: 'Very attentive to and concerned about accuracy and detail.', exampleSentence: 'He is fastidious about his appearance.', partOfSpeech: 'adjective', difficulty: 'Intermediate' },
       ],
       learningStatus: {}, // { wordId: { status: 'new' | 'known' | 'reviewing', lastReviewed: null | Date } }
+      token: '', // 认证 token
     };
   },
   computed: {
@@ -309,6 +310,14 @@ export default {
   },
   created() {
     this.loadProgress();
+    // 从 localStorage 获取 token
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.token = token;
+      console.log('Token loaded:', token);
+    } else {
+      console.warn('No token found in localStorage');
+    }
   },
   beforeUnmount() {
     // Log a session summary before the component is destroyed
