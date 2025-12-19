@@ -114,7 +114,7 @@ public class OcrService {
                         totalPages = document.getNumberOfPages();
                         PDFRenderer pdfRenderer = new PDFRenderer(document);
                         StringBuilder sb = new StringBuilder();
-                        int pagesToProcess = Math.min(totalPages, 10); // 最多处理10页作为演示
+                        int pagesToProcess = totalPages; // 处理所有页面
                         for (int i = 0; i < pagesToProcess; i++) {
                             int currentPageNum = i + 1;
                             // 检查文档是否仍然存在，防止处理已删除的文档

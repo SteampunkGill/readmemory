@@ -32,7 +32,7 @@ public class DocumentProcessingScheduler {
             //    - 对于相同 priority 的任务，优先处理创建时间较早的
             //    - 限制每次处理的数量，避免一次性加载过多任务
             //    - 注意：这里的 sql 语句假设 queue_id 是数字类型，但会增加类型转换的健壮性
-            String sql = "SELECT queue_id, document_id FROM document_processing_queue WHERE status = 'pending' ORDER BY priority DESC, created_at ASC LIMIT 10";
+            String sql = "SELECT queue_id, document_id FROM document_processing_queue WHERE status = 'pending' ORDER BY priority DESC, created_at ASC LIMIT 200";
 
             List<Map<String, Object>> pendingTasks = jdbcTemplate.queryForList(sql);
 

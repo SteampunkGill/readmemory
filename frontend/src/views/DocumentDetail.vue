@@ -17,18 +17,8 @@
     </header>
 
     <main class="main" v-if="docData">
-      <!-- 文档封面和基本信息 -->
+      <!-- 文档基本信息 -->
       <div class="document-header card">
-        <div class="cover-container no-cover">
-          <div class="book-icon">📚</div>
-          <div class="cover-overlay">
-            <button class="btn-read" @click="startReading">开始阅读</button>
-            <button class="btn-continue" v-if="docData.readProgress > 0" @click="continueReading">
-              继续阅读 ({{ docData.readProgress }}%)
-            </button>
-          </div>
-        </div>
-        
         <div class="document-info">
           <h1 class="title">{{ docData.title }}</h1>
           <div class="info-rows">
@@ -262,12 +252,6 @@ const goBack = () => {
 }
 
 const startReading = () => {
-  if (docData.value) {
-    router.push(`/reader/${docData.value.id}`)
-  }
-}
-
-const continueReading = () => {
   if (docData.value) {
     router.push(`/reader/${docData.value.id}`)
   }
