@@ -35,6 +35,24 @@ public class ReaderLookupWord {
         System.out.println("响应数据: " + response);
         System.out.println("===================");
     }
+    // 辅助方法：不区分大小写地从Map中获取字符串
+    private String getCaseInsensitive(Map<String, Object> map, String key) {
+        if (map == null) return null;
+        if (map.containsKey(key)) return (String) map.get(key);
+        if (map.containsKey(key.toUpperCase())) return (String) map.get(key.toUpperCase());
+        if (map.containsKey(key.toLowerCase())) return (String) map.get(key.toLowerCase());
+        return null;
+    }
+
+    // 辅助方法：不区分大小写地从Map中获取对象
+    private Object getCaseInsensitiveObject(Map<String, Object> map, String key) {
+        if (map == null) return null;
+        if (map.containsKey(key)) return map.get(key);
+        if (map.containsKey(key.toUpperCase())) return map.get(key.toUpperCase());
+        if (map.containsKey(key.toLowerCase())) return map.get(key.toLowerCase());
+        return null;
+    }
+
 
     // 响应DTO
     public static class LookupWordResponse {
@@ -214,20 +232,38 @@ public class ReaderLookupWord {
             lookupData.setLanguage(language);
 
             // 设置释义
-            for (Map<String, Object> definition : definitions) {
-                Definition def = new Definition();
-                def.setId(((Number) definition.get("definition_id")).intValue());
-                def.setPartOfSpeech((String) definition.get("part_of_speech"));
-                def.setDefinition((String) definition.get("definition"));
-                def.setExample((String) definition.get("example"));
-                lookupData.getDefinitions().add(def);
+            if (definitions.isEmpty()) {
+                // 强健的字段读取逻辑，处理可能的大小写问题并尝试多个备选字段
+                String translation = getCaseInsensitive(wordInfo, "translation_pos");
+                if (translation == null || translation.isEmpty()) translation = getCaseInsensitive(wordInfo, "detail");
+                if (translation == null || translation.isEmpty()) translation = getCaseInsensitive(wordInfo, "collins");
+                
+                if (translation != null && !translation.isEmpty()) {
+                    Definition def = new Definition();
+                    def.setId(0);
+                    def.setPartOfSpeech(getCaseInsensitive(wordInfo, "part_of_speech"));
+                    def.setDefinition(translation);
+                    lookupData.getDefinitions().add(def);
+                }
+            } else {
+                for (Map<String, Object> definition : definitions) {
+                    Definition def = new Definition();
+                    def.setId(((Number) getCaseInsensitiveObject(definition, "definition_id")).intValue());
+                    def.setPartOfSpeech(getCaseInsensitive(wordInfo, "part_of_speech"));
+                    def.setDefinition(getCaseInsensitive(definition, "definition"));
+                    def.setExample(getCaseInsensitive(definition, "example"));
+                    lookupData.getDefinitions().add(def);
+                }
             }
 
             // 设置例句
             for (Map<String, Object> example : examples) {
                 Example ex = new Example();
                 ex.setId(((Number) example.get("example_id")).intValue());
-                ex.setExample((String) example.get("example"));
+                // 数据库字段名是 example_sentence
+                String exampleText = (String) example.get("example_sentence");
+                if (exampleText == null) exampleText = (String) example.get("example");
+                ex.setExample(exampleText);
                 ex.setTranslation((String) example.get("translation"));
                 lookupData.getExamples().add(ex);
             }

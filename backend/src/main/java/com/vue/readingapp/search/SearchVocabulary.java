@@ -236,11 +236,11 @@ public class SearchVocabulary {
 
             // 3. 构建SQL查询
             StringBuilder sqlBuilder = new StringBuilder();
-            sqlBuilder.append("SELECT w.word_id, w.word, w.phonetic, wd.definition, wd.translation, ");
+            sqlBuilder.append("SELECT w.word_id, w.word, w.phonetic, wd.definition, w.translation_pos AS translation, ");
             sqlBuilder.append("w.created_at, w.updated_at, w.audio_url, w.difficulty, w.language ");
             sqlBuilder.append("FROM words w ");
             sqlBuilder.append("LEFT JOIN word_definitions wd ON w.word_id = wd.word_id ");
-            sqlBuilder.append("WHERE (w.word LIKE ? OR wd.definition LIKE ? OR wd.translation LIKE ?) ");
+            sqlBuilder.append("WHERE (w.word LIKE ? OR wd.definition LIKE ? OR w.translation_pos LIKE ?) ");
 
             List<Object> params = new ArrayList<>();
             params.add("%" + query + "%");
@@ -486,7 +486,7 @@ public class SearchVocabulary {
             // 难度facet
             String difficultySql = "SELECT w.difficulty, COUNT(*) as count FROM words w " +
                     "LEFT JOIN word_definitions wd ON w.word_id = wd.word_id " +
-                    "WHERE (w.word LIKE ? OR wd.definition LIKE ? OR wd.translation LIKE ?) " +
+                    "WHERE (w.word LIKE ? OR wd.definition LIKE ? OR w.translation_pos LIKE ?) " +
                     "GROUP BY w.difficulty ORDER BY count DESC";
 
             List<Object> params = new ArrayList<>();
@@ -500,7 +500,7 @@ public class SearchVocabulary {
             // 语言facet
             String languageSql = "SELECT w.language, COUNT(*) as count FROM words w " +
                     "LEFT JOIN word_definitions wd ON w.word_id = wd.word_id " +
-                    "WHERE (w.word LIKE ? OR wd.definition LIKE ? OR wd.translation LIKE ?) " +
+                    "WHERE (w.word LIKE ? OR wd.definition LIKE ? OR w.translation_pos LIKE ?) " +
                     "GROUP BY w.language ORDER BY count DESC";
 
             List<Map<String, Object>> languageFacet = jdbcTemplate.queryForList(languageSql, params.toArray());
@@ -511,7 +511,7 @@ public class SearchVocabulary {
                     "INNER JOIN user_vocabulary_tags ut ON vt.tag_id = ut.tag_id " +
                     "INNER JOIN words w ON ut.word_id = w.word_id " +
                     "LEFT JOIN word_definitions wd ON w.word_id = wd.word_id " +
-                    "WHERE (w.word LIKE ? OR wd.definition LIKE ? OR wd.translation LIKE ?) " +
+                    "WHERE (w.word LIKE ? OR wd.definition LIKE ? OR w.translation_pos LIKE ?) " +
                     "GROUP BY vt.tag_id, vt.tag_name ORDER BY count DESC LIMIT 20";
 
             List<Map<String, Object>> tagFacet = jdbcTemplate.queryForList(tagSql, params.toArray());

@@ -550,11 +550,11 @@ public class SearchGlobal {
         List<SearchItem> results = new ArrayList<>();
 
         try {
-            String sql = "SELECT w.word_id, w.word, w.phonetic, wd.definition, wd.translation, " +
+            String sql = "SELECT w.word_id, w.word, w.phonetic, wd.definition, w.translation_pos AS translation, " +
                     "w.created_at, w.updated_at, w.audio_url " +
                     "FROM words w " +
                     "LEFT JOIN word_definitions wd ON w.word_id = wd.word_id " +
-                    "WHERE w.word LIKE ? OR wd.definition LIKE ? OR wd.translation LIKE ? " +
+                    "WHERE w.word LIKE ? OR wd.definition LIKE ? OR w.translation_pos LIKE ? " +
                     "ORDER BY w.word ASC LIMIT ? OFFSET ?";
 
             List<Object> params = new ArrayList<>();

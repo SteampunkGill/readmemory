@@ -7791,3 +7791,636 @@ Caused by: java.io.IOException: Cannot delete C:\Users\shark\AppData\Local\Temp\
 2025-12-19 14:47:52 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
 2025-12-19 14:47:52 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
 2025-12-19 14:47:52 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:24 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents/12", parameters={}
+2025-12-19 14:49:24 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGetById#getDocumentById(Integer, String)
+2025-12-19 14:49:24 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/outline", parameters={}
+2025-12-19 14:49:24 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentOutline#getDocumentOutline(int, String)
+2025-12-19 14:49:24 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:24 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.documents.DocumentsGetById$DocumentDetailResponse@639bdcec]
+2025-12-19 14:49:24 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/notes", parameters={}
+2025-12-19 14:49:24 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetNotes#getNotes(int, int, int, Integer, Integer, String)
+2025-12-19 14:49:24 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:24 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:24 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:24 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetNotes$NotesResponse@45d4e53d]
+2025-12-19 14:49:24 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentOutline$OutlineResponse@3dc99d29]
+2025-12-19 14:49:24 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:24 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:24 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/pages/1", parameters={}
+2025-12-19 14:49:24 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 14:49:24 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:24 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentPage$PageResponse@133e6c5f]
+2025-12-19 14:49:24 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:26 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/dictionary/lookup?word=JWT&language=en", parameters={masked}
+2025-12-19 14:49:26 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:49:26 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:26 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=JWT&language=en", parameters={masked}
+2025-12-19 14:49:26 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:49:26 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:26 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@79a48876]
+2025-12-19 14:49:26 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:26 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/dictionary/lookup?word=Token&language=en", parameters={masked}
+2025-12-19 14:49:26 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:49:26 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:26 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=Token&language=en", parameters={masked}
+2025-12-19 14:49:26 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:49:26 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:26 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@5c197c1f]
+2025-12-19 14:49:26 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:28 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 14:49:28 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 14:49:28 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 14:49:28 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 14:49:28 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:28 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:28 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@150ed17a]
+2025-12-19 14:49:28 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=false, message='登录已过期，请重新登录', data=null}]
+2025-12-19 14:49:28 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 401 UNAUTHORIZED
+2025-12-19 14:49:28 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 401 UNAUTHORIZED
+2025-12-19 14:49:30 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/auth/login", parameters={}
+2025-12-19 14:49:30 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthLogin#login(LoginRequest)
+2025-12-19 14:49:30 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:30 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - POST "/api/v1/auth/login", parameters={}
+2025-12-19 14:49:30 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthLogin#login(LoginRequest)
+2025-12-19 14:49:30 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.auth.AuthLogin$LoginRequest@78307fce]
+2025-12-19 14:49:30 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:30 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthLogin$LoginResponse@10d97280]
+2025-12-19 14:49:30 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:32 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 14:49:32 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 14:49:32 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 14:49:32 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 14:49:32 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:32 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 14:49:32 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:32 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:32 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@44597f1d]
+2025-12-19 14:49:32 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:33 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents/12", parameters={}
+2025-12-19 14:49:33 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/outline", parameters={}
+2025-12-19 14:49:33 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/notes", parameters={}
+2025-12-19 14:49:33 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGetById#getDocumentById(Integer, String)
+2025-12-19 14:49:33 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetNotes#getNotes(int, int, int, Integer, Integer, String)
+2025-12-19 14:49:33 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentOutline#getDocumentOutline(int, String)
+2025-12-19 14:49:33 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:33 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetNotes$NotesResponse@166d4c25]
+2025-12-19 14:49:33 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:33 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.documents.DocumentsGetById$DocumentDetailResponse@40be6ee5]
+2025-12-19 14:49:33 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:33 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:33 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:33 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentOutline$OutlineResponse@2791cee]
+2025-12-19 14:49:33 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:33 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/pages/1", parameters={}
+2025-12-19 14:49:33 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 14:49:33 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:33 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentPage$PageResponse@42a5d4ce]
+2025-12-19 14:49:33 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:33 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/dictionary/lookup?word=https&language=en", parameters={masked}
+2025-12-19 14:49:33 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:49:33 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:33 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=https&language=en", parameters={masked}
+2025-12-19 14:49:33 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:49:33 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:33 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@71b1b2f6]
+2025-12-19 14:49:33 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:35 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/vocabulary", parameters={}
+2025-12-19 14:49:35 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.vocabulary.VocabularyAddTo#addToVocabulary(String, AddToVocabularyRequest)
+2025-12-19 14:49:35 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:35 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - POST "/api/v1/vocabulary", parameters={}
+2025-12-19 14:49:35 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.vocabulary.VocabularyAddTo#addToVocabulary(String, AddToVocabularyRequest)
+2025-12-19 14:49:35 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.vocabulary.VocabularyAddTo$AddToVocabularyRequest@7296952b]
+2025-12-19 14:49:35 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:35 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.vocabulary.VocabularyAddTo$AddToVocabularyResponse@49e63526]
+2025-12-19 14:49:35 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 409 CONFLICT
+2025-12-19 14:49:36 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=https&language=en", parameters={masked}
+2025-12-19 14:49:36 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:49:36 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:36 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@193b7f52]
+2025-12-19 14:49:36 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:37 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - POST "/api/v1/vocabulary", parameters={}
+2025-12-19 14:49:37 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.vocabulary.VocabularyAddTo#addToVocabulary(String, AddToVocabularyRequest)
+2025-12-19 14:49:37 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.vocabulary.VocabularyAddTo$AddToVocabularyRequest@5b1a4428]
+2025-12-19 14:49:37 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:37 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.vocabulary.VocabularyAddTo$AddToVocabularyResponse@aa11ee4]
+2025-12-19 14:49:37 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 409 CONFLICT
+2025-12-19 14:49:38 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/review/due-words?limit=10", parameters={masked}
+2025-12-19 14:49:38 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.review.ReviewGetDueWords#getDueWords(String, int, String, String, String, String, String)
+2025-12-19 14:49:38 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:38 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/review/due-words?limit=10", parameters={masked}
+2025-12-19 14:49:38 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.review.ReviewGetDueWords#getDueWords(String, int, String, String, String, String, String)
+2025-12-19 14:49:39 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:39 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.review.ReviewGetDueWords$DueWordsResponse@17776e14]
+2025-12-19 14:49:39 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2025-12-19 14:49:39 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/vocabulary/dates", parameters={}
+2025-12-19 14:49:39 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.vocabulary.VocabularyGetDates#getVocabularyDates(String)
+2025-12-19 14:49:39 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:39 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/vocabulary/dates", parameters={}
+2025-12-19 14:49:39 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.vocabulary.VocabularyGetDates#getVocabularyDates(String)
+2025-12-19 14:49:40 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:40 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.vocabulary.VocabularyGetDates$DateCountResponse@1a9f1511]
+2025-12-19 14:49:40 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:42 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 14:49:42 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 14:49:42 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 14:49:42 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 14:49:42 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:42 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@473fdab3]
+2025-12-19 14:49:42 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:49:42 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:49:42 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 14:49:42 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:53:50 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 5 class path changes (0 additions, 0 deletions, 5 modifications)
+2025-12-19 14:53:50 [Thread-5] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-12-19 14:53:50 [Thread-5] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Destroying Spring FrameworkServlet 'dispatcherServlet'
+2025-12-19 14:53:50 [Thread-5] WARN  o.a.c.loader.WebappClassLoaderBase - The web application [ROOT] appears to have started a thread named [JNA Cleaner] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.2/java.lang.Object.wait(Native Method)
+ java.base@17.0.2/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+ java.base@17.0.2/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+ app//com.sun.jna.internal.Cleaner$1.run(Cleaner.java:58)
+2025-12-19 14:53:50 [Thread-5] WARN  o.a.c.loader.WebappClassLoaderBase - The web application [ROOT] appears to have started a thread named [MySQL Statement Cancellation Timer] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.2/java.lang.Object.wait(Native Method)
+ java.base@17.0.2/java.util.TimerThread.mainLoop(Timer.java:563)
+ java.base@17.0.2/java.util.TimerThread.run(Timer.java:516)
+2025-12-19 14:53:50 [Thread-5] WARN  o.a.c.loader.WebappClassLoaderBase - The web application [ROOT] appears to have started a thread named [MySQL Statement Cancellation Timer] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.2/java.lang.Object.wait(Native Method)
+ java.base@17.0.2/java.lang.Object.wait(Object.java:338)
+ java.base@17.0.2/java.util.TimerThread.mainLoop(Timer.java:537)
+ java.base@17.0.2/java.util.TimerThread.run(Timer.java:516)
+2025-12-19 14:53:50 [Thread-5] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-19 14:53:50 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-12-19 14:53:50 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-12-19 14:53:50 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - Starting ReadingAppApplication using Java 17.0.2 on DESKTOP-FM4MQKL with PID 12060 (C:\Users\shark\Desktop\阅记星\backend\target\classes started by shark in C:\Users\shark\Desktop\阅记星\backend)
+2025-12-19 14:53:50 [restartedMain] DEBUG c.v.readingapp.ReadingAppApplication - Running with Spring Boot v2.7.14, Spring v5.3.29
+2025-12-19 14:53:50 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - The following 1 profile is active: "application.properties"
+2025-12-19 14:53:51 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-19 14:53:51 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 46 ms. Found 0 JPA repository interfaces.
+2025-12-19 14:53:51 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-12-19 14:53:51 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-19 14:53:51 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.78]
+2025-12-19 14:53:51 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-12-19 14:53:51 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1006 ms
+2025-12-19 14:53:51 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2025-12-19 14:53:51 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2025-12-19 14:53:51 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-19 14:53:52 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-19 14:53:52 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-12-19 14:53:52 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 304 mappings in 'requestMappingHandlerMapping'
+2025-12-19 14:53:52 [restartedMain] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2025-12-19 14:53:52 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-12-19 14:53:52 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-12-19 14:53:52 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-12-19 14:53:52 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - Started ReadingAppApplication in 1.471 seconds (JVM running for 708.919)
+2025-12-19 14:53:52 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-12-19 14:54:46 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 6 class path changes (0 additions, 0 deletions, 6 modifications)
+2025-12-19 14:54:46 [Thread-17] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-12-19 14:54:46 [Thread-17] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-19 14:54:46 [Thread-17] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
+2025-12-19 14:54:46 [Thread-17] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+2025-12-19 14:54:47 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - Starting ReadingAppApplication using Java 17.0.2 on DESKTOP-FM4MQKL with PID 12060 (C:\Users\shark\Desktop\阅记星\backend\target\classes started by shark in C:\Users\shark\Desktop\阅记星\backend)
+2025-12-19 14:54:47 [restartedMain] DEBUG c.v.readingapp.ReadingAppApplication - Running with Spring Boot v2.7.14, Spring v5.3.29
+2025-12-19 14:54:47 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - The following 1 profile is active: "application.properties"
+2025-12-19 14:54:47 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-19 14:54:47 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 57 ms. Found 0 JPA repository interfaces.
+2025-12-19 14:54:47 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-12-19 14:54:47 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-19 14:54:47 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.78]
+2025-12-19 14:54:47 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-12-19 14:54:47 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 767 ms
+2025-12-19 14:54:47 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Starting...
+2025-12-19 14:54:47 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Start completed.
+2025-12-19 14:54:47 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-19 14:54:48 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-19 14:54:48 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-12-19 14:54:48 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 304 mappings in 'requestMappingHandlerMapping'
+2025-12-19 14:54:48 [restartedMain] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2025-12-19 14:54:48 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-12-19 14:54:48 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-12-19 14:54:48 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-12-19 14:54:48 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - Started ReadingAppApplication in 1.231 seconds (JVM running for 764.875)
+2025-12-19 14:54:48 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-12-19 14:55:32 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-19 14:55:32 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-12-19 14:55:32 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected StandardServletMultipartResolver
+2025-12-19 14:55:32 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected AcceptHeaderLocaleResolver
+2025-12-19 14:55:32 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected FixedThemeResolver
+2025-12-19 14:55:32 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@5badfe11
+2025-12-19 14:55:32 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.support.SessionFlashMapManager@7810a6f8
+2025-12-19 14:55:32 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2025-12-19 14:55:32 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-12-19 14:55:32 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/reader/documents/12/reading-progress", parameters={}
+2025-12-19 14:55:32 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/reader/documents/12/reading-progress", parameters={}
+2025-12-19 14:55:32 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/reader/documents/12/reading-progress", parameters={}
+2025-12-19 14:55:32 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderUpdateReadingProgress#updateReadingProgress(int, ProgressRequest, String)
+2025-12-19 14:55:32 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderUpdateReadingProgress#updateReadingProgress(int, ProgressRequest, String)
+2025-12-19 14:55:32 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderUpdateReadingProgress#updateReadingProgress(int, ProgressRequest, String)
+2025-12-19 14:55:32 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressRequest@78d24c7]
+2025-12-19 14:55:32 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressRequest@1e0b6476]
+2025-12-19 14:55:32 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressRequest@65aec586]
+2025-12-19 14:55:32 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:55:32 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:55:32 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressResponse@4c28de1b]
+2025-12-19 14:55:32 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressResponse@60de004d]
+2025-12-19 14:55:32 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 401 UNAUTHORIZED
+2025-12-19 14:55:32 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 401 UNAUTHORIZED
+2025-12-19 14:55:32 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:55:32 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressResponse@2b497b62]
+2025-12-19 14:55:32 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:32 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 14:55:32 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 14:55:32 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 14:55:32 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 14:55:32 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:55:32 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@13aaa45f]
+2025-12-19 14:55:32 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:32 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:55:32 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 14:55:32 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:33 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents/12", parameters={}
+2025-12-19 14:55:33 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/outline", parameters={}
+2025-12-19 14:55:33 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGetById#getDocumentById(Integer, String)
+2025-12-19 14:55:33 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentOutline#getDocumentOutline(int, String)
+2025-12-19 14:55:33 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/notes", parameters={}
+2025-12-19 14:55:33 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetNotes#getNotes(int, int, int, Integer, Integer, String)
+2025-12-19 14:55:33 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:55:33 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.documents.DocumentsGetById$DocumentDetailResponse@6dec482f]
+2025-12-19 14:55:33 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:55:33 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:55:33 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetNotes$NotesResponse@77b3aa42]
+2025-12-19 14:55:33 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentOutline$OutlineResponse@69f36cfb]
+2025-12-19 14:55:33 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:33 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:33 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:33 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/pages/1", parameters={}
+2025-12-19 14:55:33 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 14:55:33 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:55:33 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentPage$PageResponse@2f44beee]
+2025-12-19 14:55:33 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:34 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=https&language=en", parameters={masked}
+2025-12-19 14:55:34 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:55:34 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:55:34 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@41f7a716]
+2025-12-19 14:55:34 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:35 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/dictionary/lookup?word=milk&language=en", parameters={masked}
+2025-12-19 14:55:35 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:55:35 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:35 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=milk&language=en", parameters={masked}
+2025-12-19 14:55:35 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:55:36 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:55:36 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@747919e7]
+2025-12-19 14:55:36 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:36 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/dictionary/lookup?word=com&language=en", parameters={masked}
+2025-12-19 14:55:36 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:55:36 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:36 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=com&language=en", parameters={masked}
+2025-12-19 14:55:36 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:55:36 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:55:36 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@2c521621]
+2025-12-19 14:55:36 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:38 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/dictionary/lookup?word=Bearer&language=en", parameters={masked}
+2025-12-19 14:55:38 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:55:38 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:38 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=Bearer&language=en", parameters={masked}
+2025-12-19 14:55:38 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:55:38 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:55:38 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@23176420]
+2025-12-19 14:55:38 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:43 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/dictionary/lookup?word=member&language=en", parameters={masked}
+2025-12-19 14:55:43 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:55:43 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:43 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=member&language=en", parameters={masked}
+2025-12-19 14:55:43 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:55:43 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:55:43 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@1164023b]
+2025-12-19 14:55:43 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:55:59 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-19 14:55:59 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown initiated...
+2025-12-19 14:55:59 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown completed.
+2025-12-19 14:56:03 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - Starting ReadingAppApplication using Java 17.0.2 on DESKTOP-FM4MQKL with PID 9968 (C:\Users\shark\Desktop\阅记星\backend\target\classes started by shark in C:\Users\shark\Desktop\阅记星\backend)
+2025-12-19 14:56:03 [restartedMain] DEBUG c.v.readingapp.ReadingAppApplication - Running with Spring Boot v2.7.14, Spring v5.3.29
+2025-12-19 14:56:03 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - The following 1 profile is active: "application.properties"
+2025-12-19 14:56:03 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-12-19 14:56:03 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-12-19 14:56:03 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-19 14:56:03 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 40 ms. Found 0 JPA repository interfaces.
+2025-12-19 14:56:04 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-12-19 14:56:04 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-19 14:56:04 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.78]
+2025-12-19 14:56:04 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-12-19 14:56:04 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1142 ms
+2025-12-19 14:56:04 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-12-19 14:56:04 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-12-19 14:56:04 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-19 14:56:05 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-19 14:56:05 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-12-19 14:56:05 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 304 mappings in 'requestMappingHandlerMapping'
+2025-12-19 14:56:05 [restartedMain] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2025-12-19 14:56:05 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-12-19 14:56:05 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-12-19 14:56:05 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-12-19 14:56:05 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - Started ReadingAppApplication in 2.419 seconds (JVM running for 2.818)
+2025-12-19 14:56:09 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-19 14:56:09 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-12-19 14:56:09 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected StandardServletMultipartResolver
+2025-12-19 14:56:09 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected AcceptHeaderLocaleResolver
+2025-12-19 14:56:09 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected FixedThemeResolver
+2025-12-19 14:56:09 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@369b3d82
+2025-12-19 14:56:09 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.support.SessionFlashMapManager@f680947
+2025-12-19 14:56:09 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2025-12-19 14:56:09 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2025-12-19 14:56:09 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=member&language=en", parameters={masked}
+2025-12-19 14:56:09 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:09 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:09 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@70cf3e29]
+2025-12-19 14:56:09 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:10 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=member&language=en", parameters={masked}
+2025-12-19 14:56:10 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:10 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:10 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@5d7edde1]
+2025-12-19 14:56:10 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:11 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=member&language=en", parameters={masked}
+2025-12-19 14:56:11 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:11 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:11 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@4b6c86d9]
+2025-12-19 14:56:11 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:12 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=member&language=en", parameters={masked}
+2025-12-19 14:56:12 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:12 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:12 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@9f604e9]
+2025-12-19 14:56:12 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:27 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/dictionary/lookup?word=level&language=en", parameters={masked}
+2025-12-19 14:56:27 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:27 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:27 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=level&language=en", parameters={masked}
+2025-12-19 14:56:27 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:27 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:27 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@631f29b5]
+2025-12-19 14:56:27 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:29 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=member&language=en", parameters={masked}
+2025-12-19 14:56:29 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:29 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:29 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@b03bf12]
+2025-12-19 14:56:29 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:33 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/reader/documents/12/reading-progress", parameters={}
+2025-12-19 14:56:33 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderUpdateReadingProgress#updateReadingProgress(int, ProgressRequest, String)
+2025-12-19 14:56:33 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressRequest@64df0bb1]
+2025-12-19 14:56:33 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:33 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressResponse@66f40a89]
+2025-12-19 14:56:33 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:33 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents/12", parameters={}
+2025-12-19 14:56:33 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/outline", parameters={}
+2025-12-19 14:56:33 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/notes", parameters={}
+2025-12-19 14:56:33 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGetById#getDocumentById(Integer, String)
+2025-12-19 14:56:33 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentOutline#getDocumentOutline(int, String)
+2025-12-19 14:56:33 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetNotes#getNotes(int, int, int, Integer, Integer, String)
+2025-12-19 14:56:33 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:33 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.documents.DocumentsGetById$DocumentDetailResponse@15197883]
+2025-12-19 14:56:33 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:33 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetNotes$NotesResponse@50516a60]
+2025-12-19 14:56:33 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:33 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:33 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:33 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentOutline$OutlineResponse@4876b70]
+2025-12-19 14:56:33 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:33 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/pages/1", parameters={}
+2025-12-19 14:56:33 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 14:56:33 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:33 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentPage$PageResponse@1f6b4420]
+2025-12-19 14:56:33 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:35 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=milk&language=en", parameters={masked}
+2025-12-19 14:56:35 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:35 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:35 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@5832b3df]
+2025-12-19 14:56:35 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:37 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/dictionary/lookup?word=code&language=en", parameters={masked}
+2025-12-19 14:56:37 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:37 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:37 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=code&language=en", parameters={masked}
+2025-12-19 14:56:37 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:37 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:37 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@2999de32]
+2025-12-19 14:56:37 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:37 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/dictionary/lookup?word=data&language=en", parameters={masked}
+2025-12-19 14:56:37 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:37 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:37 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=data&language=en", parameters={masked}
+2025-12-19 14:56:37 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:37 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:37 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@35bf8a74]
+2025-12-19 14:56:37 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:38 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/dictionary/lookup?word=pointsPerYuan&language=en", parameters={masked}
+2025-12-19 14:56:38 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:38 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 14:56:38 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=pointsPerYuan&language=en", parameters={masked}
+2025-12-19 14:56:38 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:38 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:38 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@5a87a615]
+2025-12-19 14:56:38 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 404 NOT_FOUND
+2025-12-19 14:56:40 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=code&language=en", parameters={masked}
+2025-12-19 14:56:40 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 14:56:40 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 14:56:40 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@4154806e]
+2025-12-19 14:56:40 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 15:01:14 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 6 class path changes (0 additions, 0 deletions, 6 modifications)
+2025-12-19 15:01:14 [Thread-5] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-12-19 15:01:14 [Thread-5] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Destroying Spring FrameworkServlet 'dispatcherServlet'
+2025-12-19 15:01:14 [Thread-5] WARN  o.a.c.loader.WebappClassLoaderBase - The web application [ROOT] appears to have started a thread named [MySQL Statement Cancellation Timer] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.2/java.lang.Object.wait(Native Method)
+ java.base@17.0.2/java.lang.Object.wait(Object.java:338)
+ java.base@17.0.2/java.util.TimerThread.mainLoop(Timer.java:537)
+ java.base@17.0.2/java.util.TimerThread.run(Timer.java:516)
+2025-12-19 15:01:14 [Thread-5] WARN  o.a.c.loader.WebappClassLoaderBase - The web application [ROOT] appears to have started a thread named [MySQL Statement Cancellation Timer] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.2/java.lang.Object.wait(Native Method)
+ java.base@17.0.2/java.lang.Object.wait(Object.java:338)
+ java.base@17.0.2/java.util.TimerThread.mainLoop(Timer.java:537)
+ java.base@17.0.2/java.util.TimerThread.run(Timer.java:516)
+2025-12-19 15:01:14 [Thread-5] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-19 15:01:14 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-12-19 15:01:14 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-12-19 15:01:14 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - Starting ReadingAppApplication using Java 17.0.2 on DESKTOP-FM4MQKL with PID 9968 (C:\Users\shark\Desktop\阅记星\backend\target\classes started by shark in C:\Users\shark\Desktop\阅记星\backend)
+2025-12-19 15:01:14 [restartedMain] DEBUG c.v.readingapp.ReadingAppApplication - Running with Spring Boot v2.7.14, Spring v5.3.29
+2025-12-19 15:01:14 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - The following 1 profile is active: "application.properties"
+2025-12-19 15:01:15 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-19 15:01:15 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 49 ms. Found 0 JPA repository interfaces.
+2025-12-19 15:01:15 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-12-19 15:01:15 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-19 15:01:15 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.78]
+2025-12-19 15:01:15 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-12-19 15:01:15 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 754 ms
+2025-12-19 15:01:15 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2025-12-19 15:01:15 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2025-12-19 15:01:15 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-19 15:01:15 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-19 15:01:15 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-12-19 15:01:15 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 304 mappings in 'requestMappingHandlerMapping'
+2025-12-19 15:01:15 [restartedMain] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2025-12-19 15:01:15 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-12-19 15:01:15 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-12-19 15:01:15 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-12-19 15:01:15 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - Started ReadingAppApplication in 1.193 seconds (JVM running for 313.347)
+2025-12-19 15:01:15 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-12-19 15:02:27 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 6 class path changes (0 additions, 0 deletions, 6 modifications)
+2025-12-19 15:02:27 [Thread-10] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-12-19 15:02:27 [Thread-10] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-19 15:02:27 [Thread-10] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
+2025-12-19 15:02:27 [Thread-10] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+2025-12-19 15:02:27 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - Starting ReadingAppApplication using Java 17.0.2 on DESKTOP-FM4MQKL with PID 9968 (C:\Users\shark\Desktop\阅记星\backend\target\classes started by shark in C:\Users\shark\Desktop\阅记星\backend)
+2025-12-19 15:02:27 [restartedMain] DEBUG c.v.readingapp.ReadingAppApplication - Running with Spring Boot v2.7.14, Spring v5.3.29
+2025-12-19 15:02:27 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - The following 1 profile is active: "application.properties"
+2025-12-19 15:02:27 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-19 15:02:28 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 85 ms. Found 0 JPA repository interfaces.
+2025-12-19 15:02:28 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-12-19 15:02:28 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-19 15:02:28 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.78]
+2025-12-19 15:02:28 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-12-19 15:02:28 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1041 ms
+2025-12-19 15:02:28 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Starting...
+2025-12-19 15:02:28 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Start completed.
+2025-12-19 15:02:28 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-19 15:02:28 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-19 15:02:28 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-12-19 15:02:28 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 304 mappings in 'requestMappingHandlerMapping'
+2025-12-19 15:02:28 [restartedMain] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2025-12-19 15:02:28 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-12-19 15:02:28 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-12-19 15:02:28 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-12-19 15:02:28 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - Started ReadingAppApplication in 1.662 seconds (JVM running for 386.233)
+2025-12-19 15:02:28 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-12-19 15:02:38 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 6 class path changes (0 additions, 0 deletions, 6 modifications)
+2025-12-19 15:02:38 [Thread-15] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-12-19 15:02:38 [Thread-15] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-19 15:02:38 [Thread-15] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown initiated...
+2025-12-19 15:02:38 [Thread-15] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown completed.
+2025-12-19 15:02:38 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - Starting ReadingAppApplication using Java 17.0.2 on DESKTOP-FM4MQKL with PID 9968 (C:\Users\shark\Desktop\阅记星\backend\target\classes started by shark in C:\Users\shark\Desktop\阅记星\backend)
+2025-12-19 15:02:38 [restartedMain] DEBUG c.v.readingapp.ReadingAppApplication - Running with Spring Boot v2.7.14, Spring v5.3.29
+2025-12-19 15:02:38 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - The following 1 profile is active: "application.properties"
+2025-12-19 15:02:39 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-19 15:02:39 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 63 ms. Found 0 JPA repository interfaces.
+2025-12-19 15:02:39 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-12-19 15:02:39 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-19 15:02:39 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.78]
+2025-12-19 15:02:39 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-12-19 15:02:39 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 882 ms
+2025-12-19 15:02:39 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Starting...
+2025-12-19 15:02:39 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Start completed.
+2025-12-19 15:02:39 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-19 15:02:39 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-19 15:02:39 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-12-19 15:02:40 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 304 mappings in 'requestMappingHandlerMapping'
+2025-12-19 15:02:40 [restartedMain] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2025-12-19 15:02:40 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-12-19 15:02:40 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-12-19 15:02:40 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-12-19 15:02:40 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - Started ReadingAppApplication in 1.33 seconds (JVM running for 397.461)
+2025-12-19 15:02:40 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-12-19 15:02:57 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-19 15:02:57 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-12-19 15:02:57 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Detected StandardServletMultipartResolver
+2025-12-19 15:02:57 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Detected AcceptHeaderLocaleResolver
+2025-12-19 15:02:57 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Detected FixedThemeResolver
+2025-12-19 15:02:57 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@26eae99c
+2025-12-19 15:02:57 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.support.SessionFlashMapManager@6e39ce22
+2025-12-19 15:02:57 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2025-12-19 15:02:57 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2025-12-19 15:02:57 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/reader/documents/12/reading-progress", parameters={}
+2025-12-19 15:02:57 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderUpdateReadingProgress#updateReadingProgress(int, ProgressRequest, String)
+2025-12-19 15:02:57 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressRequest@617b8cfc]
+2025-12-19 15:02:57 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 15:02:57 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressResponse@ae18d82]
+2025-12-19 15:02:57 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 15:02:58 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents/12", parameters={}
+2025-12-19 15:02:58 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/outline", parameters={}
+2025-12-19 15:02:58 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/notes", parameters={}
+2025-12-19 15:02:58 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGetById#getDocumentById(Integer, String)
+2025-12-19 15:02:58 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetNotes#getNotes(int, int, int, Integer, Integer, String)
+2025-12-19 15:02:58 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentOutline#getDocumentOutline(int, String)
+2025-12-19 15:02:58 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 15:02:58 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 15:02:58 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentOutline$OutlineResponse@764b537f]
+2025-12-19 15:02:58 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetNotes$NotesResponse@333efbba]
+2025-12-19 15:02:58 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 15:02:58 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.documents.DocumentsGetById$DocumentDetailResponse@3b14a6e6]
+2025-12-19 15:02:58 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 15:02:58 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 15:02:58 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 15:02:58 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/pages/1", parameters={}
+2025-12-19 15:02:58 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 15:02:58 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 15:02:58 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentPage$PageResponse@19adc8bd]
+2025-12-19 15:02:58 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 15:03:00 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-19 15:03:00 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown initiated...
+2025-12-19 15:03:00 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown completed.
+2025-12-19 15:03:03 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - Starting ReadingAppApplication using Java 17.0.2 on DESKTOP-FM4MQKL with PID 14496 (C:\Users\shark\Desktop\阅记星\backend\target\classes started by shark in C:\Users\shark\Desktop\阅记星\backend)
+2025-12-19 15:03:03 [restartedMain] DEBUG c.v.readingapp.ReadingAppApplication - Running with Spring Boot v2.7.14, Spring v5.3.29
+2025-12-19 15:03:03 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - The following 1 profile is active: "application.properties"
+2025-12-19 15:03:03 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-12-19 15:03:03 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-12-19 15:03:03 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-19 15:03:03 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 38 ms. Found 0 JPA repository interfaces.
+2025-12-19 15:03:04 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-12-19 15:03:04 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-19 15:03:04 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.78]
+2025-12-19 15:03:04 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-12-19 15:03:04 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1106 ms
+2025-12-19 15:03:04 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-12-19 15:03:04 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-12-19 15:03:04 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-19 15:03:04 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-19 15:03:05 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-12-19 15:03:05 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 304 mappings in 'requestMappingHandlerMapping'
+2025-12-19 15:03:05 [restartedMain] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2025-12-19 15:03:05 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-12-19 15:03:05 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-12-19 15:03:05 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-12-19 15:03:05 [restartedMain] INFO  c.v.readingapp.ReadingAppApplication - Started ReadingAppApplication in 2.337 seconds (JVM running for 2.684)
+2025-12-19 15:03:07 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-19 15:03:07 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-12-19 15:03:07 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected StandardServletMultipartResolver
+2025-12-19 15:03:07 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected AcceptHeaderLocaleResolver
+2025-12-19 15:03:07 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected FixedThemeResolver
+2025-12-19 15:03:07 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@72507a95
+2025-12-19 15:03:07 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.support.SessionFlashMapManager@1233daea
+2025-12-19 15:03:07 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2025-12-19 15:03:07 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2025-12-19 15:03:07 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents/12", parameters={}
+2025-12-19 15:03:07 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/reader/documents/12/reading-progress", parameters={}
+2025-12-19 15:03:07 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/outline", parameters={}
+2025-12-19 15:03:07 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/notes", parameters={}
+2025-12-19 15:03:07 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGetById#getDocumentById(Integer, String)
+2025-12-19 15:03:07 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderUpdateReadingProgress#updateReadingProgress(int, ProgressRequest, String)
+2025-12-19 15:03:07 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetNotes#getNotes(int, int, int, Integer, Integer, String)
+2025-12-19 15:03:07 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentOutline#getDocumentOutline(int, String)
+2025-12-19 15:03:07 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 15:03:07 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 15:03:07 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetNotes$NotesResponse@77269e05]
+2025-12-19 15:03:07 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.documents.DocumentsGetById$DocumentDetailResponse@73f2e6cd]
+2025-12-19 15:03:07 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressRequest@30896f82]
+2025-12-19 15:03:07 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 15:03:07 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 15:03:07 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 15:03:07 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressResponse@2c014627]
+2025-12-19 15:03:07 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 15:03:07 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 15:03:07 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentOutline$OutlineResponse@5c89ab1d]
+2025-12-19 15:03:07 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 15:03:07 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/pages/1", parameters={}
+2025-12-19 15:03:07 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 15:03:07 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 15:03:07 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentPage$PageResponse@4f8bf40d]
+2025-12-19 15:03:07 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 15:03:09 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/dictionary/lookup?word=tea&language=en", parameters={masked}
+2025-12-19 15:03:09 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 15:03:09 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 15:03:09 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=tea&language=en", parameters={masked}
+2025-12-19 15:03:09 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 15:03:09 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 15:03:09 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@5737bbd8]
+2025-12-19 15:03:09 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 15:03:11 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/dictionary/lookup?word=Header&language=en", parameters={masked}
+2025-12-19 15:03:11 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 15:03:11 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 15:03:11 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/dictionary/lookup?word=Header&language=en", parameters={masked}
+2025-12-19 15:03:11 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderLookupWord#lookupWord(String, String, String)
+2025-12-19 15:03:11 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 15:03:11 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderLookupWord$LookupWordResponse@47f0cdc6]
