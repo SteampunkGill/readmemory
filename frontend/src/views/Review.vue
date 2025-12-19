@@ -97,7 +97,12 @@
 /* eslint-disable vue/multi-word-component-names */
 import { ref, computed, onMounted } from 'vue'
 import { defineOptions } from 'vue'
-import { API_BASE_URL } from '@/config'
+
+// 模拟数据，用于后端接口不可用时
+const mockCards = [
+  { id: 1, word: 'example', phonetic: 'ɪɡˈzæmpl', meaning: '例子', example: 'This is an example.', hint: '常用词' },
+  { id: 2, word: 'vocabulary', phonetic: 'vəˈkæbjələri', meaning: '词汇', example: 'Build your vocabulary.', hint: '核心词' }
+]
 
 defineOptions({
   name: 'ReviewPage'

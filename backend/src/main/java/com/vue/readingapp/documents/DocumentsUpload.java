@@ -267,14 +267,14 @@ public class DocumentsUpload {
                     if (tagName.isEmpty()) continue;
 
                     // 检查标签是否已存在
-                    String checkTagSql = "SELECT tag_id FROM document_tags WHERE user_id = ? AND tag_name = ?";
-                    List<Map<String, Object>> existingTags = jdbcTemplate.queryForList(checkTagSql, userId, tagName);
+                    String checkTagSql = "SELECT tag_id FROM document_tags WHERE tag_name = ?";
+                    List<Map<String, Object>> existingTags = jdbcTemplate.queryForList(checkTagSql, tagName);
 
                     Integer tagId;
                     if (existingTags.isEmpty()) {
                         // 创建新标签
-                        String insertTagSql = "INSERT INTO document_tags (user_id, tag_name, created_at) VALUES (?, ?, ?)";
-                        jdbcTemplate.update(insertTagSql, userId, tagName, timestamp);
+                        String insertTagSql = "INSERT INTO document_tags (tag_name, created_at) VALUES (?, ?)";
+                        jdbcTemplate.update(insertTagSql, tagName, timestamp);
 
                         String lastTagIdSql = "SELECT LAST_INSERT_ID() as id";
                         tagId = jdbcTemplate.queryForObject(lastTagIdSql, Integer.class);

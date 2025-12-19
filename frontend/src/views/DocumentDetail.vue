@@ -19,8 +19,8 @@
     <main class="main" v-if="docData">
       <!-- 文档封面和基本信息 -->
       <div class="document-header card">
-        <div class="cover-container">
-          <img :src="docData.thumbnail || 'https://picsum.photos/seed/book/400/500'" :alt="docData.title" class="cover">
+        <div class="cover-container no-cover">
+          <div class="book-icon">📚</div>
           <div class="cover-overlay">
             <button class="btn-read" @click="startReading">开始阅读</button>
             <button class="btn-continue" v-if="docData.readProgress > 0" @click="continueReading">
@@ -148,7 +148,9 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { auth } from '@/utils/auth'
 
+import { API_BASE_URL } from '@/config'
 
 const route = useRoute()
 const router = useRouter()
@@ -332,8 +334,6 @@ const getMockDocumentDetail = () => {
   }
 }
 
-import { auth } from '@/utils/auth'
-
 // 获取文档详情
 const fetchDocumentDetail = async () => {
   try {
@@ -344,7 +344,7 @@ const fetchDocumentDetail = async () => {
       throw new Error('未登录')
     }
     
-    const response = await fetch(`http://localhost:8080/api/v1/documents/${route.params.id}`, {
+    const response = await fetch(`${API_BASE_URL}/documents/${route.params.id}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,

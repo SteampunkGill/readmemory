@@ -151,6 +151,15 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 
+// 模拟数据，用于后端接口不可用时
+const mockDocuments = [
+  { id: 1, title: '离线文档示例 1', fileType: 'PDF', fileSize: 1024 * 1024 * 2.5, updatedAt: new Date().toISOString(), isSynced: true },
+  { id: 2, title: '离线文档示例 2', fileType: 'EPUB', fileSize: 1024 * 1024 * 1.2, updatedAt: new Date().toISOString(), isSynced: false }
+]
+const mockAvailable = [
+  { id: 3, title: '可下载文档 A', fileSize: 1024 * 1024 * 5.2 },
+  { id: 4, title: '可下载文档 B', fileSize: 1024 * 1024 * 3.1 }
+]
 
 // --- 状态变量 ---
 const isLoading = ref(true)

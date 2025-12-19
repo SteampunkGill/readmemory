@@ -238,22 +238,22 @@ public class DocumentsUpdate {
                 // 删除旧的标签关系
                 String deleteRelationsSql = "DELETE dtr FROM document_tag_relations dtr " +
                         "JOIN document_tags dt ON dtr.tag_id = dt.tag_id " +
-                        "WHERE dtr.document_id = ? AND dt.user_id = ?";
-                jdbcTemplate.update(deleteRelationsSql, documentId, userId);
+                        "WHERE dtr.document_id = ?";
+                jdbcTemplate.update(deleteRelationsSql, documentId);
 
                 // 添加新的标签关系
                 for (String tagName : request.getTags()) {
                     if (tagName == null || tagName.trim().isEmpty()) continue;
 
                     // 检查标签是否已存在
-                    String checkTagSql = "SELECT tag_id FROM document_tags WHERE user_id = ? AND tag_name = ?";
-                    List<Map<String, Object>> existingTags = jdbcTemplate.queryForList(checkTagSql, userId, tagName);
+                    String checkTagSql = "SELECT tag_id FROM document_tags WHERE tag_name = ?";
+                    List<Map<String, Object>> existingTags = jdbcTemplate.queryForList(checkTagSql, tagName);
 
                     Integer tagId;
                     if (existingTags.isEmpty()) {
                         // 创建新标签
-                        String insertTagSql = "INSERT INTO document_tags (user_id, tag_name, created_at) VALUES (?, ?, ?)";
-                        jdbcTemplate.update(insertTagSql, userId, tagName, timestamp);
+                        String insertTagSql = "INSERT INTO document_tags (tag_name, created_at) VALUES (?, ?)";
+                        jdbcTemplate.update(insertTagSql, tagName, timestamp);
 
                         String lastTagIdSql = "SELECT LAST_INSERT_ID() as id";
                         tagId = jdbcTemplate.queryForObject(lastTagIdSql, Integer.class);
@@ -278,8 +278,8 @@ public class DocumentsUpdate {
             // 8. 查询文档标签
             String tagSql = "SELECT dt.tag_name FROM document_tag_relations dtr " +
                     "JOIN document_tags dt ON dtr.tag_id = dt.tag_id " +
-                    "WHERE dtr.document_id = ? AND dt.user_id = ?";
-            List<Map<String, Object>> tagResults = jdbcTemplate.queryForList(tagSql, documentId, userId);
+                    "WHERE dtr.document_id = ?";
+            List<Map<String, Object>> tagResults = jdbcTemplate.queryForList(tagSql, documentId);
 
             List<String> tags = new ArrayList<>();
             for (Map<String, Object> tag : tagResults) {

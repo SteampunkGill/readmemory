@@ -139,25 +139,40 @@ public class DocumentProcessingScheduler {
 
             if (queueTableCount == null || queueTableCount == 0) {
                 System.out.println("INFO: Creating table 'document_processing_queue'...");
-                // 注意：SQL 语句中的字段类型和约束应根据实际需求调整
-                // 确保 queue_id 是 INT 类型，以便与 Java 中的 Integer 匹配
                 String createQueueTableSql = "CREATE TABLE document_processing_queue (" +
-                        "queue_id INT AUTO_INCREMENT PRIMARY KEY," + // 明确定义为 INT
-                        "document_id VARCHAR(255) NOT NULL," +  // document_id 改为 VARCHAR，长度可调
-                        "status VARCHAR(20) NOT NULL DEFAULT 'pending'," + // 状态：pending, processing, completed, failed
-                        "priority INT DEFAULT 1," + // 优先级，值越大越高
-                        "error_message TEXT," + // 存储错误详情
-                        "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP," + // 记录创建时间
-                        "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP," + // 记录最后更新时间
-                        "INDEX idx_document_id (document_id)," + // 为 document_id 创建索引，提高查询效率
-                        "INDEX idx_status (status)" + // 为 status 创建索引，提高查询效率
-                        ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"; // 指定存储引擎和字符集
+                        "queue_id INT AUTO_INCREMENT PRIMARY KEY," +
+                        "document_id VARCHAR(255) NOT NULL," +
+                        "status VARCHAR(50) NOT NULL DEFAULT 'pending'," +
+                        "priority INT DEFAULT 1," +
+                        "error_message TEXT," +
+                        "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                        "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP," +
+                        "INDEX idx_document_id (document_id)," +
+                        "INDEX idx_status (status)" +
+                        ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
                 jdbcTemplate.execute(createQueueTableSql);
                 System.out.println("INFO: Table 'document_processing_queue' created successfully.");
             } else {
-                // 如果表已存在，可以选择在这里添加对表结构的检查和升级逻辑
-                // 例如，检查列是否存在、是否需要添加新列等
-                // System.out.println("INFO: Table 'document_processing_queue' already exists.");
+                // 检查并修复缺失的列 (使用更兼容的方式，不依赖 IF NOT EXISTS)
+                try {
+                    String checkColumnSql = "SELECT COLUMN_NAME FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = 'document_processing_queue'";
+                    List<String> existingColumns = jdbcTemplate.queryForList(checkColumnSql, String.class);
+                    
+                    if (!existingColumns.contains("error_message")) {
+                        System.out.println("INFO: Adding missing column 'error_message' to 'document_processing_queue'");
+                        jdbcTemplate.execute("ALTER TABLE document_processing_queue ADD COLUMN error_message TEXT AFTER priority");
+                    }
+                    
+                    if (!existingColumns.contains("updated_at")) {
+                        System.out.println("INFO: Adding missing column 'updated_at' to 'document_processing_queue'");
+                        jdbcTemplate.execute("ALTER TABLE document_processing_queue ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER created_at");
+                    }
+
+                    // 确保 status 长度足够
+                    jdbcTemplate.execute("ALTER TABLE document_processing_queue MODIFY COLUMN status VARCHAR(50) NOT NULL DEFAULT 'pending'");
+                } catch (Exception e) {
+                    System.err.println("ERROR: Failed to check or alter table columns: " + e.getMessage());
+                }
             }
 
             // 检查 ocr_tasks 表是否存在 (假设 OcrService 使用这个表)

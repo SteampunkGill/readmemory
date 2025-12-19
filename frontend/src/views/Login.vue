@@ -92,7 +92,6 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { API_BASE_URL } from '@/config'
 
 const router = useRouter()
 
@@ -223,6 +222,21 @@ const handleLogin = async () => {
   } finally {
     loading.value = false
   }
+}
+
+/**
+ * 模拟登录逻辑
+ */
+const mockLogin = () => {
+  storeTokens('mock_access_token', 'mock_refresh_token', 3600)
+  message.value = {
+    show: true,
+    text: '模拟登录成功！正在跳转...',
+    type: 'success'
+  }
+  setTimeout(() => {
+    router.push('/bookshelf')
+  }, 1500)
 }
 
 // 第三方登录模拟

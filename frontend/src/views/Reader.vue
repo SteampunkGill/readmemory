@@ -94,10 +94,13 @@
               class="note-item"
               @click="jumpToNote(note)"
             >
-              <div class="note-text">{{ note.content || note.text }}</div>
+              <div class="note-content-wrapper">
+                <div class="note-text">{{ note.content || note.text }}</div>
+                <button class="btn-delete-note" @click.stop="deleteNote(note)" title="删除">🗑️</button>
+              </div>
               <div class="note-meta">
-                <span class="note-type" :class="note.type || 'note'">
-                  {{ note.highlightId ? '高亮' : '笔记' }}
+                <span class="note-type" :class="note.type || 'note'" :style="note.color ? { backgroundColor: getHighlightColorValue(note.color) } : {}">
+                  {{ (note.highlightId || note.type === 'highlight') ? '高亮' : '笔记' }}
                 </span>
                 <span class="note-page">第 {{ note.page }} 页</span>
               </div>
@@ -114,10 +117,11 @@
             <!-- 遍历段落 -->
             <div v-for="(para, pIdx) in processedParagraphs" :key="pIdx" class="paragraph">
               <!-- 遍历段落中的每个词或符号 -->
-              <span 
-                v-for="(token, tIdx) in para" 
+              <span
+                v-for="(token, tIdx) in para"
                 :key="tIdx"
-                :class="['word-token', { 'is-word': token.isWord }]"
+                :class="['word-token', { 'is-word': token.isWord, 'has-highlight': token.highlightColor }]"
+                :style="token.highlightColor ? { backgroundColor: getHighlightColorValue(token.highlightColor) } : {}"
                 @click.stop="token.isWord ? handleWordClick($event, token.text) : null"
               >
                 {{ token.text }}
@@ -159,6 +163,15 @@
             </template>
           </div>
         </div>
+        <!-- 文本选择操作菜单 -->
+        <div v-if="selectionMenu.show" class="selection-menu" :style="selectionMenu.style">
+          <button class="menu-btn" @click="createHighlight('yellow')">🟨 高亮</button>
+          <button class="menu-btn" @click="createHighlight('green')">🟩 高亮</button>
+          <button class="menu-btn" @click="createHighlight('pink')">🟥 高亮</button>
+          <div class="menu-divider"></div>
+          <button class="menu-btn" @click="addNoteFromSelection">📝 笔记</button>
+        </div>
+
       </main>
     </div>
 
@@ -226,6 +239,7 @@
  */
 import { ref, reactive, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
+import { mockDocumentAPI } from '@/mock/api'
 import { API_BASE_URL } from '@/config'
 
 // 获取路由信息（用于获取 URL 中的文档 ID）和路由跳转工具
@@ -236,7 +250,7 @@ const docId = parseInt(route.params.id) || 1
 // --- 响应式状态变量 ---
 const isLoading = ref(false) // 是否正在加载
 const token = ref(sessionStorage.getItem('token') || localStorage.getItem('token') || '') // 登录令牌
-const BASE_URL = 'http://localhost:8080' // 后端 API 基础地址
+const BASE_URL = API_BASE_URL.replace('/api/v1', '') // 后端基础地址
 
 // 文档元数据（标题、作者、总页数等）
 const docData = reactive({
@@ -280,6 +294,14 @@ const wordPopup = reactive({
   definition: '', example: '', contextExample: '', style: {}, notFound: false
 })
 
+// 文本选择菜单状态
+const selectionMenu = reactive({
+  show: false,
+  text: '',
+  style: {},
+  range: null
+})
+
 // 可选主题列表
 const themes = [
   { id: 'light', name: '日间' },
@@ -296,15 +318,41 @@ const processedParagraphs = computed(() => {
   const content = currentPageData.content || ''
   if (!content) return []
   
+  // 获取当前页的所有高亮文本
+  const pageHighlights = notes.value.filter(n => n.highlightId || n.type === 'highlight')
+
   return content.split(/\n+/).map(para => {
-    // 正则表达式：匹配单词 (\w+)、标点符号 ([^\w\s]+) 或空格 (\s+)
     const tokens = para.match(/(\w+|[^\w\s]+|\s+)/g) || []
-    return tokens.map(token => ({
-      text: token,
-      isWord: /^\w+$/.test(token) // 判断是否为单词
-    }))
+    return tokens.map(token => {
+      const isWord = /^\w+$/.test(token)
+      
+      // 检查该 token 是否属于任何高亮区域
+      const highlight = pageHighlights.find(h => {
+        const hText = h.text || h.content || ''
+        return hText.includes(token.trim()) && token.trim().length > 0
+      })
+
+      return {
+        text: token,
+        isWord,
+        highlightColor: highlight ? highlight.color : null
+      }
+    })
   })
 })
+
+/**
+ * 获取高亮颜色的具体 CSS 值
+ */
+const getHighlightColorValue = (color) => {
+  const colorMap = {
+    'yellow': 'rgba(255, 255, 0, 0.4)',
+    'green': 'rgba(0, 255, 0, 0.3)',
+    'pink': 'rgba(255, 192, 203, 0.5)',
+    'blue': 'rgba(173, 216, 230, 0.5)'
+  }
+  return colorMap[color] || colorMap['yellow']
+}
 
 /**
  * 计算属性：阅读区域的动态样式
@@ -530,10 +578,148 @@ const handleWordClick = (event, word) => {
 }
 
 /**
- * 点击阅读区域时，如果查词弹窗开着，则关闭它
+ * 点击阅读区域时，处理弹窗关闭和文本选择
  */
 const onReadingAreaClick = () => {
   if (wordPopup.show) closeWordPopup()
+  
+  // 延迟处理选择，确保浏览器已完成选择操作
+  setTimeout(() => {
+    const selection = window.getSelection()
+    const selectedText = selection.toString().trim()
+    
+    if (selectedText && selectedText.length > 0) {
+      const range = selection.getRangeAt(0)
+      const rect = range.getBoundingClientRect()
+      
+      selectionMenu.text = selectedText
+      selectionMenu.range = range
+      selectionMenu.style = {
+        left: `${rect.left + rect.width / 2}px`,
+        top: `${rect.top + window.scrollY - 50}px`
+      }
+      selectionMenu.show = true
+    } else {
+      selectionMenu.show = false
+    }
+  }, 10)
+}
+
+/**
+ * 创建高亮
+ */
+const createHighlight = async (color) => {
+  if (!selectionMenu.text) return
+  
+  try {
+    const response = await fetch(`${BASE_URL}/api/v1/reader/documents/${docId}/highlights`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        text: selectionMenu.text,
+        page: currentPage.value,
+        color: color,
+        position: {} // 简化处理，实际可存储更精确的位置信息
+      })
+    })
+    
+    if (response.ok) {
+      // 重新获取笔记和高亮列表
+      fetchAllNotes()
+      // 清除选择
+      window.getSelection().removeAllRanges()
+      selectionMenu.show = false
+      alert('已添加高亮')
+    }
+  } catch (e) {
+    console.error('添加高亮失败', e)
+    alert('添加高亮失败')
+  }
+}
+
+/**
+ * 从选择内容添加笔记
+ */
+const addNoteFromSelection = async () => {
+  const noteContent = prompt('为选中的文本添加笔记:', '')
+  if (noteContent === null) return
+  
+  try {
+    // 1. 先创建高亮
+    const hlResponse = await fetch(`${BASE_URL}/api/v1/reader/documents/${docId}/highlights`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        text: selectionMenu.text,
+        page: currentPage.value,
+        color: 'yellow',
+        note: noteContent
+      })
+    })
+    
+    if (hlResponse.ok) {
+      const hlResult = await hlResponse.json()
+      const highlightId = hlResult.data.id
+      
+      // 2. 创建关联笔记
+      await fetch(`${BASE_URL}/api/v1/reader/documents/${docId}/notes`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token.value}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          content: noteContent,
+          page: currentPage.value,
+          highlightId: highlightId
+        })
+      })
+      
+      fetchAllNotes()
+      window.getSelection().removeAllRanges()
+      selectionMenu.show = false
+      alert('笔记已保存')
+    }
+  } catch (e) {
+    console.error('保存笔记失败', e)
+  }
+}
+
+/**
+ * 删除笔记或高亮
+ */
+const deleteNote = async (note) => {
+  if (!confirm('确定要删除这条记录吗？')) return
+  
+  try {
+    // 如果是高亮或有关联高亮，先删除高亮
+    if (note.highlightId || note.type === 'highlight') {
+      const hlId = note.highlightId || note.id
+      await fetch(`${BASE_URL}/api/v1/reader/documents/${docId}/highlights/${hlId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token.value}` }
+      })
+    }
+    
+    // 如果是笔记，删除笔记
+    if (note.id && note.type !== 'highlight') {
+      await fetch(`${BASE_URL}/api/v1/reader/documents/${docId}/notes/${note.id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token.value}` }
+      })
+    }
+    
+    fetchAllNotes()
+    alert('已删除')
+  } catch (e) {
+    console.error('删除失败', e)
+  }
 }
 
 /**
@@ -983,6 +1169,46 @@ onMounted(async () => {
 }
 
 .example {
+
+/* 文本选择菜单样式 */
+.selection-menu {
+  position: fixed;
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-hard);
+  display: flex;
+  padding: 5px;
+  z-index: 1000;
+  border: 1px solid var(--border-color);
+  transform: translateX(-50%);
+  animation: fadeIn 0.2s ease;
+}
+
+.menu-btn {
+  background: transparent;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-radius: var(--border-radius-sm);
+  white-space: nowrap;
+}
+
+.menu-btn:hover {
+  background-color: var(--primary-light);
+}
+
+.menu-divider {
+  width: 1px;
+  background-color: var(--border-color);
+  margin: 0 5px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
   font-size: 0.85rem;
   color: var(--text-color-medium);
   border-left: 3px solid var(--accent-pink);

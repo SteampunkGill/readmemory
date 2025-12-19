@@ -302,8 +302,8 @@ public class DocumentsSearch {
                 // 查询文档标签
                 String tagSql = "SELECT dt.tag_name FROM document_tag_relations dtr " +
                         "JOIN document_tags dt ON dtr.tag_id = dt.tag_id " +
-                        "WHERE dtr.document_id = ? AND dt.user_id = ?";
-                List<Map<String, Object>> tagResults = jdbcTemplate.queryForList(tagSql, docId, userId);
+                        "WHERE dtr.document_id = ?";
+                List<Map<String, Object>> tagResults = jdbcTemplate.queryForList(tagSql, docId);
 
                 List<String> tags = tagResults.stream()
                         .map(tag -> (String) tag.get("tag_name"))

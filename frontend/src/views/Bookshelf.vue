@@ -1,34 +1,22 @@
-<!-- eslint-disable vue/multi-word-component-names -->
+ <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <!-- 书架主页面容器 -->
   <div class="bookshelf-page">
-    <!-- 顶部导航栏：包含 Logo、搜索框、功能按钮和用户头像 -->
-    <header class="header">
-      <div class="logo" @click="$router.push('/')">
-        <img src="@/assets/logo.png" alt="Logo" class="logo-img">
-        <span class="logo-text">阅记星</span>
-      </div>
+    <!-- 顶部操作栏：包含搜索框和功能按钮 -->
+    <div class="action-bar">
       <!-- 搜索框：点击后跳转到搜索页面 -->
       <div class="search-bar" @click="goToSearch">
         <input type="text" placeholder="搜索文档、生词、笔记..." readonly>
         <button class="search-icon">🔍</button>
       </div>
       <div class="header-actions">
-        <!-- 背单词按钮 -->
-        <button class="btn-vocabulary" @click="goToVocabulary">
-          <span class="icon">🔤</span> 背单词
-        </button>
         <!-- 上传文档按钮 -->
-        <button class="btn-upload" @click="goToUpload">
-          <span class="icon">📤</span> 上传
+        <button class="btn-upload btn-accent" @click="goToUpload">
+          <span class="icon">📤</span> 上传文档
         </button>
         <!-- 导入词典按钮：点击后触发隐藏的文件选择框 -->
-        <button class="btn-import" @click="triggerImport">
+        <button class="btn-import btn-secondary" @click="triggerImport">
           <span class="icon">📥</span> 导入词典
-        </button>
-        <!-- 查看词典列表按钮 -->
-        <button class="btn-dictionary" @click="$router.push('/vocabulary/list')">
-          <span class="icon">📖</span> 查看词典
         </button>
         <!-- 隐藏的文件上传控件，用于导入词典文件 -->
         <input
@@ -38,12 +26,8 @@
           accept=".csv,.json,.txt"
           @change="handleFileChange"
         >
-        <!-- 用户头像：点击进入个人中心 -->
-        <div class="user-avatar" @click="goToUserCenter">
-          <img :src="user.avatarUrl || DEFAULT_AVATAR" alt="用户头像">
-        </div>
       </div>
-    </header>
+    </div>
 
     <main class="main">
       <!-- 加载状态：数据获取中显示转圈动画 -->
@@ -73,27 +57,25 @@
           class="document-card"
           :class="getDocumentStatus(doc)"
         >
-          <div class="card-header">
-            <!-- 文档封面图 -->
-            <img :src="doc.thumbnail || DEFAULT_BOOK_COVER" :alt="doc.title" class="cover">
-            <!-- 状态标签（如：未处理、阅读中） -->
-            <div class="status-badge">{{ getStatusText(doc) }}</div>
-            <!-- 卡片右上角的快捷操作按钮 -->
-            <div class="card-actions">
-              <button class="icon-btn" @click.stop="editDocument(doc)" title="编辑">✏️</button>
-              <button class="icon-btn" @click.stop="deleteDocument(doc.id)" title="删除">🗑️</button>
-              <!-- 手动触发 OCR 处理按钮（如果文档未自动处理成功） -->
-              <button
-                class="icon-btn"
-                @click.stop="triggerOCR(doc.id)"
-                :disabled="doc.processingStatus === 'processing'"
-                :title="doc.processingStatus === 'processing' ? '正在处理中' : '手动触发OCR处理'"
-              >
-                🔄
-              </button>
-            </div>
-          </div>
           <div class="card-body">
+            <div class="card-top">
+              <!-- 状态标签（如：未处理、阅读中） -->
+              <div class="status-badge">{{ getStatusText(doc) }}</div>
+              <!-- 卡片右上角的快捷操作按钮 -->
+              <div class="card-actions">
+                <button class="icon-btn" @click.stop="editDocument(doc)" title="编辑">✏️</button>
+                <button class="icon-btn" @click.stop="deleteDocument(doc.id)" title="删除">🗑️</button>
+                <!-- 手动触发 OCR 处理按钮（如果文档未自动处理成功） -->
+                <button
+                  class="icon-btn"
+                  @click.stop="triggerOCR(doc.id)"
+                  :disabled="doc.processingStatus === 'processing'"
+                  :title="doc.processingStatus === 'processing' ? '正在处理中' : '手动触发OCR处理'"
+                >
+                  🔄
+                </button>
+              </div>
+            </div>
             <h3 class="title">{{ doc.title }}</h3>
             <p class="author">{{ doc.uploader || doc.author || '未知作者' }}</p>
             <!-- 文档标签 -->
@@ -139,6 +121,49 @@
     <div v-if="toast.show" class="toast" :class="toast.type">
       {{ toast.message }}
     </div>
+    <!-- 编辑文档对话框 -->
+    <div v-if="showEditModal" class="modal-overlay" @click.self="closeEditModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>编辑文档信息</h2>
+          <button class="close-btn" @click="closeEditModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>标题</label>
+            <input v-model="editForm.title" type="text" placeholder="请输入文档标题">
+          </div>
+          <div class="form-group">
+            <label>描述</label>
+            <textarea v-model="editForm.description" rows="3" placeholder="请输入文档描述"></textarea>
+          </div>
+          <div class="form-group">
+            <label>标签 (逗号分隔)</label>
+            <input v-model="editForm.tagsString" type="text" placeholder="标签1, 标签2...">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>语言</label>
+              <select v-model="editForm.language">
+                <option value="zh">中文</option>
+                <option value="en">英文</option>
+                <option value="ja">日文</option>
+              </select>
+            </div>
+            <div class="form-group checkbox-group">
+              <label>
+                <input type="checkbox" v-model="editForm.isPublic"> 公开文档
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" @click="closeEditModal">取消</button>
+          <button class="btn-primary" @click="saveDocument" :disabled="saving">{{ saving ? '保存中...' : '保存更改' }}</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -149,7 +174,7 @@
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { auth } from '@/utils/auth'
-import { API_BASE_URL, DEFAULT_AVATAR, DEFAULT_BOOK_COVER } from '@/config'
+import { API_BASE_URL } from '@/config'
 
 const router = useRouter()
 const fileInput = ref(null) // 引用文件上传控件
@@ -410,9 +435,7 @@ const fetchAllData = async () => {
 // --- 页面跳转与交互函数 ---
 
 const goToSearch = () => router.push('/search')
-const goToVocabulary = () => router.push('/vocabulary')
 const goToUpload = () => router.push('/upload')
-const goToUserCenter = () => router.push('/user')
 
 // 触发文件选择框
 const triggerImport = () => fileInput.value.click()
@@ -459,7 +482,94 @@ const handleFileChange = async (event) => {
   }
 }
 
-const editDocument = (doc) => showToast(`编辑功能开发中: ${doc.title}`, 'info')
+// 编辑文档相关状态
+const showEditModal = ref(false)
+const saving = ref(false)
+const editForm = reactive({
+  id: null,
+  title: '',
+  description: '',
+  tagsString: '',
+  language: 'zh',
+  isPublic: false
+})
+
+/**
+ * 打开编辑对话框并填充数据
+ */
+const editDocument = (doc) => {
+  editForm.id = doc.id
+  editForm.title = doc.title || ''
+  editForm.description = doc.description || ''
+  editForm.tagsString = (doc.tags || []).join(', ')
+  editForm.language = doc.language || 'zh'
+  editForm.isPublic = doc.isPublic || false
+  showEditModal.value = true
+}
+
+/**
+ * 关闭编辑对话框
+ */
+const closeEditModal = () => {
+  showEditModal.value = false
+  editForm.id = null
+}
+
+/**
+ * 保存文档更改
+ */
+const saveDocument = async () => {
+  if (!editForm.title.trim()) {
+    showToast('标题不能为空', 'warning')
+    return
+  }
+
+  saving.value = true
+  try {
+    const token = auth.getToken()
+    const tags = editForm.tagsString
+      .split(',')
+      .map(t => t.trim())
+      .filter(t => t !== '')
+
+    const response = await fetch(`${API_BASE_URL}/documents/${editForm.id}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: editForm.title,
+        description: editForm.description,
+        tags: tags,
+        language: editForm.language,
+        isPublic: editForm.isPublic
+      })
+    })
+
+    const result = await response.json()
+    if (result.success) {
+      showToast('文档更新成功', 'success')
+      // 更新本地列表中的数据
+      const index = documents.value.findIndex(d => d.id === editForm.id)
+      if (index !== -1) {
+        documents.value[index] = {
+          ...documents.value[index],
+          ...result.data.document
+        }
+        updateTabCounts()
+      }
+      closeEditModal()
+    } else {
+      showToast(result.message || '更新失败', 'error')
+    }
+  } catch (error) {
+    console.error('更新文档失败:', error)
+    showToast('更新失败: ' + error.message, 'error')
+  } finally {
+    saving.value = false
+  }
+}
 
 /**
  * 删除文档
@@ -513,38 +623,22 @@ onUnmounted(() => {
   color: var(--text-color-dark);
 }
 
-/* 顶部导航栏样式 */
-.header {
+/* 顶部操作栏样式 */
+.action-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem;
+  padding: 1.5rem 2rem;
   background-color: var(--surface-color);
+  border-radius: var(--border-radius-lg);
+  margin-bottom: 2rem;
   box-shadow: var(--shadow-soft);
-  border-bottom: 5px solid var(--primary-color);
-  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-title);
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: var(--primary-color);
-  cursor: pointer;
-}
-
-.logo-img {
-  width: 40px;
-  height: 40px;
+  border: 2px solid var(--primary-light);
 }
 
 .search-bar {
   flex: 1;
   max-width: 500px;
-  margin: 0 2rem;
   position: relative;
   cursor: pointer;
 }
@@ -553,21 +647,28 @@ onUnmounted(() => {
   width: 100%;
   padding: 12px 20px;
   padding-right: 50px;
-  border-radius: var(--border-radius-lg);
-  border: 3px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  border: 2px solid var(--border-color);
   background-color: #f9f9f9;
   font-size: 1rem;
+  transition: var(--transition-smooth);
+}
+
+.search-bar input:focus {
+  border-color: var(--primary-color);
+  background-color: white;
 }
 
 .search-icon {
   position: absolute;
-  right: 12px;
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
   background: transparent;
   border: none;
   font-size: 1.2rem;
   cursor: pointer;
+  color: var(--text-color-light);
 }
 
 .header-actions {
@@ -577,7 +678,7 @@ onUnmounted(() => {
 }
 
 /* 按钮通用样式 */
-.btn-vocabulary, .btn-upload, .btn-continue, .btn-start, .btn-details, .btn-primary, .btn-import, .btn-dictionary {
+.btn-continue, .btn-start, .btn-details, .btn-primary {
   padding: 10px 20px;
   border-radius: var(--border-radius-lg);
   font-weight: bold;
@@ -587,27 +688,6 @@ onUnmounted(() => {
   border: none;
   cursor: pointer;
   transition: transform 0.2s;
-}
-
-.btn-vocabulary { background-color: var(--primary-color); }
-.btn-upload { background-color: var(--accent-yellow); }
-.btn-import { background-color: #4a90e2; color: white; }
-.btn-dictionary { background-color: #6daa2c; color: white; }
-.btn-primary { background-color: var(--primary-color); }
-
-.user-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 3px solid var(--primary-color);
-  cursor: pointer;
-}
-
-.user-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .main {
@@ -656,7 +736,7 @@ onUnmounted(() => {
   border-radius: var(--border-radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-soft);
-  border: 3px solid transparent;
+  border: 3px solid var(--border-color);
   transition: all 0.3s var(--transition-bounce);
 }
 
@@ -666,21 +746,14 @@ onUnmounted(() => {
   border-color: var(--primary-color);
 }
 
-.card-header {
-  position: relative;
-  height: 180px;
-}
-
-.cover {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .status-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
   background-color: var(--primary-color);
   color: var(--text-color-dark);
   padding: 4px 12px;
@@ -690,9 +763,6 @@ onUnmounted(() => {
 }
 
 .card-actions {
-  position: absolute;
-  top: 12px;
-  right: 12px;
   display: flex;
   gap: 0.5rem;
 }
@@ -725,6 +795,113 @@ onUnmounted(() => {
   color: var(--text-color-medium);
   margin-bottom: 1rem;
   font-size: 0.9rem;
+}
+
+
+/* 模态框样式 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background-color: var(--surface-color);
+  width: 90%;
+  max-width: 500px;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-hard);
+  overflow: hidden;
+  animation: modal-in 0.3s var(--transition-bounce);
+}
+
+@keyframes modal-in {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: var(--text-color-light);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: var(--text-color-medium);
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  font-size: 1rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 10px;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.modal-footer {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
 }
 
 .tags {

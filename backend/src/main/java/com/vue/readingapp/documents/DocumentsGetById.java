@@ -80,6 +80,9 @@ public class DocumentsGetById {
         private List<String> tags;
         private String thumbnail;
         private String processingError;
+        private Long wordCount;
+        private Integer noteCount;
+        private Integer highlightCount;
 
         // Getters and Setters
         public Integer getId() { return id; }
@@ -144,6 +147,15 @@ public class DocumentsGetById {
 
         public String getProcessingError() { return processingError; }
         public void setProcessingError(String processingError) { this.processingError = processingError; }
+
+        public Long getWordCount() { return wordCount; }
+        public void setWordCount(Long wordCount) { this.wordCount = wordCount; }
+
+        public Integer getNoteCount() { return noteCount; }
+        public void setNoteCount(Integer noteCount) { this.noteCount = noteCount; }
+
+        public Integer getHighlightCount() { return highlightCount; }
+        public void setHighlightCount(Integer highlightCount) { this.highlightCount = highlightCount; }
     }
 
     @GetMapping("/{documentId}")
@@ -191,7 +203,10 @@ public class DocumentsGetById {
                     "d.file_size, d.file_type, d.language, d.page_count, d.reading_progress, " +
                     "d.is_public, d.is_favorite, d.is_processed, d.processing_status, " +
                     "d.created_at, d.updated_at, d.last_read_at, u.username as uploader, " +
-                    "d.processing_error " +
+                    "d.processing_error, " +
+                    "(SELECT COALESCE(SUM(word_count), 0) FROM document_pages WHERE document_id = d.document_id) as word_count, " +
+                    "(SELECT COUNT(*) FROM document_notes WHERE document_id = d.document_id) as note_count, " +
+                    "(SELECT COUNT(*) FROM document_highlights WHERE document_id = d.document_id) as highlight_count " +
                     "FROM documents d " +
                     "LEFT JOIN users u ON d.user_id = u.user_id " +
                     "WHERE d.document_id = ? AND d.user_id = ? AND (d.status IS NULL OR d.status != 'deleted')";
@@ -259,6 +274,16 @@ public class DocumentsGetById {
             dto.setTags(tags);
             dto.setThumbnail(null);
             dto.setProcessingError((String) row.get("processing_error"));
+            
+            // 设置统计数据
+            Object wordCountObj = row.get("word_count");
+            dto.setWordCount(wordCountObj != null ? ((Number) wordCountObj).longValue() : 0L);
+            
+            Object noteCountObj = row.get("note_count");
+            dto.setNoteCount(noteCountObj != null ? ((Number) noteCountObj).intValue() : 0);
+            
+            Object highlightCountObj = row.get("highlight_count");
+            dto.setHighlightCount(highlightCountObj != null ? ((Number) highlightCountObj).intValue() : 0);
 
             DocumentDetailResponse response = new DocumentDetailResponse(true, "获取文档详情成功", dto);
 

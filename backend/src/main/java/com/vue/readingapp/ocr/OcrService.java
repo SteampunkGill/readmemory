@@ -117,6 +117,11 @@ public class OcrService {
                         int pagesToProcess = Math.min(totalPages, 10); // 最多处理10页作为演示
                         for (int i = 0; i < pagesToProcess; i++) {
                             int currentPageNum = i + 1;
+                            // 检查文档是否仍然存在，防止处理已删除的文档
+                            if (!checkDocumentExists(documentId)) {
+                                throw new Exception("文档 ID " + documentId + " 已不存在，停止 OCR 处理。");
+                            }
+                            
                             System.out.println("DEBUG: Processing PDF page " + currentPageNum);
                             BufferedImage bim = pdfRenderer.renderImageWithDPI(i, 300, ImageType.RGB);
                             String pageText = tesseract.doOCR(bim);
@@ -154,6 +159,10 @@ public class OcrService {
                 
                 // 对于非 PDF 文件，保存第一页内容
                 if (!lowerPath.endsWith(".pdf")) {
+                    // 检查文档是否仍然存在
+                    if (!checkDocumentExists(documentId)) {
+                        throw new Exception("文档 ID " + documentId + " 已不存在，停止 OCR 处理。");
+                    }
                     savePageToDatabase(documentId, 1, resultText);
                 }
                 
@@ -259,7 +268,17 @@ public class OcrService {
         }
     }
 
-    private void savePageToDatabase(Integer documentId, int pageNumber, String content) {
+    private boolean checkDocumentExists(Integer documentId) {
+        try {
+            String sql = "SELECT COUNT(*) FROM documents WHERE document_id = ?";
+            Integer count = jdbcTemplate.queryForObject(sql, Integer.class, documentId);
+            return count != null && count > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void savePageToDatabase(Integer documentId, int pageNumber, String content) throws Exception {
         System.out.println("[DEBUG] 准备保存页面数据: documentId=" + documentId + ", pageNumber=" + pageNumber + ", content长度=" + (content != null ? content.length() : 0));
         try {
             String pageId = "page_" + documentId + "_" + pageNumber;
@@ -274,7 +293,7 @@ public class OcrService {
             System.out.println("INFO: 成功保存页面 " + pageNumber + " 到 document_pages，影响行数: " + rows);
         } catch (Exception e) {
             System.err.println("ERROR: 保存页面到 document_pages 失败: " + e.getMessage());
-            e.printStackTrace();
+            throw new Exception("数据库写入失败 (可能文档已被删除): " + e.getMessage(), e);
         }
     }
 

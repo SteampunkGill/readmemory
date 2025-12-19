@@ -1,4 +1,4 @@
-<template>
+p<template>
   <div id="app">
     <!-- 全局通知组件（用于模拟通知） -->
     <div v-if="notification.show" class="notification" :class="notification.type">
@@ -11,20 +11,13 @@
       <div class="nav-container">
         <router-link to="/" class="nav-logo">📚 阅记星</router-link>
         <div class="nav-links">
+          <router-link to="/bookshelf">📚 书架</router-link>
+          <router-link to="/vocabulary">🔤 生词本</router-link>
+          <router-link to="/review">🔄 复习</router-link>
+          <router-link to="/user">👤 我的</router-link>
           <button @click="toggleTheme" class="theme-toggle" :title="isDark ? '切换到日间模式' : '切换到夜间模式'">
             {{ isDark ? '☀️' : '🌙' }}
           </button>
-          <router-link to="/welcome">欢迎</router-link>
-          <router-link to="/onboarding">引导</router-link>
-          <router-link to="/login">登录</router-link>
-          <router-link to="/register">注册</router-link>
-          <router-link to="/bookshelf">书架</router-link>
-          <router-link to="/upload">上传</router-link>
-          <router-link to="/reader">阅读器</router-link>
-          <router-link to="/vocabulary">生词本</router-link>
-          <router-link to="/review">复习</router-link>
-          <router-link to="/user">用户中心</router-link>
-          <router-link to="/settings">设置</router-link>
         </div>
       </div>
     </nav>
@@ -35,7 +28,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+// 控制导航栏显示：在登录、注册、欢迎页等不显示主导航
+const showNav = computed(() => {
+  const hideOnRoutes = ['/login', '/register', '/welcome', '/onboarding']
+  return !hideOnRoutes.includes(route.path)
+})
 
 // 主题管理
 const isDark = ref(false)

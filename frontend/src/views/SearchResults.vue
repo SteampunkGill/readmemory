@@ -102,6 +102,19 @@
 <script setup>
 /* eslint-disable vue/multi-word-component-names */
 import { ref, computed, onMounted } from 'vue'
+
+// 模拟数据，用于后端接口不可用时
+const mockResults = {
+  documents: [
+    { id: 1, title: '模拟文档 1', author: '作者 A', date: '2025-12-19', snippet: '这是模拟文档的内容片段...', status: '已导入' }
+  ],
+  words: [
+    { id: 1, word: 'test', phonetic: 'test', meaning: '测试', source: '模拟文档 1' }
+  ],
+  notes: [
+    { id: 1, content: '这是一条模拟笔记', document: '模拟文档 1', date: '2025-12-19' }
+  ]
+}
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
