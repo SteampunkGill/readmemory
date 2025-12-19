@@ -1,0 +1,520 @@
+<template>
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <!-- 返回按钮 -->
+      <button class="back-btn" @click="$router.push('/vocabulary')">
+        <span class="icon">←</span> 返回
+      </button>
+      <h2>看英选义</h2>
+      <div v-if="!loading && quizList.length > 0" class="progress">
+        进度: {{ currentIndex + 1 }} / {{ quizList.length }}
+      </div>
+    </div>
+
+    <!-- 加载状态 -->
+    <div v-if="loading" class="quiz-card">
+      <div class="word-display">
+        <h1>加载中...</h1>
+        <p class="phonetic">正在为您准备复习计划</p>
+      </div>
+    </div>
+
+    <!-- 测验卡片 -->
+    <div v-else-if="currentQuestion && !quizFinished" class="quiz-card">
+      <div class="word-display">
+        <h1>{{ currentQuestion.word }}</h1>
+        <p class="phonetic">{{ currentQuestion.phonetic }}</p>
+      </div>
+
+      <!-- 选项网格 -->
+      <div class="options-grid">
+        <button 
+          v-for="(option, index) in currentQuestion.options" 
+          :key="index"
+          class="option-btn"
+          :class="getOptionClass(option)"
+          @click="handleAnswer(option)"
+          :disabled="answered"
+        >
+          <span class="option-label">{{ String.fromCharCode(65 + index) }}</span>
+          {{ option.definition }}
+        </button>
+      </div>
+
+      <!-- 反馈区域 -->
+      <div v-if="answered" class="feedback-area">
+        <p v-if="isCorrect" class="correct-msg">太棒了！回答正确</p>
+        <div v-else class="incorrect-msg">
+          <p>可惜答错了</p>
+          <p class="correct-answer">正确答案：{{ currentQuestion.correctAnswer.definition }}</p>
+        </div>
+
+        <!-- 原文例句与来源展示 -->
+        <div class="word-context-info" v-if="currentQuestion.example">
+          <div class="context-label">原文例句：</div>
+          <p class="context-text">{{ currentQuestion.example }}</p>
+          <div class="context-source" v-if="currentQuestion.source">
+            —— 摘自《{{ currentQuestion.source }}》
+          </div>
+        </div>
+
+        <button class="next-btn" @click="nextQuestion">
+          {{ isLastQuestion ? '查看结果' : '下一题' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- 结果卡片 -->
+    <div v-else-if="quizFinished" class="result-card">
+      <h2>练习完成！</h2>
+      <div class="score-display">
+        <span class="score">{{ score }}</span>
+        <span class="total">/ {{ quizList.length }}</span>
+      </div>
+      <p>正确率: {{ Math.round((score / quizList.length) * 100) }}%</p>
+      <button class="retry-btn" @click="resetQuiz">再练一次</button>
+      <button class="home-btn" @click="$router.push('/vocabulary')">返回首页</button>
+    </div>
+
+    <!-- 无数据状态 -->
+    <div v-else class="quiz-card">
+      <div class="word-display">
+        <h1>暂无任务</h1>
+        <p class="phonetic">当前没有需要复习的单词</p>
+      </div>
+      <button class="home-btn" @click="$router.push('/vocabulary')">返回首页</button>
+    </div>
+  </div>
+</template>
+
+<script>
+import { API_BASE_URL } from '@/config';
+import { auth } from '@/utils/auth';
+
+export default {
+  name: 'EnglishToChinese',
+  data() {
+    return {
+      currentIndex: 0,
+      score: 0,
+      answered: false,
+      selectedOption: null,
+      isCorrect: false,
+      quizFinished: false,
+      quizList: [],
+      loading: false
+    };
+  },
+  computed: {
+    currentQuestion() {
+      return this.quizList[this.currentIndex];
+    },
+    isLastQuestion() {
+      return this.currentIndex === this.quizList.length - 1;
+    }
+  },
+  methods: {
+    // 从后端获取待复习单词
+    async fetchQuizData() {
+      this.loading = true;
+      const token = auth.getToken();
+      const { mode, date } = this.$route.query;
+      
+      let url = `${API_BASE_URL}/review/due-words?limit=10&mode=${mode || 'spaced'}`;
+      if (date) url += `&date=${date}`;
+
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch from server');
+
+        const result = await response.json();
+
+        if (result.success && result.data.words && result.data.words.length > 0) {
+          this.generateQuiz(result.data.words);
+        } else {
+          this.quizList = [];
+        }
+      } catch (error) {
+        console.error('获取数据失败:', error);
+        this.quizList = [];
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    // 生成题目逻辑：将原始单词列表转换为带有干扰项的题目格式
+    generateQuiz(words) {
+      const shuffled = [...words].sort(() => 0.5 - Math.random());
+      
+      this.quizList = shuffled.map(word => {
+        // 从池子中选出除正确答案外的其他单词作为干扰项
+        const otherWords = words.filter(w => w.id !== word.id);
+        const distractors = otherWords
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 3);
+        
+        const options = [...distractors, word].sort(() => 0.5 - Math.random());
+
+        return {
+          ...word,
+          options,
+          correctAnswer: word
+        };
+      });
+    },
+
+    handleAnswer(option) {
+      this.answered = true;
+      this.selectedOption = option;
+      this.isCorrect = option.id === this.currentQuestion.id;
+      if (this.isCorrect) {
+        this.score++;
+      }
+    },
+
+    getOptionClass(option) {
+      if (!this.answered) return '';
+      if (option.id === this.currentQuestion.id) return 'correct';
+      if (this.selectedOption && option.id === this.selectedOption.id) return 'incorrect';
+      return '';
+    },
+
+    nextQuestion() {
+      if (this.isLastQuestion) {
+        this.quizFinished = true;
+      } else {
+        this.currentIndex++;
+        this.answered = false;
+        this.selectedOption = null;
+      }
+    },
+
+    resetQuiz() {
+      this.currentIndex = 0;
+      this.score = 0;
+      this.answered = false;
+      this.quizFinished = false;
+      this.fetchQuizData();
+    }
+  },
+  created() {
+    this.fetchQuizData();
+  }
+};
+</script>
+
+<style scoped>
+/* --- 主体布局 --- */
+.quiz-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: var(--spacing-md);
+}
+
+/* --- 头部 --- */
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.back-btn {
+  background-color: var(--surface-color);
+  border: 2px solid var(--primary-dark);
+  color: var(--primary-dark);
+  padding: 8px 16px;
+  border-radius: var(--border-radius-lg);
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: flex;
+  align-items: center;
+  font-family: var(--font-body);
+}
+
+.back-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.back-btn .icon {
+  margin-right: 8px;
+}
+
+.quiz-header h2 {
+  font-size: 2rem;
+  color: var(--primary-dark);
+  margin: 0;
+}
+
+.progress {
+  font-size: 1.1rem;
+  color: var(--text-color-medium);
+  font-family: var(--font-body);
+}
+
+/* --- 测验卡片 --- */
+.quiz-card {
+  background: var(--surface-color);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-medium);
+  text-align: center;
+  border: 4px solid var(--primary-light);
+}
+
+.word-display h1 {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-color-dark);
+  font-family: var(--font-title);
+}
+
+.phonetic {
+  color: var(--text-color-medium);
+  font-size: 1.4rem;
+  margin-bottom: var(--spacing-xl);
+}
+
+/* --- 选项网格 --- */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+.option-btn {
+  background: var(--surface-color);
+  border: 3px solid var(--border-color);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-lg);
+  text-align: left;
+  font-size: 1.3rem;
+  color: var(--text-color-dark);
+  display: flex;
+  align-items: center;
+  transition: var(--transition-smooth), transform 0.2s var(--transition-bounce);
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.option-btn:hover:not(:disabled) {
+  border-color: var(--primary-color);
+  background-color: rgba(135, 206, 235, 0.1);
+  transform: translateY(-4px) scale(1.02);
+}
+
+.option-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.option-label {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  border-radius: 50%;
+  font-weight: bold;
+  margin-right: var(--spacing-md);
+  flex-shrink: 0;
+}
+
+/* --- 反馈样式 --- */
+.option-btn.correct {
+  background: var(--accent-green);
+  border-color: #76c776;
+  color: var(--text-color-dark);
+}
+.option-btn.correct .option-label {
+  background: #5cb85c;
+  color: white;
+}
+
+.option-btn.incorrect {
+  background: var(--accent-pink);
+  border-color: #ff9aa8;
+  color: var(--text-color-dark);
+}
+.option-btn.incorrect .option-label {
+  background: #d9534f;
+  color: white;
+}
+
+.feedback-area {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  border-top: 3px dashed var(--border-color);
+}
+
+.correct-msg {
+  color: #2ecc71;
+  font-weight: bold;
+  font-size: 1.8rem;
+  font-family: var(--font-title);
+  margin-bottom: var(--spacing-md);
+}
+
+.incorrect-msg {
+  margin-bottom: var(--spacing-md);
+}
+
+.incorrect-msg p {
+  font-size: 1.5rem;
+  color: #e74c3c;
+  font-family: var(--font-title);
+  margin-bottom: 4px;
+}
+
+.correct-answer {
+  font-weight: bold;
+  color: #2ecc71;
+  font-size: 1.2rem;
+}
+
+/* --- 原文上下文样式 --- */
+.word-context-info {
+  background: rgba(252, 248, 232, 0.5);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  margin: var(--spacing-lg) 0;
+  text-align: left;
+  border-left: 5px solid var(--accent-yellow);
+}
+
+.context-label {
+  font-weight: bold;
+  color: var(--primary-dark);
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.context-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-color-dark);
+  margin-bottom: 8px;
+}
+
+.context-source {
+  text-align: right;
+  font-size: 0.9rem;
+  color: var(--text-color-medium);
+  font-style: italic;
+}
+
+/* --- 按钮样式 --- */
+.next-btn, .retry-btn, .home-btn {
+  padding: 14px 32px;
+  border-radius: var(--border-radius-xl);
+  font-weight: bold;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  border: none;
+  box-shadow: var(--shadow-soft);
+}
+
+.next-btn {
+  background: var(--primary-color);
+  color: var(--text-color-dark);
+}
+.next-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-3px);
+}
+
+.retry-btn {
+  background: var(--accent-green);
+  color: var(--text-color-dark);
+  margin-right: var(--spacing-md);
+}
+
+.home-btn {
+  background: var(--accent-yellow);
+  color: var(--text-color-dark);
+}
+
+/* --- 结果卡片 --- */
+.result-card {
+  background: var(--surface-color);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-xl);
+  text-align: center;
+  box-shadow: var(--shadow-medium);
+  border: 4px solid var(--accent-yellow);
+}
+
+.result-card h2 {
+  font-size: 3rem;
+  color: var(--primary-dark);
+  margin-bottom: var(--spacing-md);
+}
+
+.score-display {
+  font-size: 6rem;
+  margin: var(--spacing-md) 0;
+  line-height: 1;
+}
+
+.score {
+  color: var(--primary-color);
+  font-weight: bold;
+  font-family: var(--font-title);
+}
+.total {
+  color: var(--text-color-light);
+  font-size: 0.5em;
+}
+
+.result-card p {
+  font-size: 1.5rem;
+  color: var(--text-color-medium);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* --- 响应式设计 --- */
+@media (max-width: 768px) {
+  .quiz-container {
+    margin: var(--spacing-sm) var(--spacing-sm);
+    padding: var(--spacing-md);
+  }
+  .quiz-header h2 {
+    font-size: 1.8em;
+  }
+  .word-display h1 {
+    font-size: 2.5em;
+  }
+}
+
+@media (max-width: 480px) {
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+  .quiz-header {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  .quiz-header h2 {
+    margin-top: var(--spacing-sm);
+  }
+  .quiz-card, .result-card {
+    padding: var(--spacing-lg);
+  }
+  .score-display {
+    font-size: 4em;
+  }
+}
+</style>

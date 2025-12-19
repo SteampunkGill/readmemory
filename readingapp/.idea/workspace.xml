@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d3098962-37d5-49bf-8c20-b8e5857a3f81" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/debug.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/init.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/vue-reading-app.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/vue-reading-app.log.2025-12-13.0.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/vue-reading-app.log.2025-12-14.0.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/vue-reading-app.log.2025-12-15.0.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/vue-reading-app.log.2025-12-17.0.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ReadingAppApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/auth/AuthForgotPassword.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/auth/AuthGetCurrentUser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/auth/AuthLogin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/auth/AuthLogout.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/auth/AuthRefreshToken.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/auth/AuthRegister.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/auth/AuthResetPassword.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/auth/AuthUpdatePassword.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/auth/AuthVerifyEmail.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/auth/AuthVerifyToken.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/config/CorsConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentProcessingController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsBatchDelete.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsBatchDocumentAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsBatchUpdate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsDelete.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsDuplicate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsExport.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsGet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsGetById.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsGetProcessingStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsGetStats.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsMove.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsSearch.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsShare.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsUnshare.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsUpdate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/DocumentsUpload.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/all_java_files_content.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/documents/提取.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/BatchExport.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/CleanupExportFiles.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/CreateExportTemplate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/DeleteExportHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/ExportAllData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/ExportDocuments.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/ExportHighlights.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/ExportNotes.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/ExportReadingHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/ExportReviews.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/ExportStatistics.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/ExportStudyPlan.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/ExportToAnki.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/ExportVocabulary.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/GetExportHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/GetExportStats.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/GetExportTemplates.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/GetSupportedFormats.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/all_java_files_content.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/export/提取.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackAddComment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackBatchAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackCreateCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackDelete.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackDeleteCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackExport.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackGetById.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackGetCategories.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackGetDetail.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackGetReplies.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackGetStatistics.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackGetStats.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackGetTypes.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackList.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackMarkAsRead.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackMarkAsResolved.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackReply.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackSearch.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackSubmit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackUpdate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackUpdateCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackUpdateStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/FeedbackVote.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/all_java_files_content.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/feedback/提取.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/ClearAllNotifications.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/MarkAllAsRead.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/MarkAsRead.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationBatchDelete.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationBatchMarkAsRead.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationClearHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationCreate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationDelete.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationGet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationGetById.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationGetHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationGetSettings.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationGetStats.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationGetUnreadCount.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationMarkAllAsRead.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationMarkAsRead.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationSubscribe.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationUnsubscribe.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/NotificationUpdateSettings.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/all_java_files_content.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/notifications/提取.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/OcrBatchProcess.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/OcrCancelTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/OcrExportText.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/OcrGetHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/OcrGetResult.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/OcrGetSettings.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/OcrGetStatistics.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/OcrGetTaskStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/OcrProcessDocument.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/OcrProcessPage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/OcrService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/OcrUpdateResult.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/OcrUpdateSettings.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/OcrUploadDocument.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/all_java_files_content.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/config/OcrConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/core/OcrEngine.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/core/OcrProcessingException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/core/OcrResult.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/core/TesseractEngine.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/service/ImagePreprocessor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/service/OcrProcessingService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/utils/ImageUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/utils/TextUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/ocr/提取.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineBatchDelete.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineBatchDownload.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineCancelDownload.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineCancelSyncTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineCheckDocumentStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineClearCache.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineDeleteDocument.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineDownloadDocument.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineGetDocumentById.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineGetDocuments.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineGetDownloadStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineGetSettings.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineGetStorageStats.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineGetSyncHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineGetSyncStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineSetStorageLimit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineStartSyncTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineSyncDocument.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineSyncHighlight.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineSyncNote.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineSyncReview.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineSyncVocabulary.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineUpdateDocument.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/OfflineUpdateSettings.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/all_java_files_content.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/offline/提取.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderAddBookmark.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderAddHighlight.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderAddNote.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderBatchUpdateHighlights.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderClearReadingHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderDeleteBookmark.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderDeleteHighlight.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderDeleteNote.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderGetBookmarks.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderGetDocumentOutline.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderGetDocumentPage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderGetHighlightById.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderGetHighlights.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderGetNoteById.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderGetNotes.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderGetReadingHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderLookupWord.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderSearchDocumentContent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderUpdateHighlight.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderUpdateNote.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/ReaderUpdateReadingProgress.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/all_java_files_content.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/reader/提取.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewBatchSubmit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewClearHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewDeleteHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewGetCalendar.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewGetDailyGoal.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewGetDueWords.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewGetHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewGetPlan.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewGetProgress.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewGetReminders.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewGetSession.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewGetSmartWords.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewGetStats.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewResetProgress.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewSetReminder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewSkip.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewSubmit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewUpdateDailyGoal.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/ReviewUpdatePlan.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/all_java_files_content.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/review/提取.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/scheduler/DocumentProcessingScheduler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchAdvanced.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchAutocomplete.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchClearHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchCreateFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchDeleteHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchDeleteSaved.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchDocuments.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchGetFilters.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchGetHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchGetPopular.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchGetRecent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchGetSaved.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchGetStats.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchGetSuggestions.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchGlobal.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchHighlights.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchNotes.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchSave.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchSaveResult.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchVocabulary.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/SearchVoice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/all_java_files_content.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/search/提取.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsExport.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsGet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsGetAll.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsGetBackup.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsGetFont.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsGetLanguage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsGetNotification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsGetReading.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsGetReview.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsGetTheme.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsImport.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsResetToDefault.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsUpdate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsUpdateBackup.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsUpdateFont.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsUpdateGeneral.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsUpdateLanguage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsUpdateNotification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsUpdatePrivacy.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsUpdateReading.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsUpdateReview.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/SettingsUpdateTheme.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/all_java_files_content.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/settings/提取.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemCheckForUpdates.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemClearCache.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemGetAPIDocumentation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemGetAnnouncements.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemGetChangelog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemGetConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemGetFAQ.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemGetHealth.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemGetHelpDocumentation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemGetPrivacyPolicy.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemGetResources.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemGetServerTime.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemGetStatistics.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemGetStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemGetTermsOfService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemGetVersion.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemMarkAnnouncementAsRead.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/SystemSubmitBugReport.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/all_java_files_content.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/system/提取.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagAddToDocument.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagBatchDocumentTags.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagBatchUpdateDocument.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagBatchVocabularyTags.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagCreate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagCreateDocumentTag.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagCreateVocabularyTag.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagDelete.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagDeleteDocumentTag.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagDeleteVocabularyTag.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagGetAll.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagGetDetail.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagGetDocumentTagById.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagGetDocumentTags.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagGetPopular.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagGetStatistics.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagGetVocabularyTagById.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagGetVocabularyTags.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagMerge.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagRemoveFromDocument.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagSearch.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagUpdate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagUpdateDocumentTag.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/TagUpdateVocabularyTag.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/all_java_files_content.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/tags/提取.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserCancelSubscription.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserDeleteAccount.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserExportData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserGetAchievements.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserGetActivityLog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserGetLearningCalendar.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserGetLearningGoals.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserGetLearningReport.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserGetLearningStats.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserGetPointsAndLevel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserGetProfile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserGetSubscriptionInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserSetLearningGoal.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserUpdateAvatar.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserUpdatePreferences.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserUpdateProfile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/UserUpdateSubscription.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/all_java_files_content.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/user/提取.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyAddTo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyBatchAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyBatchLookup.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyBatchUpdate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyDeleteItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyExport.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyGetItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyGetLearningStats.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyGetList.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyGetReviewStats.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyGetSimilarWords.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyGetStats.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyGetWordExamples.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyImport.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyLookupWord.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyMarkAsMastered.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyResetLearningStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularySearch.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/VocabularyUpdateItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/all_java_files_content.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vue/readingapp/vocabulary/提取.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/tessdata/chi_sim.traineddata" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/tessdata/chi_tra.traineddata" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/tessdata/eng.traineddata" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/vue/readingapp/ReadingappApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/documents/1765967441664_0e154165-5ad4-4459-b88f-055417ca82af.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/documents/1765967718309_b6ee6f3e-bcc0-4f8c-aedf-6ecadf389a80.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/documents/1765974871580_58f0f9b6-62e9-45ad-ac60-8c12daf44c1b.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/documents/1765979535675_fdc26656-0300-4ad1-bcc0-c9712de638ab.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/documents/1765980941866_fdbb0aec-ee00-4477-83f0-680d4abe4ca2.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/documents/1765983318850_66630289-885d-4872-8c27-cf3b523fab73.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/documents/1765983378499_8b569b6c-edf3-45f1-84a9-13b58f861b62.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/documents/1765983961546_9def4df7-3122-49cb-8652-3ff428c9d25b.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_management_api_doc.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/mock/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/mock/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/styles/global.css" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/styles/global.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/views/Bookshelf.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/views/Bookshelf.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/views/DictionaryDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/views/DictionaryDetail.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/views/DocumentDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/views/DocumentDetail.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/views/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/views/Login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/views/OfflineManagement.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/views/OfflineManagement.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/views/Reader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/views/Reader.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/views/Register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/views/Register.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/views/Review.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/views/Review.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/views/SearchResults.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/views/SearchResults.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/views/SettingsPanel.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/views/SettingsPanel.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/views/Upload.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/views/Upload.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/views/UserCenter.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/views/UserCenter.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readmemo-vue-app/src/views/Vocabulary.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../readmemo-vue-app/src/views/Vocabulary.vue" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Record" />
+        <option value="package-info" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="36harFhHJwkOVspRktAhzraKC0R" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.ReadingAppApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ReadingappApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.readingapp.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.未命名.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="未命名" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="ACTIVE_PROFILES" value="application.properties" />
+      <module name="readingapp" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.vue.readingapp.ReadingAppApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="StructureViewState">
+    <option name="selectedTab" value="逻辑" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="d3098962-37d5-49bf-8c20-b8e5857a3f81" name="更改" comment="" />
+      <created>1765461455044</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1765461455044</updated>
+      <workItem from="1765461456181" duration="6085000" />
+      <workItem from="1765497775209" duration="5469000" />
+      <workItem from="1765521075736" duration="24332000" />
+      <workItem from="1765554600628" duration="1000000" />
+      <workItem from="1765592518381" duration="2106000" />
+      <workItem from="1765620835346" duration="1721000" />
+      <workItem from="1765731730383" duration="784000" />
+      <workItem from="1765764652775" duration="3389000" />
+      <workItem from="1765768110984" duration="5000" />
+      <workItem from="1765780481951" duration="6189000" />
+      <workItem from="1765882908621" duration="521000" />
+      <workItem from="1765956120365" duration="15891000" />
+      <workItem from="1765977074535" duration="476000" />
+      <workItem from="1765977574320" duration="145000" />
+      <workItem from="1765977750521" duration="688000" />
+      <workItem from="1765979628483" duration="6305000" />
+      <workItem from="1766040277040" duration="10373000" />
+      <workItem from="1766061822318" duration="8376000" />
+      <workItem from="1766108954817" duration="66000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
