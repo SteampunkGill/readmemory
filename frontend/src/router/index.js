@@ -21,6 +21,8 @@ const EnglishToChinese = () => import('@/views/vocabulary/EnglishToChinese.vue')
 const ChineseToEnglish = () => import('@/views/vocabulary/ChineseToEnglish.vue')
 const FillInBlanks = () => import('@/views/vocabulary/FillInBlanks.vue')
 const Review = () => import('@/views/Review.vue')
+const ReviewReport = () => import('@/views/ReviewReport.vue')
+const ReviewStats = () => import('@/views/ReviewStats.vue')
 const UserCenter = () => import('@/views/UserCenter.vue')
 const Settings = () => import('@/views/Settings.vue')
 const SearchResults = () => import('@/views/SearchResults.vue')
@@ -126,6 +128,18 @@ const routes = [
     path: '/review',
     name: 'Review',
     component: Review,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/review/report',
+    name: 'ReviewReport',
+    component: ReviewReport,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/review/stats',
+    name: 'ReviewStats',
+    component: ReviewStats,
     meta: { requiresAuth: true }
   },
   {

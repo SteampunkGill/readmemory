@@ -96,6 +96,7 @@
 <script setup>
 /* eslint-disable vue/multi-word-component-names */
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { defineOptions } from 'vue'
 import { API_BASE_URL } from '@/config'
 import { auth } from '@/utils/auth'
@@ -110,6 +111,7 @@ defineOptions({
   name: 'ReviewPage'
 })
 
+const router = useRouter()
 const cards = ref([])
 const cardIndex = ref(0)
 const showAnswer = ref(false)
@@ -233,6 +235,10 @@ const nextCard = () => {
     cardIndex.value++
   } else {
     cardIndex.value = cards.value.length // 进入完成状态
+    // 自动跳转到统计报告页
+    setTimeout(() => {
+      router.push('/review/report')
+    }, 1500)
   }
 }
 
@@ -282,17 +288,8 @@ const saveSettings = async () => {
   }
 }
 
-const fetchStats = async () => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/user/learning-stats`, {
-      method: 'GET',
-      headers: getAuthHeader()
-    })
-    const data = await response.json()
-    alert(`统计信息：已学单词 ${data.wordsLearned}, 复习准确率 ${data.reviewAccuracy}%`)
-  } catch (error) {
-    alert('无法获取统计信息')
-  }
+const fetchStats = () => {
+  router.push('/review/stats')
 }
 
 // 初始化
@@ -301,6 +298,7 @@ onMounted(() => {
   fetchReviewSettings()
 })
 </script>
+
 <style scoped>
 /* 定义CSS变量 - 童趣风格 */
 .review-page {
