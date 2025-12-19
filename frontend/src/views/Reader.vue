@@ -285,6 +285,7 @@ const currentChapter = ref(1) // 当前所在章节
 
 const toc = ref([]) // 目录数据
 const notes = ref([]) // 笔记数据
+const highlights = ref([]) // 高亮数据
 const searchResults = ref([]) // 搜索结果
 const searchQuery = ref('') // 搜索关键词
 
@@ -312,30 +313,43 @@ const themes = [
 /**
  * 计算属性：处理正文文本
  * 将纯文本拆分为段落，再将段落拆分为一个个单词或符号。
- * 这样可以实现点击单个单词进行查词的功能。
  */
 const processedParagraphs = computed(() => {
   const content = currentPageData.content || ''
   if (!content) return []
   
-  // 获取当前页的所有高亮文本
-  const pageHighlights = notes.value.filter(n => n.highlightId || n.type === 'highlight')
+  // 合并来自两个来源的高亮数据：独立高亮和笔记关联的高亮
+  // 并且严格过滤当前页
+  const allHighlights = [
+    ...highlights.value.map(h => ({ text: h.text, color: h.color, page: h.page })),
+    ...notes.value.filter(n => n.highlight).map(n => ({
+      text: n.highlight.text,
+      color: n.highlight.color,
+      page: n.page
+    }))
+  ].filter(h => parseInt(h.page) === currentPage.value)
 
   return content.split(/\n+/).map(para => {
     const tokens = para.match(/(\w+|[^\w\s]+|\s+)/g) || []
+    
     return tokens.map(token => {
       const isWord = /^\w+$/.test(token)
+      const trimmed = token.trim()
       
       // 检查该 token 是否属于任何高亮区域
-      const highlight = pageHighlights.find(h => {
-        const hText = h.text || h.content || ''
-        return hText.includes(token.trim()) && token.trim().length > 0
+      // 逻辑：只要该 token 的文本被包含在某个高亮文本中，就应用颜色
+      const found = allHighlights.find(h => {
+        const hText = h.text || ''
+        return trimmed && hText.includes(trimmed)
       })
 
+      // 特殊处理空格：如果前后都是同一个高亮，则空格也高亮
+      let highlightColor = found ? found.color : null
+      
       return {
         text: token,
         isWord,
-        highlightColor: highlight ? highlight.color : null
+        highlightColor
       }
     })
   })
@@ -429,6 +443,7 @@ const fetchPageContent = async (pageNumber) => {
       Object.assign(currentPageData, json.data)
       currentPage.value = pageNumber
       if (json.data.notes) notes.value = json.data.notes
+      if (json.data.highlights) highlights.value = json.data.highlights
       
       // 更新本地进度百分比
       if (docData.pageCount) {
@@ -451,9 +466,28 @@ const fetchAllNotes = async () => {
       headers: { 'Authorization': `Bearer ${token.value}` }
     })
     const json = await response.json()
-    if (json.data) notes.value = json.data
+    if (json.data) {
+      notes.value = Array.isArray(json.data) ? json.data : (json.data.notes || [])
+    }
   } catch (e) {
     console.error('获取笔记失败', e)
+  }
+}
+
+/**
+ * 获取该文档下的所有高亮
+ */
+const fetchAllHighlights = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/v1/reader/documents/${docId}/highlights`, {
+      headers: { 'Authorization': `Bearer ${token.value}` }
+    })
+    const json = await response.json()
+    if (json.data) {
+      highlights.value = Array.isArray(json.data) ? json.data : (json.data.highlights || [])
+    }
+  } catch (e) {
+    console.error('获取高亮失败', e)
   }
 }
 
@@ -628,7 +662,7 @@ const createHighlight = async (color) => {
     
     if (response.ok) {
       // 重新获取笔记和高亮列表
-      fetchAllNotes()
+      await Promise.all([fetchAllNotes(), fetchAllHighlights()])
       // 清除选择
       window.getSelection().removeAllRanges()
       selectionMenu.show = false
@@ -682,6 +716,7 @@ const addNoteFromSelection = async () => {
       })
       
       fetchAllNotes()
+      fetchAllHighlights()
       window.getSelection().removeAllRanges()
       selectionMenu.show = false
       alert('笔记已保存')
@@ -890,7 +925,8 @@ onMounted(async () => {
   await Promise.all([
     fetchDocumentMeta(),
     fetchTOC(),
-    fetchAllNotes()
+    fetchAllNotes(),
+    fetchAllHighlights()
   ])
   
   // 获取当前页内容

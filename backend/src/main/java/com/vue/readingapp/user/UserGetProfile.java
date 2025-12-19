@@ -241,8 +241,8 @@ public class UserGetProfile {
             Map<String, Object> session = sessions.get(0);
             int userId = ((Number) session.get("user_id")).intValue();
 
-            // 3. 查询用户信息 - 移除可能不存在的字段 bio, location, website 以避免 SQL 错误
-            String userSql = "SELECT user_id, username, email, nickname, avatar_url, " +
+            // 3. 查询用户信息
+            String userSql = "SELECT user_id, username, email, nickname, avatar_url, bio, location, website, " +
                     "is_verified, created_at, last_login_at FROM users WHERE user_id = ?";
 
             List<Map<String, Object>> users = jdbcTemplate.queryForList(userSql, userId);

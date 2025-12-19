@@ -325,7 +325,24 @@ public class UserUpdateProfile {
 
             Map<String, Object> user = users.get(0);
 
-            // 6. 格式化用户信息（保持LocalDateTime类型）
+            // 6. 格式化用户信息（处理 Timestamp 到 LocalDateTime 的转换）
+            Object createdAtObj = user.get("created_at");
+            Object lastLoginObj = user.get("last_login_at");
+            
+            LocalDateTime createdAt = null;
+            if (createdAtObj instanceof java.sql.Timestamp) {
+                createdAt = ((java.sql.Timestamp) createdAtObj).toLocalDateTime();
+            } else if (createdAtObj instanceof LocalDateTime) {
+                createdAt = (LocalDateTime) createdAtObj;
+            }
+
+            LocalDateTime lastLoginAt = null;
+            if (lastLoginObj instanceof java.sql.Timestamp) {
+                lastLoginAt = ((java.sql.Timestamp) lastLoginObj).toLocalDateTime();
+            } else if (lastLoginObj instanceof LocalDateTime) {
+                lastLoginAt = (LocalDateTime) lastLoginObj;
+            }
+
             UserData userData = new UserData(
                     (int) user.get("user_id"),
                     (String) user.get("username"),
@@ -335,8 +352,8 @@ public class UserUpdateProfile {
                     user.get("bio") != null ? (String) user.get("bio") : "",
                     user.get("location") != null ? (String) user.get("location") : "",
                     user.get("website") != null ? (String) user.get("website") : "",
-                    (LocalDateTime) user.get("created_at"),
-                    (LocalDateTime) user.get("last_login_at"),
+                    createdAt,
+                    lastLoginAt,
                     user.get("is_verified") != null && (boolean) user.get("is_verified")
             );
 

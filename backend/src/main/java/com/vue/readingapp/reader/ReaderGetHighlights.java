@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -170,11 +171,11 @@ public class ReaderGetHighlights {
 
             if (sessions.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                        new HighlightsResponse(false, "登录已过期，请重新登录", null)
+                        new HighlightsResponse(false, "登录已过期或无效，请重新登录", null)
                 );
             }
 
-            int userId = (int) sessions.get(0).get("user_id");
+            int userId = ((Number) sessions.get(0).get("user_id")).intValue();
 
             // 2. 验证文档权限
             String docSql = "SELECT * FROM documents WHERE document_id = ? AND (user_id = ? OR is_public = true)";

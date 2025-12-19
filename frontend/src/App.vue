@@ -10,6 +10,18 @@ p<template>
     <nav v-if="showNav" class="global-nav">
       <div class="nav-container">
         <router-link to="/" class="nav-logo">📚 阅记星</router-link>
+        
+        <!-- 全局搜索框 -->
+        <div class="nav-search" v-if="showNav">
+          <input
+            type="text"
+            v-model="globalSearchQuery"
+            placeholder="搜索..."
+            @keyup.enter="handleGlobalSearch"
+          />
+          <button @click="handleGlobalSearch">🔍</button>
+        </div>
+
         <div class="nav-links">
           <router-link to="/bookshelf">📚 书架</router-link>
           <router-link to="/vocabulary">🔤 生词本</router-link>
@@ -29,9 +41,10 @@ p<template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 
 // 控制导航栏显示：在登录、注册、欢迎页等不显示主导航
 const showNav = computed(() => {
@@ -73,7 +86,17 @@ const showNotification = (message, type = 'info') => {
 // 暴露给子组件（通过 provide/inject 或全局属性，这里简化）
 window.$notify = showNotification
 
-
+// 全局搜索逻辑
+const globalSearchQuery = ref('')
+const handleGlobalSearch = () => {
+  if (globalSearchQuery.value.trim()) {
+    router.push({
+      path: '/search',
+      query: { q: globalSearchQuery.value.trim() }
+    })
+    globalSearchQuery.value = '' // 清空搜索框
+  }
+}
 </script>
 
 <style scoped>

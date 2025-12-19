@@ -215,8 +215,11 @@ public class ReaderGetDocumentPage {
             String highlightSql = "SELECT * FROM document_highlights WHERE document_id = ? AND page = ? AND user_id = ?";
             List<Map<String, Object>> highlights = jdbcTemplate.queryForList(highlightSql, documentId, pageNumber, userId);
 
-            // 5. 获取该页面的笔记
-            String noteSql = "SELECT * FROM document_notes WHERE document_id = ? AND page = ? AND user_id = ?";
+            // 5. 获取该页面的笔记（关联高亮信息）
+            String noteSql = "SELECT dn.*, dh.text as highlight_text, dh.color as highlight_color " +
+                    "FROM document_notes dn " +
+                    "LEFT JOIN document_highlights dh ON dn.highlight_id = dh.highlight_id " +
+                    "WHERE dn.document_id = ? AND dn.page = ? AND dn.user_id = ?";
             List<Map<String, Object>> notes = jdbcTemplate.queryForList(noteSql, documentId, pageNumber, userId);
 
             // 6. 构建响应数据

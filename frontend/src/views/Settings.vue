@@ -628,12 +628,6 @@ textarea {
   border: 6px solid var(--primary-color);
   box-shadow: var(--shadow-medium);
   transition: var(--transition-smooth);
-  cursor: pointer;
-}
-
-.profile-avatar:hover {
-  transform: scale(1.1) rotate(10deg);
-  border-color: var(--accent-yellow);
 }
 
 /* 账户安全页面 */

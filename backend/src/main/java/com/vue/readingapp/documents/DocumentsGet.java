@@ -329,7 +329,7 @@ public class DocumentsGet {
 
             if (tokenResults.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                        new DocumentsResponse(false, "登录已过期，请重新登录", null)
+                        new DocumentsResponse(false, "登录已过期或无效，请重新登录", null)
                 );
             }
 

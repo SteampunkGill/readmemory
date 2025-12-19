@@ -472,12 +472,11 @@ public class SearchGlobal {
         List<SearchItem> results = new ArrayList<>();
 
         try {
-            String sql = "SELECT d.document_id, d.title, d.content, d.author, d.language, " +
-                    "d.word_count, d.difficulty, d.created_at, d.updated_at, " +
-                    "d.thumbnail_url, d.status " +
+            // 修正：documents 表没有 content 字段，内容在 description 中，或者需要关联查询
+            String sql = "SELECT d.document_id, d.title, d.description as content, d.author, d.language, " +
+                    "d.created_at, d.updated_at, d.status " +
                     "FROM documents d " +
-                    "WHERE (d.title LIKE ? OR d.content LIKE ?) " +
-                    "AND d.status = 'processed' ";
+                    "WHERE (d.title LIKE ? OR d.description LIKE ?) ";
 
             if (userId != null) {
                 sql += "AND d.user_id = ? ";
@@ -508,7 +507,7 @@ public class SearchGlobal {
                 if (content != null && content.length() > 200) {
                     item.setExcerpt(content.substring(0, 200) + "...");
                 } else {
-                    item.setExcerpt(content);
+                    item.setExcerpt(content != null ? content : "");
                 }
 
                 item.setAuthor((String) doc.get("author"));
@@ -694,11 +693,11 @@ public class SearchGlobal {
         List<SearchItem> results = new ArrayList<>();
 
         try {
-            String sql = "SELECT h.highlight_id, h.document_id, h.selected_text, h.note, h.created_at, " +
+            String sql = "SELECT h.highlight_id, h.document_id, h.text, h.note, h.created_at, " +
                     "d.title as document_title " +
                     "FROM document_highlights h " +
                     "LEFT JOIN documents d ON h.document_id = d.document_id " +
-                    "WHERE h.selected_text LIKE ? OR h.note LIKE ? ";
+                    "WHERE h.text LIKE ? OR h.note LIKE ? ";
 
             if (userId != null) {
                 sql += "AND h.user_id = ? ";
@@ -725,13 +724,13 @@ public class SearchGlobal {
                 item.setId("highlight_" + highlightId);
                 item.setType("highlight");
                 item.setTitle("高亮 - " + highlight.get("document_title"));
-                item.setSelectedText((String) highlight.get("selected_text"));
+                item.setSelectedText((String) highlight.get("text"));
                 item.setNote((String) highlight.get("note"));
                 item.setDocumentTitle((String) highlight.get("document_title"));
                 item.setDocumentId(docId);
 
                 // 生成摘要
-                String text = (String) highlight.get("selected_text");
+                String text = (String) highlight.get("text");
                 if (text != null && text.length() > 100) {
                     item.setExcerpt(text.substring(0, 100) + "...");
                 } else {
@@ -793,10 +792,10 @@ public class SearchGlobal {
     private List<String> getWordExamples(Long wordId) {
         List<String> examples = new ArrayList<>();
         try {
-            String sql = "SELECT example_text FROM word_examples WHERE word_id = ? LIMIT 3";
+            String sql = "SELECT example_sentence FROM word_examples WHERE word_id = ? LIMIT 3";
             List<Map<String, Object>> exampleList = jdbcTemplate.queryForList(sql, wordId);
             for (Map<String, Object> example : exampleList) {
-                examples.add((String) example.get("example_text"));
+                examples.add((String) example.get("example_sentence"));
             }
         } catch (Exception e) {
             System.err.println("获取单词例句失败: " + e.getMessage());

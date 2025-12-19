@@ -9,10 +9,8 @@
       <div class="user-header">
         <h1 class="header-title">用户中心</h1>
         <div class="user-info">
-          <div class="avatar-wrapper" @click="$refs.avatarInput.click()">
+          <div class="avatar-wrapper">
             <img :src="userProfile.avatar || 'https://i.pravatar.cc/150'" alt="用户头像" class="user-avatar" />
-            <div class="avatar-mask">更换头像</div>
-            <input type="file" ref="avatarInput" hidden accept="image/*" @change="handleAvatarUpload" />
           </div>
           <div class="user-details">
             <div class="user-name">{{ userProfile.nickname }} <span class="role-badge">{{ userProfile.role || '普通用户' }}</span></div>
@@ -120,10 +118,7 @@
             
             <div class="section-title" style="margin-top: 40px;">敏感操作</div>
             <div class="danger-zone">
-              <button class="btn btn-secondary" @click="handleExportData" :disabled="isExporting">
-                {{ isExporting ? '导出请求中...' : '📦 导出我的个人数据' }}
-              </button>
-              <button class="btn btn-danger" @click="handleDeleteAccount" style="margin-left: 10px;">
+              <button class="btn btn-danger" @click="handleDeleteAccount">
                 🗑️ 注销我的账号
               </button>
             </div>
@@ -185,10 +180,16 @@
             <div class="page-title">帮助与反馈</div>
             <div class="feedback-form">
               <div class="form-group">
+                <div class="form-label">反馈标题</div>
+                <input type="text" v-model="feedback.title" placeholder="请输入反馈简要标题">
+              </div>
+              <div class="form-group">
                 <div class="form-label">反馈类型</div>
                 <select v-model="feedback.type">
-                  <option value="Bug反馈">问题反馈</option>
-                  <option value="功能建议">功能建议</option>
+                  <option value="bug">问题反馈</option>
+                  <option value="feature">功能建议</option>
+                  <option value="improvement">改进优化</option>
+                  <option value="other">其他</option>
                 </select>
               </div>
               <div class="form-group">
@@ -225,7 +226,6 @@ import { auth } from '@/utils/auth';
 const router = useRouter();
 const activePage = ref('dashboard');
 const isLoading = ref(false);
-const isExporting = ref(false);
 const isSaving = ref(false);
 const token = auth.getToken();
 
@@ -281,12 +281,19 @@ const achievementBadges = ref([
 
 const subscription = ref({ planName: '专业版', status: '活跃', endDate: '2025-12-31' });
 const passwords = ref({ old: '', new: '', confirm: '' });
-const feedback = ref({ type: 'Bug反馈', content: '' });
+const feedback = ref({ title: '', type: 'bug', content: '' });
 
 // --- 统一请求 Header ---
 const getHeaders = (contentType = 'application/json') => {
   const headers = { 'Authorization': `Bearer ${token}` };
   if (contentType) headers['Content-Type'] = contentType;
+  
+  // 尝试从本地存储或用户信息中获取用户ID
+  const userId = userProfile.value.user_id || userProfile.value.id;
+  if (userId) {
+    headers['X-User-Id'] = userId;
+  }
+  
   return headers;
 };
 
@@ -347,27 +354,6 @@ const fetchAllData = async () => {
 
 // --- 功能操作 ---
 
-const handleAvatarUpload = async (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
-  
-  const formData = new FormData();
-  formData.append('avatar', file);
-
-  try {
-    const res = await fetch('http://localhost:8080/api/v1/user/avatar', {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${token}` }, // Multipart 不需要手动设 Content-Type
-      body: formData
-    });
-    const result = await res.json();
-    if (result.success) {
-      userProfile.value.avatar = result.user?.avatar || result.data?.avatar;
-      alert('头像更新成功');
-    }
-  } catch (err) { alert('头像上传异常'); }
-};
-
 const saveFullProfile = async () => {
   isSaving.value = true;
   try {
@@ -426,20 +412,6 @@ const handleUpdatePassword = async () => {
   } catch (err) { alert('操作异常'); }
 };
 
-const handleExportData = async () => {
-  isExporting.value = true;
-  try {
-    const res = await fetch('http://localhost:8080/api/v1/user/export-data', {
-      headers: getHeaders()
-    });
-    const result = await res.json();
-    alert(result.message || '导出任务已提交，请查看您的邮箱');
-  } catch (err) { 
-    alert('导出请求失败'); 
-  } finally { 
-    isExporting.value = false; 
-  }
-};
 
 const handleDeleteAccount = async () => {
   const pwd = prompt('注销账号是永久性操作，所有数据将被清空。请输入密码确认：');
@@ -462,12 +434,14 @@ const handleDeleteAccount = async () => {
 };
 
 const submitFeedback = async () => {
+  if (!feedback.value.title) return alert('请填写反馈标题');
   if (!feedback.value.content) return alert('请填写反馈内容');
   try {
     const res = await fetch('http://localhost:8080/api/v1/feedback/submit', {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
+        title: feedback.value.title,
         type: feedback.value.type,
         content: feedback.value.content
       })
@@ -475,6 +449,7 @@ const submitFeedback = async () => {
     const result = await res.json();
     if (result.success) {
       alert('感谢您的反馈，我们会尽快处理！');
+      feedback.value.title = '';
       feedback.value.content = '';
     }
   } catch (err) { alert('提交失败'); }
@@ -619,12 +594,7 @@ onMounted(() => {
 
 .avatar-wrapper {
   position: relative;
-  cursor: pointer;
   transition: transform 0.3s ease;
-}
-
-.avatar-wrapper:hover {
-  transform: scale(1.1);
 }
 
 .user-avatar {
@@ -635,32 +605,6 @@ onMounted(() => {
   box-shadow: var(--shadow-lg);
   object-fit: cover;
   transition: all 0.3s ease;
-}
-
-.avatar-wrapper:hover .user-avatar {
-  border-color: var(--accent-yellow);
-  transform: rotate(5deg);
-}
-
-.avatar-mask {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.avatar-wrapper:hover .avatar-mask {
-  opacity: 1;
 }
 
 .user-details {

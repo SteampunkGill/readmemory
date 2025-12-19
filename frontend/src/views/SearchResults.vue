@@ -101,7 +101,12 @@
 
 <script setup>
 /* eslint-disable vue/multi-word-component-names */
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { API_BASE_URL } from '@/config'
+
+const router = useRouter()
+const route = useRoute()
 
 // 模拟数据，用于后端接口不可用时
 const mockResults = {
@@ -115,11 +120,8 @@ const mockResults = {
     { id: 1, content: '这是一条模拟笔记', document: '模拟文档 1', date: '2025-12-19' }
   ]
 }
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
-
-const query = ref('')
+const query = ref(route.query.q || '')
 const activeFilter = ref('all')
 const loading = ref(false)
 
@@ -139,8 +141,8 @@ const results = ref({
 
 // 计算是否有任何结果
 const hasResults = computed(() => {
-  return results.value.documents.length > 0 || 
-         results.value.words.length > 0 || 
+  return results.value.documents.length > 0 ||
+         results.value.words.length > 0 ||
          results.value.notes.length > 0
 })
 
@@ -159,6 +161,11 @@ const filteredNotes = computed(() => {
 
 // 发送 API 搜索请求
 const performSearch = async () => {
+  if (!query.value.trim()) {
+    results.value = { documents: [], words: [], notes: [] }
+    return
+  }
+
   loading.value = true
   
   try {
@@ -167,12 +174,12 @@ const performSearch = async () => {
     if (apiType === 'words') apiType = 'vocabulary'
     
     // 构建 URL
-    const url = new URL('http://localhost:8080/api/v1/search')
+    const url = new URL(`${API_BASE_URL}/search`)
     url.searchParams.append('query', query.value)
     url.searchParams.append('type', apiType)
     url.searchParams.append('pageSize', '20')
 
-    const token = localStorage.getItem('token') // 假设 token 存储在 localStorage
+    const token = localStorage.getItem('token')
 
     const response = await fetch(url.toString(), {
       method: 'GET',
@@ -194,7 +201,7 @@ const performSearch = async () => {
       
       results.value = {
         documents: items.filter(i => i.type === 'document').map(i => ({
-          id: i.id,
+          id: i.id.replace('doc_', ''),
           title: i.title,
           author: i.author || '未知',
           date: i.createdAt || '最近',
@@ -202,25 +209,25 @@ const performSearch = async () => {
           status: i.status || '已导入'
         })),
         words: items.filter(i => i.type === 'vocabulary').map(i => ({
-          id: i.id,
+          id: i.id.replace('word_', ''),
           word: i.word,
           phonetic: i.phonetic || '',
           meaning: i.translation || i.definition || '',
           source: i.source || '未知'
         })),
         notes: items.filter(i => i.type === 'notes' || i.type === 'note').map(i => ({
-          id: i.id,
+          id: i.id.replace('note_', ''),
           content: i.content || i.excerpt || '',
           document: i.documentTitle || '关联文档',
+          documentId: i.documentId,
           date: i.createdAt || '最近'
         }))
       }
     } else {
-      throw new Error('后端数据格式不正确')
+      results.value = { documents: [], words: [], notes: [] }
     }
   } catch (error) {
     console.error('搜索请求失败，回退到模拟数据:', error)
-    // 请求失败，回退到原始模拟数据
     results.value = mockResults
   } finally {
     loading.value = false
@@ -253,12 +260,26 @@ const openWord = (word) => {
 }
 
 const openNote = (note) => {
-  router.push(`/reader/view?note=${note.id}`)
+  if (note.documentId) {
+    router.push(`/reader/${note.documentId}`)
+  } else {
+    console.warn('笔记未关联文档 ID')
+  }
 }
+
+// 监听路由参数变化
+watch(() => route.query.q, (newQ) => {
+  if (newQ) {
+    query.value = newQ
+    performSearch()
+  }
+})
 
 // 初始化
 onMounted(() => {
-  // 如果有默认搜索需求可以在这里调用
+  if (query.value) {
+    performSearch()
+  }
 })
 </script>
 <style scoped>

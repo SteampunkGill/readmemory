@@ -140,17 +140,17 @@ public class ReaderAddNote {
 
             String token = authHeader.substring(7);
 
-            // 验证token
+            // 验证token：直接在SQL中检查有效期，确保时区一致性
             String tokenSql = "SELECT user_id FROM user_sessions WHERE access_token = ? AND expires_at > NOW()";
             List<Map<String, Object>> sessions = jdbcTemplate.queryForList(tokenSql, token);
 
             if (sessions.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                        new NoteResponse(false, "登录已过期，请重新登录", null)
+                        new NoteResponse(false, "登录已过期或无效，请重新登录", null)
                 );
             }
 
-            int userId = (int) sessions.get(0).get("user_id");
+            int userId = ((Number) sessions.get(0).get("user_id")).intValue();
 
             // 2. 验证文档权限
             String docSql = "SELECT * FROM documents WHERE document_id = ? AND (user_id = ? OR is_public = true)";
@@ -248,8 +248,20 @@ public class ReaderAddNote {
             noteData.setPage(((Number) note.get("page")).intValue());
             noteData.setHighlightId(note.get("highlight_id") != null ?
                     ((Number) note.get("highlight_id")).intValue() : null);
-            noteData.setCreatedAt((LocalDateTime) note.get("created_at"));
-            noteData.setUpdatedAt((LocalDateTime) note.get("updated_at"));
+            
+            Object createdAt = note.get("created_at");
+            if (createdAt instanceof java.sql.Timestamp) {
+                noteData.setCreatedAt(((java.sql.Timestamp) createdAt).toLocalDateTime());
+            } else if (createdAt instanceof LocalDateTime) {
+                noteData.setCreatedAt((LocalDateTime) createdAt);
+            }
+
+            Object updatedAt = note.get("updated_at");
+            if (updatedAt instanceof java.sql.Timestamp) {
+                noteData.setUpdatedAt(((java.sql.Timestamp) updatedAt).toLocalDateTime());
+            } else if (updatedAt instanceof LocalDateTime) {
+                noteData.setUpdatedAt((LocalDateTime) updatedAt);
+            }
 
             // 解析position JSON
             if (note.get("position") != null) {

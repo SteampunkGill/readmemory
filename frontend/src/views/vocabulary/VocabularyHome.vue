@@ -31,12 +31,25 @@
       </div>
     </div>
 
-    <!-- 复习计划设置 (已简化为只复习今日收藏) -->
+    <!-- 复习计划设置 -->
     <div class="plan-settings-card">
-      <h3>复习模式</h3>
+      <h3>复习模式设置</h3>
       <div class="settings-row">
         <div class="setting-group">
-          <p style="color: var(--primary-color); font-weight: bold;">✨ 当前模式：只复习今天收藏的单词</p>
+          <label>选择模式:</label>
+          <select v-model="reviewMode" class="styled-select">
+            <option value="spaced">间隔重复 (今日收藏)</option>
+            <option value="date">按日期复习</option>
+            <option value="all">全部复习</option>
+          </select>
+        </div>
+        <div class="setting-group" v-if="reviewMode === 'date'">
+          <label>选择日期:</label>
+          <select v-model="selectedDate" class="styled-select">
+            <option v-for="item in availableDates" :key="item.date" :value="item.date">
+              {{ item.date }} ({{ item.count }}个词)
+            </option>
+          </select>
         </div>
       </div>
     </div>
@@ -158,8 +171,10 @@ export default {
     },
 
     startReview(path) {
-      // 强制使用 spaced 模式，后端已修改该模式下只返回今日收藏
-      const query = { mode: 'spaced' };
+      const query = { mode: this.reviewMode };
+      if (this.reviewMode === 'date' && this.selectedDate) {
+        query.date = this.selectedDate;
+      }
       this.$router.push({ path, query });
     }
   },

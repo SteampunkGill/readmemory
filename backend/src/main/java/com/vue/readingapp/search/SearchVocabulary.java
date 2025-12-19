@@ -436,10 +436,10 @@ public class SearchVocabulary {
     private List<String> getWordExamples(Long wordId) {
         List<String> examples = new ArrayList<>();
         try {
-            String sql = "SELECT example_text FROM word_examples WHERE word_id = ? LIMIT 3";
+            String sql = "SELECT example_sentence FROM word_examples WHERE word_id = ? LIMIT 3";
             List<Map<String, Object>> exampleList = jdbcTemplate.queryForList(sql, wordId);
             for (Map<String, Object> example : exampleList) {
-                examples.add((String) example.get("example_text"));
+                examples.add((String) example.get("example_sentence"));
             }
         } catch (Exception e) {
             System.err.println("获取单词例句失败: " + e.getMessage());
@@ -453,7 +453,8 @@ public class SearchVocabulary {
         try {
             String sql = "SELECT vt.tag_name FROM vocabulary_tags vt " +
                     "INNER JOIN user_vocabulary_tags ut ON vt.tag_id = ut.tag_id " +
-                    "WHERE ut.word_id = ?";
+                    "INNER JOIN user_vocabulary uv ON ut.user_vocab_id = uv.user_vocab_id " +
+                    "WHERE uv.word_id = ?";
             List<Map<String, Object>> tagList = jdbcTemplate.queryForList(sql, wordId);
             for (Map<String, Object> tag : tagList) {
                 tags.add((String) tag.get("tag_name"));

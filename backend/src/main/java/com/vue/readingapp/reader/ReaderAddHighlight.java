@@ -148,17 +148,17 @@ public class ReaderAddHighlight {
 
             String token = authHeader.substring(7);
 
-            // 验证token
+            // 验证token：直接在SQL中检查有效期，确保时区一致性
             String tokenSql = "SELECT user_id FROM user_sessions WHERE access_token = ? AND expires_at > NOW()";
             List<Map<String, Object>> sessions = jdbcTemplate.queryForList(tokenSql, token);
 
             if (sessions.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                        new HighlightResponse(false, "登录已过期，请重新登录", null)
+                        new HighlightResponse(false, "登录已过期或无效，请重新登录", null)
                 );
             }
 
-            int userId = (int) sessions.get(0).get("user_id");
+            int userId = ((Number) sessions.get(0).get("user_id")).intValue();
 
             // 2. 验证文档权限
             String docSql = "SELECT * FROM documents WHERE document_id = ? AND (user_id = ? OR is_public = true)";
@@ -264,8 +264,20 @@ public class ReaderAddHighlight {
 
             highlightData.setColor((String) highlight.get("color"));
             highlightData.setNote((String) highlight.get("note"));
-            highlightData.setCreatedAt((LocalDateTime) highlight.get("created_at"));
-            highlightData.setUpdatedAt((LocalDateTime) highlight.get("updated_at"));
+            
+            Object createdAt = highlight.get("created_at");
+            if (createdAt instanceof java.sql.Timestamp) {
+                highlightData.setCreatedAt(((java.sql.Timestamp) createdAt).toLocalDateTime());
+            } else if (createdAt instanceof LocalDateTime) {
+                highlightData.setCreatedAt((LocalDateTime) createdAt);
+            }
+
+            Object updatedAt = highlight.get("updated_at");
+            if (updatedAt instanceof java.sql.Timestamp) {
+                highlightData.setUpdatedAt(((java.sql.Timestamp) updatedAt).toLocalDateTime());
+            } else if (updatedAt instanceof LocalDateTime) {
+                highlightData.setUpdatedAt((LocalDateTime) updatedAt);
+            }
 
             HighlightResponse response = new HighlightResponse(true, "高亮已添加", highlightData);
             printResponse(response);

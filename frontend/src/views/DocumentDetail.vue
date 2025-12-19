@@ -115,7 +115,6 @@
           <button class="btn-secondary" @click="toggleFavorite">
             {{ docData.isFavorite ? '取消收藏' : '添加到收藏' }}
           </button>
-          <button class="btn-outline" @click="exportDocument">导出文档</button>
           <button class="btn-outline" @click="showNotes">查看笔记</button>
           <button class="btn-danger" @click="deleteDocument">删除文档</button>
         </div>
@@ -270,10 +269,6 @@ const toggleFavorite = () => {
     docData.value.isFavorite = !docData.value.isFavorite
     showToast(docData.value.isFavorite ? '已添加到收藏' : '已取消收藏', 'success')
   }
-}
-
-const exportDocument = () => {
-  showToast('导出功能开发中', 'info')
 }
 
 const showNotes = () => {

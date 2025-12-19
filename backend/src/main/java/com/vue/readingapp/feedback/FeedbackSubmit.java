@@ -72,6 +72,16 @@ public class FeedbackSubmit {
 
         public Map<String, Object> getMetadata() { return metadata; }
         public void setMetadata(Map<String, Object> metadata) { this.metadata = metadata; }
+
+        @Override
+        public String toString() {
+            return "SubmitRequest{" +
+                    "title='" + title + '\'' +
+                    ", content='" + content + '\'' +
+                    ", type='" + type + '\'' +
+                    ", priority='" + priority + '\'' +
+                    '}';
+        }
     }
 
     public static class Attachment {
@@ -109,6 +119,15 @@ public class FeedbackSubmit {
 
         public FeedbackData getData() { return data; }
         public void setData(FeedbackData data) { this.data = data; }
+
+        @Override
+        public String toString() {
+            return "SubmitResponse{" +
+                    "success=" + success +
+                    ", message='" + message + '\'' +
+                    ", data=" + data +
+                    '}';
+        }
     }
 
     public static class FeedbackData {
@@ -198,9 +217,7 @@ public class FeedbackSubmit {
             String actualUserId = null;
             String userName = "匿名用户";
 
-            if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                String token = authHeader.substring(7);
-                // 从token中获取用户信息（简化处理）
+            if (userId != null && !userId.isEmpty()) {
                 String userSql = "SELECT user_id, username FROM users WHERE user_id = ?";
                 List<Map<String, Object>> users = jdbcTemplate.queryForList(userSql, userId);
 
@@ -212,8 +229,21 @@ public class FeedbackSubmit {
             }
 
             if (actualUserId == null) {
-                // 如果没有用户ID，使用默认值（课设简化处理）
-                actualUserId = "user_anonymous";
+                // 如果没有获取到用户ID，尝试获取数据库中第一个用户作为兜底（课设简化处理）
+                try {
+                    List<Map<String, Object>> firstUser = jdbcTemplate.queryForList("SELECT user_id, username FROM users LIMIT 1");
+                    if (!firstUser.isEmpty()) {
+                        actualUserId = String.valueOf(firstUser.get(0).get("user_id"));
+                        userName = (String) firstUser.get(0).get("username");
+                    } else {
+                        // 实在没有用户，返回错误
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                                new SubmitResponse(false, "请先登录后再提交反馈", null)
+                        );
+                    }
+                } catch (Exception e) {
+                    actualUserId = "1"; // 最后的保底
+                }
             }
 
             // 2. 验证请求数据
@@ -271,7 +301,7 @@ public class FeedbackSubmit {
 
             int rowsAffected = jdbcTemplate.update(insertSql,
                     feedbackId,
-                    actualUserId,
+                    Integer.parseInt(actualUserId),
                     request.getTitle(),
                     request.getContent(),
                     type,

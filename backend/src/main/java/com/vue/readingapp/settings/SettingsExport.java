@@ -61,30 +61,19 @@ public class SettingsExport {
             String accessToken = authHeader.substring(7);
 
             // 2. 查询会话信息
-            String sessionSql = "SELECT user_id, expires_at FROM user_sessions WHERE access_token = ?";
+            String sessionSql = "SELECT user_id FROM user_sessions WHERE access_token = ? AND expires_at > NOW()";
             List<Map<String, Object>> sessions = jdbcTemplate.queryForList(sessionSql, accessToken);
 
             if (sessions.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
                         new HashMap<String, Object>() {{
                             put("success", false);
-                            put("message", "会话已过期，请重新登录");
+                            put("message", "会话已过期或无效，请重新登录");
                         }}
                 );
             }
 
-            Map<String, Object> session = sessions.get(0);
-            Integer userId = (Integer) session.get("user_id");
-            LocalDateTime expiresAt = (LocalDateTime) session.get("expires_at");
-
-            if (expiresAt.isBefore(LocalDateTime.now())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                        new HashMap<String, Object>() {{
-                            put("success", false);
-                            put("message", "会话已过期，请重新登录");
-                        }}
-                );
-            }
+            Integer userId = (Integer) sessions.get(0).get("user_id");
 
             // 3. 查询用户信息
             String userSql = "SELECT username, email, nickname, avatar_url FROM users WHERE user_id = ?";

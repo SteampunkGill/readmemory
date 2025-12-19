@@ -383,8 +383,9 @@ public class UserUpdatePreferences {
             newPreferences.put("notification", notificationPrefs);
 
             // 7. 更新用户偏好设置
-            // 将Map转换为JSON字符串（简化处理，使用toString）
-            String newPreferencesJson = newPreferences.toString();
+            // 使用 Jackson 将 Map 转换为真正的 JSON 字符串
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            String newPreferencesJson = mapper.writeValueAsString(newPreferences);
 
             String updateSql = "UPDATE users SET preferences = ? WHERE user_id = ?";
             int rowsUpdated = jdbcTemplate.update(updateSql, newPreferencesJson, userId);
@@ -411,28 +412,26 @@ public class UserUpdatePreferences {
 
             Map<String, Object> updatedUser = updatedUsers.get(0);
 
-            // 9. 格式化用户信息（处理可能的类型转换问题）
+            // 9. 格式化用户信息（处理 Timestamp 到 LocalDateTime 的转换）
+            Object createdAtObj = updatedUser.get("created_at");
+            Object lastLoginObj = updatedUser.get("last_login_at");
+            
             LocalDateTime createdAt = null;
-            LocalDateTime lastLoginAt = null;
-            
-            try {
-                createdAt = (LocalDateTime) updatedUser.get("created_at");
-            } catch (ClassCastException e) {
-                // 如果转换失败，尝试从字符串解析
-                String dateStr = (String) updatedUser.get("created_at");
-                if (dateStr != null && !dateStr.isEmpty()) {
-                    createdAt = LocalDateTime.parse(dateStr.replace(" ", "T"));
-                }
+            if (createdAtObj instanceof java.sql.Timestamp) {
+                createdAt = ((java.sql.Timestamp) createdAtObj).toLocalDateTime();
+            } else if (createdAtObj instanceof LocalDateTime) {
+                createdAt = (LocalDateTime) createdAtObj;
+            } else if (createdAtObj instanceof String) {
+                createdAt = LocalDateTime.parse(((String) createdAtObj).replace(" ", "T"));
             }
-            
-            try {
-                lastLoginAt = (LocalDateTime) updatedUser.get("last_login_at");
-            } catch (ClassCastException e) {
-                // 如果转换失败，尝试从字符串解析
-                String dateStr = (String) updatedUser.get("last_login_at");
-                if (dateStr != null && !dateStr.isEmpty()) {
-                    lastLoginAt = LocalDateTime.parse(dateStr.replace(" ", "T"));
-                }
+
+            LocalDateTime lastLoginAt = null;
+            if (lastLoginObj instanceof java.sql.Timestamp) {
+                lastLoginAt = ((java.sql.Timestamp) lastLoginObj).toLocalDateTime();
+            } else if (lastLoginObj instanceof LocalDateTime) {
+                lastLoginAt = (LocalDateTime) lastLoginObj;
+            } else if (lastLoginObj instanceof String) {
+                lastLoginAt = LocalDateTime.parse(((String) lastLoginObj).replace(" ", "T"));
             }
             
             UserData userData = new UserData(

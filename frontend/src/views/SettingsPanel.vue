@@ -452,10 +452,6 @@ const submitFeedback = () => {
   transition: transform 0.3s ease;
 }
 
-.profile-avatar:hover {
-  transform: scale(1.1) rotate(5deg);
-}
-
 .profile-header input[type="text"] {
   font-family: var(--font-heading);
   font-size: 28px;

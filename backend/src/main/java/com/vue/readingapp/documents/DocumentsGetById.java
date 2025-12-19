@@ -177,22 +177,12 @@ public class DocumentsGetById {
             String token = authHeader.substring(7);
 
             // 验证token
-            String tokenSql = "SELECT user_id, expires_at, NOW() as current_db_time FROM user_sessions WHERE access_token = ?";
+            String tokenSql = "SELECT user_id FROM user_sessions WHERE access_token = ? AND expires_at > NOW()";
             List<Map<String, Object>> tokenResults = jdbcTemplate.queryForList(tokenSql, token);
             
             if (tokenResults.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                        new DocumentDetailResponse(false, "登录已过期，请重新登录", null)
-                );
-            }
-
-            Map<String, Object> sessionMap = tokenResults.get(0);
-            LocalDateTime expiresAt = convertToLocalDateTime(sessionMap.get("expires_at"));
-            LocalDateTime dbNow = convertToLocalDateTime(sessionMap.get("current_db_time"));
-
-            if (expiresAt != null && dbNow != null && expiresAt.isBefore(dbNow)) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                        new DocumentDetailResponse(false, "登录已过期，请重新登录", null)
+                        new DocumentDetailResponse(false, "登录已过期或无效，请重新登录", null)
                 );
             }
 
