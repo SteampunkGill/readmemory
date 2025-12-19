@@ -22,7 +22,7 @@
         <span class="value">{{ knownWordsCount }}</span>
       </div>
       <div class="stat-item">
-        <span class="label">待复习</span>
+        <span class="label">今日收藏</span>
         <span class="value">{{ dueCount }}</span>
       </div>
       <div class="stat-item">
@@ -31,25 +31,12 @@
       </div>
     </div>
 
-    <!-- 复习计划设置 -->
+    <!-- 复习计划设置 (已简化为只复习今日收藏) -->
     <div class="plan-settings-card">
-      <h3>复习计划设置</h3>
+      <h3>复习模式</h3>
       <div class="settings-row">
         <div class="setting-group">
-          <label>复习模式：</label>
-          <select v-model="reviewMode" class="styled-select">
-            <option value="spaced">记忆曲线 (推荐)</option>
-            <option value="daily">按日期复习</option>
-            <option value="recent">最近一周</option>
-          </select>
-        </div>
-        <div class="setting-group" v-if="reviewMode === 'daily'">
-          <label>选择日期：</label>
-          <select v-model="selectedDate" class="styled-select">
-            <option v-for="d in availableDates" :key="d.date" :value="d.date">
-              {{ d.date }} ({{ d.count }}词)
-            </option>
-          </select>
+          <p style="color: var(--primary-color); font-weight: bold;">✨ 当前模式：只复习今天收藏的单词</p>
         </div>
       </div>
     </div>
@@ -171,10 +158,8 @@ export default {
     },
 
     startReview(path) {
-      const query = { mode: this.reviewMode };
-      if (this.reviewMode === 'daily' && this.selectedDate) {
-        query.date = this.selectedDate;
-      }
+      // 强制使用 spaced 模式，后端已修改该模式下只返回今日收藏
+      const query = { mode: 'spaced' };
       this.$router.push({ path, query });
     }
   },

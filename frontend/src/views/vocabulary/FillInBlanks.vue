@@ -139,7 +139,7 @@ export default {
         const result = await response.json();
 
         if (result.success && result.data.words && result.data.words.length > 0) {
-          this.processQuizData(result.data.words);
+          this.processQuizData(result.data.words, result.data.distractorPool || []);
         } else {
           this.quizList = [];
         }
@@ -151,8 +151,26 @@ export default {
       }
     },
 
-    processQuizData(words) {
-      const shuffledWords = [...words].sort(() => 0.5 - Math.random());
+    processQuizData(words, distractorPool) {
+      // 模拟干扰项，用于词库不足时的兜底
+      const mockDistractors = [
+        { id: -301, word: 'strategy', definition: '策略；战略', phonetic: '/ˈstrætədʒi/' },
+        { id: -302, word: 'resource', definition: '资源；财力', phonetic: '/rɪˈsɔːs/' },
+        { id: -303, word: 'quality', definition: '质量；品质', phonetic: '/ˈkwɒləti/' },
+        { id: -304, word: 'performance', definition: '性能；表演', phonetic: '/pəˈfɔːməns/' },
+        { id: -305, word: 'management', definition: '管理；经营', phonetic: '/ˈmænɪdʒmənt/' },
+        { id: -306, word: 'investment', definition: '投资；投入', phonetic: '/ɪnˈvestmənt/' },
+        { id: -307, word: 'environment', definition: '环境；外界', phonetic: '/ɪnˈvaɪrənmənt/' },
+        { id: -308, word: 'community', definition: '社区；团体', phonetic: '/kəˈmjuːnəti/' },
+        { id: -309, word: 'analysis', definition: '分析；解析', phonetic: '/əˈnæləsɪs/' },
+        { id: -310, word: 'benefit', definition: '利益；好处', phonetic: '/ˈbenɪfɪt/' },
+        { id: -311, word: 'category', definition: '类别；范畴', phonetic: '/ˈkætəɡəri/' },
+        { id: -312, word: 'delivery', definition: '交付；递送', phonetic: '/dɪˈlɪvəri/' }
+      ];
+
+      // 过滤掉没有例句的单词，确保题目符合“选词填空”
+      const validWords = words.filter(w => w.sentence || w.example);
+      const shuffledWords = [...validWords].sort(() => 0.5 - Math.random());
       
       this.quizList = shuffledWords.map(word => {
         // 处理句子：后端可能返回 example 字段，如果没有占位符则动态替换
@@ -162,11 +180,32 @@ export default {
           sentence = sentence.replace(regex, '_______');
         }
 
-        // 生成干扰项
-        const distractors = words
-          .filter(w => w.id !== word.id)
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 3);
+        // 1. 优先从后端提供的真实干扰项池中选择
+        let distractors = [];
+        if (distractorPool && distractorPool.length > 0) {
+          distractors = distractorPool
+            .filter(d => d.word !== word.word && d.word && d.word.trim() !== '')
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3);
+        }
+        
+        // 2. 如果干扰项不足，从当前复习单词列表中补充
+        if (distractors.length < 3) {
+          const additional = words
+            .filter(w => w.id !== word.id && !distractors.find(d => d.id === w.id) && w.word)
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3 - distractors.length);
+          distractors = [...distractors, ...additional];
+        }
+
+        // 3. 如果仍然不足 3 个，使用模拟干扰项兜底
+        if (distractors.length < 3) {
+          const mocks = mockDistractors
+            .filter(m => m.word !== word.word && !distractors.find(d => d.word === m.word))
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3 - distractors.length);
+          distractors = [...distractors, ...mocks];
+        }
         
         const options = [...distractors, word].sort(() => 0.5 - Math.random());
 

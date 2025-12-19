@@ -97,6 +97,8 @@
 /* eslint-disable vue/multi-word-component-names */
 import { ref, computed, onMounted } from 'vue'
 import { defineOptions } from 'vue'
+import { API_BASE_URL } from '@/config'
+import { auth } from '@/utils/auth'
 
 // 模拟数据，用于后端接口不可用时
 const mockCards = [
@@ -126,7 +128,7 @@ const progress = computed(() => total.value > 0 ? (completed.value / total.value
 
 // 获取 Token 的辅助函数
 const getAuthHeader = () => ({
-  'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+  'Authorization': `Bearer ${auth.getToken()}`,
   'Content-Type': 'application/json'
 })
 
@@ -134,24 +136,30 @@ const getAuthHeader = () => ({
 const fetchCards = async () => {
   loading.value = true
   try {
-    const response = await fetch('http://localhost:8080/api/v1/vocabulary?pageSize=50', {
+    // 修改为调用 review/due-words 接口，以获取今日收藏的单词
+    const response = await fetch(`${API_BASE_URL}/review/due-words?limit=50&mode=spaced`, {
       method: 'GET',
       headers: getAuthHeader()
     })
     
     if (!response.ok) throw new Error('Fetch failed')
     
-    const data = await response.json()
-    // 数据映射：将后端字段映射到前端使用的字段
-    cards.value = data.items.map(item => ({
-      id: item.id,
-      word: item.word,
-      phonetic: item.phonetic || '',
-      meaning: item.definition,
-      example: item.exampleSentence,
-      hint: item.tags ? item.tags.join(', ') : ''
-    }))
-    total.value = cards.value.length
+    const result = await response.json()
+    if (result.success && result.data.words) {
+      // 数据映射：将后端字段映射到前端使用的字段
+      cards.value = result.data.words.map(item => ({
+        id: item.id,
+        word: item.word,
+        phonetic: item.phonetic || '',
+        meaning: item.definition,
+        example: item.example,
+        hint: item.source ? `来源: ${item.source}` : ''
+      }))
+      total.value = cards.value.length
+    } else {
+      cards.value = []
+      total.value = 0
+    }
   } catch (error) {
     console.error('获取后端数据失败，使用模拟数据:', error)
     cards.value = [...mockCards]
@@ -167,7 +175,7 @@ const submitProgress = async (cardId, status) => {
   const backendStatus = status === 'known' ? 'mastered' : 'learning'
   
   try {
-    await fetch('http://localhost:8080/api/v1/vocabulary/progress', {
+    await fetch(`${API_BASE_URL}/vocabulary/progress`, {
       method: 'POST',
       headers: getAuthHeader(),
       body: JSON.stringify({
@@ -183,7 +191,7 @@ const submitProgress = async (cardId, status) => {
 // 获取设置
 const fetchReviewSettings = async () => {
   try {
-    const response = await fetch('http://localhost:8080/api/v1/user/settings/review', {
+    const response = await fetch(`${API_BASE_URL}/user/settings/review`, {
       method: 'GET',
       headers: getAuthHeader()
     })
@@ -257,7 +265,7 @@ const closeSettings = () => {
 
 const saveSettings = async () => {
   try {
-    const response = await fetch('http://localhost:8080/api/v1/user/settings/review', {
+    const response = await fetch(`${API_BASE_URL}/user/settings/review`, {
       method: 'PUT',
       headers: getAuthHeader(),
       body: JSON.stringify({
@@ -276,7 +284,7 @@ const saveSettings = async () => {
 
 const fetchStats = async () => {
   try {
-    const response = await fetch('http://localhost:8080/api/v1/user/learning-stats', {
+    const response = await fetch(`${API_BASE_URL}/user/learning-stats`, {
       method: 'GET',
       headers: getAuthHeader()
     })

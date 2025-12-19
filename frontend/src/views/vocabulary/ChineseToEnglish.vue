@@ -131,7 +131,7 @@ export default {
         const result = await response.json();
         
         if (result.success && result.data.words && result.data.words.length > 0) {
-          this.processQuizData(result.data.words);
+          this.processQuizData(result.data.words, result.data.distractorPool || []);
         } else {
           this.quizList = [];
         }
@@ -144,15 +144,57 @@ export default {
     },
 
     // 处理原始单词列表，生成题目和干扰项
-    processQuizData(words) {
-      const shuffled = [...words].sort(() => 0.5 - Math.random());
+    processQuizData(words, distractorPool) {
+      // 模拟干扰项，用于词库不足时的兜底
+      const mockDistractors = [
+        { id: -201, word: 'achieve', definition: '达到；完成', phonetic: '/əˈtʃiːv/' },
+        { id: -202, word: 'believe', definition: '相信；认为', phonetic: '/bɪˈliːv/' },
+        { id: -203, word: 'consider', definition: '考虑；认为', phonetic: '/kənˈsɪdə/' },
+        { id: -204, word: 'discover', definition: '发现；发觉', phonetic: '/dɪˈskʌvə/' },
+        { id: -205, word: 'establish', definition: '建立；确立', phonetic: '/ɪˈstæblɪʃ/' },
+        { id: -206, word: 'improve', definition: '改善；提高', phonetic: '/ɪmˈpruːv/' },
+        { id: -207, word: 'maintain', definition: '维持；保养', phonetic: '/meɪnˈteɪn/' },
+        { id: -208, word: 'provide', definition: '提供；规定', phonetic: '/prəˈvaɪd/' },
+        { id: -209, word: 'require', definition: '需要；要求', phonetic: '/rɪˈkwaɪə/' },
+        { id: -210, word: 'suggest', definition: '建议；暗示', phonetic: '/səˈdʒest/' },
+        { id: -211, word: 'understand', definition: '理解；明白', phonetic: '/ˌʌndəˈstænd/' },
+        { id: -212, word: 'prepare', definition: '准备；预备', phonetic: '/prɪˈpeə/' }
+      ];
+
+      // 检查是否包含中文字符的辅助正则
+      const hasChinese = /[\u4e00-\u9fa5]/;
+
+      // 过滤掉没有中文定义的单词，确保题目符合“看义选英”
+      const validWords = words.filter(w => w.definition && hasChinese.test(w.definition));
+      const shuffled = [...validWords].sort(() => 0.5 - Math.random());
       
       this.quizList = shuffled.map(word => {
-        // 从当前单词池中选出其他单词作为干扰项
-        const distractors = words
-          .filter(w => w.id !== word.id)
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 3);
+        // 1. 优先从后端提供的真实干扰项池中选择（确保是英文单词）
+        let distractors = [];
+        if (distractorPool && distractorPool.length > 0) {
+          distractors = distractorPool
+            .filter(d => d.word !== word.word && d.word && d.word.trim() !== '')
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3);
+        }
+        
+        // 2. 如果干扰项不足，从当前复习单词列表中补充
+        if (distractors.length < 3) {
+          const additional = words
+            .filter(w => w.id !== word.id && !distractors.find(d => d.id === w.id) && w.word)
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3 - distractors.length);
+          distractors = [...distractors, ...additional];
+        }
+
+        // 3. 如果仍然不足 3 个，使用模拟干扰项兜底
+        if (distractors.length < 3) {
+          const mocks = mockDistractors
+            .filter(m => m.word !== word.word && !distractors.find(d => d.word === m.word))
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3 - distractors.length);
+          distractors = [...distractors, ...mocks];
+        }
           
         const options = [...distractors, word].sort(() => 0.5 - Math.random());
         

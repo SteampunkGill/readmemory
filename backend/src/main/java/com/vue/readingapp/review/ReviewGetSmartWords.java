@@ -221,8 +221,10 @@ public class ReviewGetSmartWords {
             sqlBuilder.append("LEFT JOIN word_definitions wd ON w.word_id = wd.word_id ");
             sqlBuilder.append("LEFT JOIN word_examples we ON w.word_id = we.word_id ");
             sqlBuilder.append("WHERE uv.user_id = ? ");
-            sqlBuilder.append("AND uv.is_mastered = 0 ");
-            sqlBuilder.append("AND uv.next_review_date <= DATE_ADD(NOW(), INTERVAL 30 DAY) ");
+            // 修改为只复习今天收藏的单词
+            sqlBuilder.append("AND DATE(uv.created_at) = CURDATE() ");
+            sqlBuilder.append("AND uv.status != 'mastered' ");
+            sqlBuilder.append("AND uv.source IS NOT NULL AND uv.source != '' "); // 只复习收藏的词
 
             params.add(userId);
 

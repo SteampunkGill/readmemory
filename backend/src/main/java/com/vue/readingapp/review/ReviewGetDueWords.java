@@ -81,17 +81,22 @@ public class ReviewGetDueWords {
      */
     public static class DueWordsData {
         private List<DueWord> words; // 单词列表
+        private List<Map<String, Object>> distractorPool; // 干扰项池
         private int total;           // 生词本总单词数
         private int due_count;       // 当前到期需复习的单词总数
 
-        public DueWordsData(List<DueWord> words, int total, int due_count) {
+        public DueWordsData(List<DueWord> words, List<Map<String, Object>> distractorPool, int total, int due_count) {
             this.words = words;
+            this.distractorPool = distractorPool;
             this.total = total;
             this.due_count = due_count;
         }
 
         public List<DueWord> getWords() { return words; }
         public void setWords(List<DueWord> words) { this.words = words; }
+
+        public List<Map<String, Object>> getDistractorPool() { return distractorPool; }
+        public void setDistractorPool(List<Map<String, Object>> distractorPool) { this.distractorPool = distractorPool; }
 
         public int getTotal() { return total; }
         public void setTotal(int total) { this.total = total; }
@@ -220,7 +225,7 @@ public class ReviewGetDueWords {
                 );
             }
 
-            int userId = (int) users.get(0).get("user_id");
+            int userId = ((Number) users.get(0).get("user_id")).intValue();
 
             // 2. 动态构建 SQL 查询语句
             StringBuilder sqlBuilder = new StringBuilder();
@@ -245,9 +250,12 @@ public class ReviewGetDueWords {
             sqlBuilder.append("FROM user_vocabulary uv ");
             sqlBuilder.append("JOIN words w ON uv.word_id = w.word_id ");
             sqlBuilder.append("WHERE uv.user_id = ? ");
-            sqlBuilder.append("AND uv.status != 'mastered' "); // 排除已完全掌握的单词
-            // 筛选已经到期或未来 7 天内即将到期的单词
-            sqlBuilder.append("AND (uv.next_review_at IS NULL OR uv.next_review_at <= DATE_ADD(NOW(), INTERVAL 7 DAY)) ");
+            // 修改为只复习今天收藏的单词
+            sqlBuilder.append("AND DATE(uv.created_at) = CURDATE() ");
+            // 依然排除已完全掌握的单词（可选，但通常今天收藏的不会是 mastered）
+            sqlBuilder.append("AND uv.status != 'mastered' ");
+            // 只复习有来源的单词（即阅读时收藏的单词）
+            sqlBuilder.append("AND uv.source IS NOT NULL AND uv.source != '' ");
 
             params.add(userId);
 
@@ -267,7 +275,7 @@ public class ReviewGetDueWords {
 
             // 限制返回数量
             sqlBuilder.append("LIMIT ?");
-            params.add(Math.min(limit, 100)); 
+            params.add(Math.min(limit, 100));
 
             // 3. 执行查询
             List<Map<String, Object>> dueWordsList = jdbcTemplate.queryForList(
@@ -277,15 +285,15 @@ public class ReviewGetDueWords {
             List<DueWord> dueWords = new ArrayList<>();
             for (Map<String, Object> row : dueWordsList) {
                 DueWord dueWord = new DueWord();
-                dueWord.setId((int) row.get("user_vocab_id"));
+                dueWord.setId(((Number) row.get("user_vocab_id")).intValue());
                 dueWord.setWord((String) row.get("word"));
                 dueWord.setLanguage((String) row.get("language"));
                 dueWord.setDefinition((String) row.get("definition"));
                 dueWord.setExample((String) row.get("example"));
                 dueWord.setPhonetic((String) row.get("phonetic"));
                 dueWord.setPart_of_speech((String) row.get("part_of_speech"));
-                dueWord.setMastery_level((int) row.get("mastery_level"));
-                dueWord.setReview_count((int) row.get("review_count"));
+                dueWord.setMastery_level(((Number) row.get("mastery_level")).intValue());
+                dueWord.setReview_count(((Number) row.get("review_count")).intValue());
 
                 if (row.get("last_reviewed_at") != null) {
                     dueWord.setLast_reviewed_at(row.get("last_reviewed_at").toString());
@@ -297,27 +305,44 @@ public class ReviewGetDueWords {
                 dueWord.setDifficulty((String) row.get("difficulty"));
                 dueWord.setSource((String) row.get("source"));
                 dueWord.setDue_reason((String) row.get("due_reason"));
-                dueWord.setPriority((int) row.get("priority"));
+                dueWord.setPriority(((Number) row.get("priority")).intValue());
 
                 // 获取该单词关联的标签
-                List<String> tags = getTagsForUserVocabulary((int) row.get("user_vocab_id"));
+                List<String> tags = getTagsForUserVocabulary(((Number) row.get("user_vocab_id")).intValue());
                 dueWord.setTags(tags);
 
                 dueWords.add(dueWord);
             }
 
-            // 5. 获取全局统计数据
-            // 统计生词本中未掌握的总数
-            String countSql = "SELECT COUNT(*) as total FROM user_vocabulary WHERE user_id = ? AND status != 'mastered'";
+            // 5. 获取干扰项池：从全局词典中随机抽取真实单词作为干扰项
+            String distractorSql = "SELECT w.word_id as id, w.word, " +
+                    "(SELECT definition FROM word_definitions WHERE word_id = w.word_id LIMIT 1) as definition, " +
+                    "w.phonetic FROM words w " +
+                    "WHERE w.word IS NOT NULL AND w.word != '' " +
+                    "AND EXISTS (SELECT 1 FROM word_definitions WHERE word_id = w.word_id) " +
+                    "ORDER BY RAND() LIMIT 50";
+            List<Map<String, Object>> distractorPool = jdbcTemplate.queryForList(distractorSql);
+
+            // 兜底：如果全局词典为空，从用户已有的生词本中获取干扰项
+            if (distractorPool.isEmpty()) {
+                String fallbackSql = "SELECT user_vocab_id as id, word, definition, phonetic FROM user_vocabulary " +
+                        "WHERE definition IS NOT NULL AND definition != '' " +
+                        "ORDER BY RAND() LIMIT 50";
+                distractorPool = jdbcTemplate.queryForList(fallbackSql);
+            }
+
+            // 6. 获取全局统计数据
+            // 统计生词本中今天收藏且未掌握的总数
+            String countSql = "SELECT COUNT(*) as total FROM user_vocabulary WHERE user_id = ? AND DATE(created_at) = CURDATE() AND status != 'mastered' AND source IS NOT NULL AND source != ''";
             int total = jdbcTemplate.queryForObject(countSql, Integer.class, userId);
 
-            // 统计当前已经到期（需立即复习）的数量
+            // 统计当前已经到期（需立即复习）的数量 - 这里也改为今天收藏的数量
             String dueCountSql = "SELECT COUNT(*) as due_count FROM user_vocabulary " +
-                    "WHERE user_id = ? AND status != 'mastered' AND (next_review_at IS NULL OR next_review_at <= NOW())";
+                    "WHERE user_id = ? AND DATE(created_at) = CURDATE() AND status != 'mastered' AND source IS NOT NULL AND source != ''";
             int dueCount = jdbcTemplate.queryForObject(dueCountSql, Integer.class, userId);
 
-            // 6. 返回响应
-            DueWordsData data = new DueWordsData(dueWords, total, dueCount);
+            // 7. 返回响应
+            DueWordsData data = new DueWordsData(dueWords, distractorPool, total, dueCount);
             DueWordsResponse response = new DueWordsResponse(true, "获取待复习单词成功", data);
             printResponse(response);
 

@@ -137,7 +137,7 @@ export default {
         const result = await response.json();
 
         if (result.success && result.data.words && result.data.words.length > 0) {
-          this.generateQuiz(result.data.words);
+          this.generateQuiz(result.data.words, result.data.distractorPool || []);
         } else {
           this.quizList = [];
         }
@@ -150,15 +150,58 @@ export default {
     },
 
     // 生成题目逻辑：将原始单词列表转换为带有干扰项的题目格式
-    generateQuiz(words) {
-      const shuffled = [...words].sort(() => 0.5 - Math.random());
+    generateQuiz(words, distractorPool) {
+      // 模拟干扰项，仅在极端情况下（后端未返回任何干扰项）使用
+      const mockDistractors = [
+        { id: -101, word: 'perspective', definition: '观点；远景', phonetic: '/pəˈspektɪv/' },
+        { id: -102, word: 'significant', definition: '重大的；有意义的', phonetic: '/sɪɡˈnɪfɪkənt/' },
+        { id: -103, word: 'innovation', definition: '创新；变革', phonetic: '/ˌɪnəˈveɪʃn/' },
+        { id: -104, word: 'sustainable', definition: '可持续的；养得起的', phonetic: '/səˈsteɪnəbl/' },
+        { id: -105, word: 'comprehensive', definition: '全面的；广泛的', phonetic: '/ˌkɒmprɪˈhensɪv/' },
+        { id: -106, word: 'implementation', definition: '实施；执行', phonetic: '/ˌɪmplɪmenˈteɪʃn/' },
+        { id: -107, word: 'collaboration', definition: '合作；协作', phonetic: '/kəˌlæbəˈreɪʃn/' },
+        { id: -108, word: 'efficiency', definition: '效率；效能', phonetic: '/ɪˈfɪʃnsi/' },
+        { id: -109, word: 'transformation', definition: '转化；转换', phonetic: '/ˌtrænsfəˈmeɪʃn/' },
+        { id: -110, word: 'infrastructure', definition: '基础设施；公共建设', phonetic: '/ˈɪnfrəstrʌktʃə/' },
+        { id: -111, word: 'consequence', definition: '后果；结果', phonetic: '/ˈkɒnsɪkwəns/' },
+        { id: -112, word: 'fundamental', definition: '基本的；根本的', phonetic: '/ˌfʌndəˈmentl/' }
+      ];
+
+      // 检查是否包含中文字符的辅助正则
+      const hasChinese = /[\u4e00-\u9fa5]/;
+
+      // 过滤掉没有中文定义的单词，确保题目符合“看英选义”且选项为中文
+      const validWords = words.filter(w => w.definition && hasChinese.test(w.definition));
+      const shuffled = [...validWords].sort(() => 0.5 - Math.random());
       
       this.quizList = shuffled.map(word => {
-        // 从池子中选出除正确答案外的其他单词作为干扰项
-        const otherWords = words.filter(w => w.id !== word.id);
-        const distractors = otherWords
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 3);
+        // 1. 优先从后端提供的真实干扰项池中选择
+        let distractors = [];
+        if (distractorPool && distractorPool.length > 0) {
+          // 过滤掉当前单词本身，并确保包含中文字符的定义
+          distractors = distractorPool
+            .filter(d => d.word !== word.word && d.definition && hasChinese.test(d.definition))
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3);
+        }
+        
+        // 2. 如果干扰项不足 3 个，从当前复习单词列表中补充（必须包含中文定义）
+        if (distractors.length < 3) {
+          const additional = words
+            .filter(w => w.id !== word.id && !distractors.find(d => d.id === w.id) && w.definition && hasChinese.test(w.definition))
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3 - distractors.length);
+          distractors = [...distractors, ...additional];
+        }
+
+        // 3. 如果仍然不足 3 个，使用模拟干扰项兜底（确保选项永远是中文）
+        if (distractors.length < 3) {
+          const mocks = mockDistractors
+            .filter(m => m.word !== word.word && !distractors.find(d => d.word === m.word) && hasChinese.test(m.definition))
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3 - distractors.length);
+          distractors = [...distractors, ...mocks];
+        }
         
         const options = [...distractors, word].sort(() => 0.5 - Math.random());
 
