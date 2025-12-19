@@ -306,8 +306,7 @@ public class ReviewBatchSubmit {
                     "mastery_level = ?, " +
                     "review_count = review_count + 1, " +
                     "last_reviewed_at = ?, " +
-                    "next_review_date = ?, " +
-                    "is_mastered = CASE WHEN mastery_level >= 8 THEN 1 ELSE 0 END " +
+                    "next_review_at = ? " +
                     "WHERE user_vocab_id = ? AND user_id = ?";
 
             int updated = jdbcTemplate.update(updateSql,

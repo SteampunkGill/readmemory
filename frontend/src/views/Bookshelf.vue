@@ -656,7 +656,7 @@ onUnmounted(() => {
 
 .search-bar input:focus {
   border-color: var(--primary-color);
-  background-color: white;
+  background-color: #f1f2f6;
 }
 
 .search-icon {

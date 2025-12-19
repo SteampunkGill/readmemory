@@ -197,7 +197,7 @@ export default {
 
 .btn-back:hover {
   background: var(--primary-color);
-  color: white;
+  color: #f1f2f6;
 }
 
 .search-box {

@@ -597,7 +597,7 @@ onMounted(() => {
   font-weight: bold;
 }
 
-.status-badge.unprocessed { background-color: var(--accent-pink); color: white; }
+.status-badge.unprocessed { background-color: var(--accent-pink); color: #f1f2f6; }
 .status-badge.processing { background-color: var(--accent-yellow); color: var(--text-color-dark); }
 .status-badge.processed { background-color: var(--primary-light); color: var(--text-color-dark); }
 .status-badge.reading { background-color: var(--primary-color); color: var(--text-color-dark); }
@@ -751,12 +751,12 @@ onMounted(() => {
 
 .btn-outline:hover {
   background-color: var(--primary-color);
-  color: white;
+  color: #f1f2f6;
 }
 
 .btn-danger {
   background-color: #ff7675;
-  color: white;
+  color: #f1f2f6;
 }
 
 .action-buttons button:hover {

@@ -181,7 +181,7 @@ public class UserGetActivityLog {
             }
 
             Map<String, Object> session = sessions.get(0);
-            int userId = (int) session.get("user_id");
+            int userId = ((Number) session.get("user_id")).intValue();
 
             // 3. 验证参数
             if (page < 1) {

@@ -239,7 +239,7 @@ public class UserGetProfile {
             }
 
             Map<String, Object> session = sessions.get(0);
-            int userId = (int) session.get("user_id");
+            int userId = ((Number) session.get("user_id")).intValue();
 
             // 3. 查询用户信息 - 移除可能不存在的字段 bio, location, website 以避免 SQL 错误
             String userSql = "SELECT user_id, username, email, nickname, avatar_url, " +

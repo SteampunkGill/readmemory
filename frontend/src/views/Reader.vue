@@ -1049,7 +1049,7 @@ onMounted(async () => {
   margin-bottom: 4px;
 }
 .toc-list li:hover { background-color: var(--primary-light); }
-.toc-list li.active { background-color: var(--primary-color); color: white; }
+.toc-list li.active { background-color: var(--primary-color); color: #f1f2f6; }
 
 /* 主阅读区域布局 */
 .reader-container {
@@ -1129,7 +1129,7 @@ onMounted(async () => {
   margin-top: 1rem;
   width: 100%;
   background-color: var(--primary-color);
-  color: white;
+  color: #f1f2f6;
 }
 
 .popup-header {

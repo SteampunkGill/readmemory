@@ -382,7 +382,7 @@ onMounted(() => {
 .stat-card {
   flex: 1;
   min-width: 200px;
-  background-color: white;
+  background-color: #f1f2f6;
   border-radius: var(--radius-large);
   padding: 1.5rem;
   border: 3px solid var(--color-secondary);
@@ -428,18 +428,18 @@ onMounted(() => {
 
 .btn-primary {
   background-color: var(--color-primary);
-  color: white;
+  color: #f1f2f6;
   border-color: var(--color-primary);
 }
 
 .btn-secondary {
-  background-color: white;
+  background-color: #f1f2f6;
   color: var(--color-primary);
   border-color: var(--color-primary);
 }
 
 .document-list {
-  background-color: white;
+  background-color: #f1f2f6;
   border-radius: var(--radius-large);
   padding: 2rem;
   border: 3px solid var(--color-primary);
@@ -526,7 +526,7 @@ onMounted(() => {
   border-radius: var(--radius-medium);
   font-weight: bold;
   background-color: var(--color-success);
-  color: white;
+  color: #f1f2f6;
 }
 
 .status.已过期 {
@@ -547,13 +547,13 @@ onMounted(() => {
   padding: 10px 20px;
   border-radius: var(--radius-medium);
   border: 2px solid var(--color-secondary);
-  background-color: white;
+  background-color: #f1f2f6;
   font-weight: bold;
   cursor: pointer;
 }
 
 .settings {
-  background-color: white;
+  background-color: #f1f2f6;
   border-radius: var(--radius-large);
   padding: 2rem;
   border: 3px solid var(--color-primary);
@@ -597,7 +597,7 @@ onMounted(() => {
 .btn-save {
   padding: 15px 40px;
   background-color: var(--color-primary);
-  color: white;
+  color: #f1f2f6;
   border: none;
   border-radius: var(--radius-large);
   font-size: 1.2rem;
@@ -619,7 +619,7 @@ onMounted(() => {
 }
 
 .modal-content {
-  background-color: white;
+  background-color: #f1f2f6;
   padding: 3rem;
   border-radius: var(--radius-large);
   border: 5px solid var(--color-primary);
@@ -668,7 +668,7 @@ onMounted(() => {
   padding: 10px 20px;
   border-radius: var(--radius-medium);
   background-color: var(--color-primary);
-  color: white;
+  color: #f1f2f6;
   border: none;
   font-weight: bold;
   cursor: pointer;
@@ -687,7 +687,7 @@ onMounted(() => {
   padding: 12px 24px;
   border-radius: var(--radius-medium);
   background-color: var(--color-secondary);
-  color: white;
+  color: #f1f2f6;
   border: none;
   font-weight: bold;
   cursor: pointer;

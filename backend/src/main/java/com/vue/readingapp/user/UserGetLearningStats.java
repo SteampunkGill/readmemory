@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -25,8 +26,8 @@ public class UserGetLearningStats {
     }
 
     // 打印查询结果
-    private void printQueryResult(Object result) {
-        System.out.println("=== 数据库查询结果 ===");
+    private void printQueryResult(String step, Object result) {
+        System.out.println("=== 数据库查询结果 [" + step + "] ===");
         System.out.println("查询结果: " + result);
         System.out.println("===================");
     }
@@ -42,12 +43,12 @@ public class UserGetLearningStats {
     public static class LearningStatsResponse {
         private boolean success;
         private String message;
-        private LearningStatsData stats;
+        private LearningStatsData data;
 
-        public LearningStatsResponse(boolean success, String message, LearningStatsData stats) {
+        public LearningStatsResponse(boolean success, String message, LearningStatsData data) {
             this.success = success;
             this.message = message;
-            this.stats = stats;
+            this.data = data;
         }
 
         public boolean isSuccess() { return success; }
@@ -56,8 +57,8 @@ public class UserGetLearningStats {
         public String getMessage() { return message; }
         public void setMessage(String message) { this.message = message; }
 
-        public LearningStatsData getStats() { return stats; }
-        public void setStats(LearningStatsData stats) { this.stats = stats; }
+        public LearningStatsData getData() { return data; }
+        public void setData(LearningStatsData data) { this.data = data; }
     }
 
     public static class LearningStatsData {
@@ -213,7 +214,7 @@ public class UserGetLearningStats {
             }
 
             Map<String, Object> session = sessions.get(0);
-            int userId = (int) session.get("user_id");
+            int userId = ((Number) session.get("user_id")).intValue();
 
             // 3. 验证周期参数
             String[] validPeriods = {"day", "week", "month", "year", "all"};
@@ -234,47 +235,74 @@ public class UserGetLearningStats {
             // 4.1 查询总阅读时间（从reading_history表）
             String readingTimeSql = "SELECT COALESCE(SUM(TIMESTAMPDIFF(SECOND, start_time, end_time)), 0) as total_seconds " +
                     "FROM reading_history WHERE user_id = ?";
-            Map<String, Object> readingTimeResult = jdbcTemplate.queryForMap(readingTimeSql, userId);
-            int totalSeconds = ((Number) readingTimeResult.get("total_seconds")).intValue();
+            List<Map<String, Object>> readingTimeResults = jdbcTemplate.queryForList(readingTimeSql, userId);
+            int totalSeconds = 0;
+            if (!readingTimeResults.isEmpty()) {
+                Object val = readingTimeResults.get(0).get("total_seconds");
+                totalSeconds = val != null ? ((Number) val).intValue() : 0;
+            }
             stats.setTotalReadingTime(totalSeconds);
             stats.setFormattedReadingTime(formatDuration(totalSeconds));
 
             // 4.2 查询已读文档数量
             String docsSql = "SELECT COUNT(DISTINCT document_id) as count FROM reading_history WHERE user_id = ?";
-            Map<String, Object> docsResult = jdbcTemplate.queryForMap(docsSql, userId);
-            stats.setDocumentsRead(((Number) docsResult.get("count")).intValue());
+            List<Map<String, Object>> docsResults = jdbcTemplate.queryForList(docsSql, userId);
+            int docsCount = 0;
+            if (!docsResults.isEmpty()) {
+                Object val = docsResults.get(0).get("count");
+                docsCount = val != null ? ((Number) val).intValue() : 0;
+            }
+            stats.setDocumentsRead(docsCount);
 
-            // 4.3 查询已学单词数量
-            String wordsSql = "SELECT COUNT(*) as count FROM user_vocabulary WHERE user_id = ?";
-            Map<String, Object> wordsResult = jdbcTemplate.queryForMap(wordsSql, userId);
-            stats.setWordsLearned(((Number) wordsResult.get("count")).intValue());
+            // 4.3 查询已学单词数量（排除今日收藏的单词）
+            String wordsSql = "SELECT COUNT(*) as count FROM user_vocabulary WHERE user_id = ? AND DATE(created_at) < CURDATE()";
+            List<Map<String, Object>> wordsResults = jdbcTemplate.queryForList(wordsSql, userId);
+            int wordsCount = 0;
+            if (!wordsResults.isEmpty()) {
+                Object val = wordsResults.get(0).get("count");
+                wordsCount = val != null ? ((Number) val).intValue() : 0;
+            }
+            stats.setWordsLearned(wordsCount);
 
             // 4.4 查询已完成复习数量
             String reviewsSql = "SELECT COUNT(*) as count FROM review_sessions WHERE user_id = ? AND status = 'completed'";
-            Map<String, Object> reviewsResult = jdbcTemplate.queryForMap(reviewsSql, userId);
-            stats.setReviewsCompleted(((Number) reviewsResult.get("count")).intValue());
+            List<Map<String, Object>> reviewsResults = jdbcTemplate.queryForList(reviewsSql, userId);
+            int reviewsCount = 0;
+            if (!reviewsResults.isEmpty()) {
+                Object val = reviewsResults.get(0).get("count");
+                reviewsCount = val != null ? ((Number) val).intValue() : 0;
+            }
+            stats.setReviewsCompleted(reviewsCount);
 
             // 4.5 查询复习准确率
             String accuracySql = "SELECT COALESCE(AVG(accuracy), 0) as avg_accuracy FROM review_sessions " +
                     "WHERE user_id = ? AND status = 'completed'";
-            Map<String, Object> accuracyResult = jdbcTemplate.queryForMap(accuracySql, userId);
-            double accuracy = ((Number) accuracyResult.get("avg_accuracy")).doubleValue();
+            List<Map<String, Object>> accuracyResults = jdbcTemplate.queryForList(accuracySql, userId);
+            double accuracy = 0.0;
+            if (!accuracyResults.isEmpty()) {
+                Object val = accuracyResults.get(0).get("avg_accuracy");
+                accuracy = val != null ? ((Number) val).doubleValue() : 0.0;
+            }
             stats.setReviewAccuracy(accuracy);
             stats.setFormattedReviewAccuracy(formatPercentage(accuracy, 100, 1));
 
             // 4.6 查询连续学习天数
             String streakSql = "SELECT MAX(streak_days) as max_streak FROM daily_learning_stats WHERE user_id = ?";
-            Map<String, Object> streakResult = jdbcTemplate.queryForMap(streakSql, userId);
-            Object maxStreak = streakResult.get("max_streak");
-            stats.setLongestStreak(maxStreak != null ? ((Number) maxStreak).intValue() : 0);
+            List<Map<String, Object>> streakResults = jdbcTemplate.queryForList(streakSql, userId);
+            int maxStreakVal = 0;
+            if (!streakResults.isEmpty()) {
+                Object val = streakResults.get(0).get("max_streak");
+                maxStreakVal = val != null ? ((Number) val).intValue() : 0;
+            }
+            stats.setLongestStreak(maxStreakVal);
 
             // 4.7 查询今日进度
-            String todaySql = "SELECT total_study_time, words_correct, words_reviewed FROM daily_learning_stats " +
-                    "WHERE user_id = ? AND learning_date = CURDATE()";
+            String todaySql = "SELECT reading_time, words_correct, words_reviewed FROM daily_learning_stats " +
+                    "WHERE user_id = ? AND date = CURDATE()";
             List<Map<String, Object>> todayResults = jdbcTemplate.queryForList(todaySql, userId);
             if (!todayResults.isEmpty()) {
                 Map<String, Object> today = todayResults.get(0);
-                Object readingTime = today.get("total_study_time");
+                Object readingTime = today.get("reading_time");
                 Object wordsLearned = today.get("words_correct");
                 Object reviewsCompleted = today.get("words_reviewed");
                 
@@ -283,7 +311,37 @@ public class UserGetLearningStats {
                 stats.getTodayProgress().setReviewsCompleted(reviewsCompleted != null ? ((Number) reviewsCompleted).intValue() : 0);
             }
 
-            // 4.8 查询按语言统计
+            // 4.8 查询本周进度
+            String weeklySql = "SELECT SUM(reading_time) as reading_time, SUM(words_correct) as words_correct, SUM(words_reviewed) as words_reviewed " +
+                    "FROM daily_learning_stats WHERE user_id = ? AND date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+            List<Map<String, Object>> weeklyResults = jdbcTemplate.queryForList(weeklySql, userId);
+            if (!weeklyResults.isEmpty()) {
+                Map<String, Object> weekly = weeklyResults.get(0);
+                Object readingTime = weekly.get("reading_time");
+                Object wordsLearned = weekly.get("words_correct");
+                Object reviewsCompleted = weekly.get("words_reviewed");
+                
+                stats.getWeeklyProgress().setReadingTime(readingTime != null ? ((Number) readingTime).intValue() : 0);
+                stats.getWeeklyProgress().setWordsLearned(wordsLearned != null ? ((Number) wordsLearned).intValue() : 0);
+                stats.getWeeklyProgress().setReviewsCompleted(reviewsCompleted != null ? ((Number) reviewsCompleted).intValue() : 0);
+            }
+
+            // 4.9 查询本月进度
+            String monthlySql = "SELECT SUM(reading_time) as reading_time, SUM(words_correct) as words_correct, SUM(words_reviewed) as words_reviewed " +
+                    "FROM daily_learning_stats WHERE user_id = ? AND date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)";
+            List<Map<String, Object>> monthlyResults = jdbcTemplate.queryForList(monthlySql, userId);
+            if (!monthlyResults.isEmpty()) {
+                Map<String, Object> monthly = monthlyResults.get(0);
+                Object readingTime = monthly.get("reading_time");
+                Object wordsLearned = monthly.get("words_correct");
+                Object reviewsCompleted = monthly.get("words_reviewed");
+                
+                stats.getMonthlyProgress().setReadingTime(readingTime != null ? ((Number) readingTime).intValue() : 0);
+                stats.getMonthlyProgress().setWordsLearned(wordsLearned != null ? ((Number) wordsLearned).intValue() : 0);
+                stats.getMonthlyProgress().setReviewsCompleted(reviewsCompleted != null ? ((Number) reviewsCompleted).intValue() : 0);
+            }
+
+            // 4.10 查询按语言统计
             String languageSql = "SELECT language, COUNT(*) as count FROM documents d " +
                     "JOIN reading_history rh ON d.document_id = rh.document_id " +
                     "WHERE rh.user_id = ? GROUP BY language";
@@ -292,17 +350,27 @@ public class UserGetLearningStats {
                 stats.getByLanguage().put((String) lang.get("language"), lang.get("count"));
             }
 
-            // 4.9 查询成就数量
+            // 4.11 查询成就数量
             String achievementsSql = "SELECT COUNT(*) as unlocked FROM user_achievements WHERE user_id = ?";
-            Map<String, Object> achievementsResult = jdbcTemplate.queryForMap(achievementsSql, userId);
-            stats.setAchievementsUnlocked(((Number) achievementsResult.get("unlocked")).intValue());
+            List<Map<String, Object>> achievementsResults = jdbcTemplate.queryForList(achievementsSql, userId);
+            int unlockedCount = 0;
+            if (!achievementsResults.isEmpty()) {
+                Object val = achievementsResults.get(0).get("unlocked");
+                unlockedCount = val != null ? ((Number) val).intValue() : 0;
+            }
+            stats.setAchievementsUnlocked(unlockedCount);
 
             // 总成就数量
             String totalAchievementsSql = "SELECT COUNT(*) as total FROM learning_achievements";
-            Map<String, Object> totalAchievementsResult = jdbcTemplate.queryForMap(totalAchievementsSql);
-            stats.setTotalAchievements(((Number) totalAchievementsResult.get("total")).intValue());
+            List<Map<String, Object>> totalAchievementsResults = jdbcTemplate.queryForList(totalAchievementsSql);
+            int totalCount = 0;
+            if (!totalAchievementsResults.isEmpty()) {
+                Object val = totalAchievementsResults.get(0).get("total");
+                totalCount = val != null ? ((Number) val).intValue() : 0;
+            }
+            stats.setTotalAchievements(totalCount);
 
-            printQueryResult(stats);
+            printQueryResult("final", stats);
 
             // 5. 准备响应数据
             LearningStatsResponse response = new LearningStatsResponse(true, "获取学习统计成功", stats);
@@ -316,7 +384,7 @@ public class UserGetLearningStats {
             System.err.println("获取学习统计过程中发生错误: " + e.getMessage());
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new LearningStatsResponse(false, "服务器内部错误: " + e.getMessage(), null)
+                    new LearningStatsResponse(false, "服务器内部错误: " + e.getClass().getSimpleName() + " - " + e.getMessage(), null)
             );
         }
     }

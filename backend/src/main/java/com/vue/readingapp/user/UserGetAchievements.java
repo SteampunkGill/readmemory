@@ -139,10 +139,10 @@ public class UserGetAchievements {
                         new AchievementsResponse(false, "登录已过期，请重新登录", null)
                 );
             }
+Map<String, Object> session = sessions.get(0);
+int userId = ((Number) session.get("user_id")).intValue();
 
-            Map<String, Object> session = sessions.get(0);
-            int userId = (int) session.get("user_id");
-
+// 3. 查询所有成就
             // 3. 查询所有成就
             String allAchievementsSql = "SELECT achievement_id, name, description, icon_url, category, points, rarity, " +
                     "total_required FROM learning_achievements ORDER BY category, points DESC";

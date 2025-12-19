@@ -345,7 +345,7 @@ const toggleFavorite = () => {
 
 .btn-add {
   background-color: var(--color-primary);
-  color: white;
+  color: #f1f2f6;
   border: none;
 }
 
@@ -364,7 +364,7 @@ const toggleFavorite = () => {
   text-align: center;
   margin-bottom: 3rem;
   padding: 2rem;
-  background-color: white;
+  background-color: #f1f2f6;
   border-radius: var(--radius-large);
   border: 5px solid var(--color-primary);
 }
@@ -398,21 +398,21 @@ const toggleFavorite = () => {
 
 .tag.level {
   background-color: var(--color-accent);
-  color: white;
+  color: #f1f2f6;
 }
 
 .tag.part-of-speech {
   background-color: var(--color-info);
-  color: white;
+  color: #f1f2f6;
 }
 
 .tag.frequency {
   background-color: var(--color-success);
-  color: white;
+  color: #f1f2f6;
 }
 
 .section {
-  background-color: white;
+  background-color: #f1f2f6;
   padding: 2rem;
   border-radius: var(--radius-large);
   margin-bottom: 2rem;
@@ -455,7 +455,7 @@ const toggleFavorite = () => {
 
 .def-pos {
   background-color: var(--color-info);
-  color: white;
+  color: #f1f2f6;
   padding: 4px 12px;
   border-radius: var(--radius-small);
   font-size: 0.9rem;
@@ -474,7 +474,7 @@ const toggleFavorite = () => {
 
 .example {
   padding: 0.8rem;
-  background-color: white;
+  background-color: #f1f2f6;
   border-radius: var(--radius-medium);
   border-left: 3px solid var(--color-secondary);
 }
@@ -526,7 +526,7 @@ const toggleFavorite = () => {
 
 .word-chip:hover {
   background-color: var(--color-primary);
-  color: white;
+  color: #f1f2f6;
   transform: translateY(-2px);
 }
 
@@ -576,7 +576,7 @@ const toggleFavorite = () => {
 
 .related-chip {
   background-color: var(--color-accent);
-  color: white;
+  color: #f1f2f6;
   padding: 10px 20px;
   border-radius: var(--radius-medium);
   cursor: pointer;
@@ -597,7 +597,7 @@ const toggleFavorite = () => {
 .footer {
   margin-top: 3rem;
   padding: 2rem;
-  background-color: white;
+  background-color: #f1f2f6;
   border-radius: var(--radius-large);
   border-top: 5px solid var(--color-secondary);
 }
@@ -620,7 +620,7 @@ const toggleFavorite = () => {
 
 .btn-footer:first-child {
   background-color: var(--color-primary);
-  color: white;
+  color: #f1f2f6;
 }
 
 .btn-footer:nth-child(2) {
@@ -630,6 +630,6 @@ const toggleFavorite = () => {
 
 .btn-footer:last-child {
   background-color: var(--color-accent);
-  color: white;
+  color: #f1f2f6;
 }
 </style>

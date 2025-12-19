@@ -291,7 +291,7 @@ const submitFeedback = () => {
 
 .nav-link.active {
     background-color: var(--primary-color);
-    color: white;
+    color: #f1f2f6;
     font-weight: 600;
 }
 
@@ -369,7 +369,7 @@ textarea {
 
 .btn-primary {
     background-color: var(--primary-color);
-    color: white;
+    color: #f1f2f6;
 }
 .btn-primary:hover {
     background-color: #0056b3;
@@ -377,12 +377,12 @@ textarea {
 
 .btn-secondary {
     background-color: var(--secondary-color);
-    color: white;
+    color: #f1f2f6;
 }
 
 .btn-danger {
      background-color: #dc3545;
-     color: white;
+     color: #f1f2f6;
 }
 
 /* Profile */
@@ -480,7 +480,7 @@ textarea {
   width: 20px;
   left: 4px;
   bottom: 4px;
-  background-color: white;
+  background-color: #f1f2f6;
   transition: .4s;
   border-radius: 50%;
 }

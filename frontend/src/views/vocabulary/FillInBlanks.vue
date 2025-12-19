@@ -290,7 +290,7 @@ export default {
 
 .back-btn:hover {
   background-color: var(--primary-color);
-  color: white;
+  color: #f1f2f6;
   transform: translateY(-2px);
 }
 

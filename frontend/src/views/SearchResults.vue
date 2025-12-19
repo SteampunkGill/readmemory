@@ -292,7 +292,7 @@ onMounted(() => {
   padding: 15px 30px;
   border-radius: var(--radius-large);
   background-color: var(--color-primary);
-  color: white;
+  color: #f1f2f6;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
@@ -308,7 +308,7 @@ onMounted(() => {
   padding: 10px 20px;
   border-radius: var(--radius-medium);
   border: 3px solid var(--color-secondary);
-  background-color: white;
+  background-color: #f1f2f6;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s;
@@ -316,12 +316,12 @@ onMounted(() => {
 
 .filters button.active {
   background-color: var(--color-primary);
-  color: white;
+  color: #f1f2f6;
   border-color: var(--color-primary);
 }
 
 .results-container {
-  background-color: white;
+  background-color: #f1f2f6;
   border-radius: var(--radius-large);
   padding: 2rem;
   border: 3px solid var(--color-primary);
@@ -411,7 +411,7 @@ onMounted(() => {
   border-radius: var(--radius-medium);
   font-weight: bold;
   background-color: var(--color-accent);
-  color: white;
+  color: #f1f2f6;
 }
 
 .word-card {

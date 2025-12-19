@@ -199,7 +199,7 @@ public class SettingsGetReview {
             }
 
             Map<String, Object> session = sessions.get(0);
-            Integer userId = (Integer) session.get("user_id");
+            Integer userId = ((Number) session.get("user_id")).intValue();
             LocalDateTime expiresAt = (LocalDateTime) session.get("expires_at");
 
             if (expiresAt.isBefore(LocalDateTime.now())) {

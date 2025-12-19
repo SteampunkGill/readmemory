@@ -359,117 +359,173 @@ const goToLogin = () => {
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background: linear-gradient(135deg, #FFF9F0 0%, #FFE8E8 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
 }
 
 .container {
   width: 100%;
   max-width: 500px;
   background-color: white;
-  border-radius: var(--radius-large);
+  border-radius: 20px;
   padding: 3rem;
-  box-shadow: var(--shadow-hard);
-  border: 5px solid var(--color-accent);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+  border-radius: 20px 20px 0 0;
 }
 
 .brand {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .logo {
   width: 80px;
   height: 80px;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
 }
 
 .brand h1 {
   font-size: 2.5rem;
-  color: var(--color-primary);
-  margin-bottom: 0.5rem;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .brand p {
-  color: var(--color-text-light);
+  color: #64748b;
   font-size: 1.1rem;
+  line-height: 1.6;
 }
 
 .form, .verification-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.75rem;
 }
 
 .input-group label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
-  color: var(--color-text);
+  color: #334155;
+  font-size: 0.95rem;
 }
 
 .input-group input {
   width: 100%;
-  padding: 12px 16px;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-medium);
+  padding: 14px 18px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
   font-size: 1rem;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
+  background: #f8fafc;
+  color: #1e293b;
 }
 
 .input-group input:focus {
   outline: none;
-  border-color: var(--color-primary);
+  border-color: #3b82f6;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
 .input-group input.error {
-  border-color: var(--color-error);
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.input-group input.error:focus {
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
 }
 
 .input-hint {
   font-size: 0.85rem;
-  color: var(--color-text-light);
-  margin-top: 0.25rem;
+  color: #94a3b8;
+  margin-top: 0.5rem;
 }
 
 .error-message {
-  color: var(--color-error);
+  color: #ef4444;
   font-size: 0.9rem;
   margin-top: 0.5rem;
+  font-weight: 500;
 }
 
 .success-message {
-  color: var(--color-success);
+  color: #10b981;
   font-size: 0.9rem;
   margin-top: 0.5rem;
+  font-weight: 500;
 }
 
 .btn-primary {
-  background-color: var(--color-primary);
+  background: linear-gradient(90deg, #3b82f6, #6366f1);
   color: white;
   border: none;
-  padding: 12px 24px;
-  border-radius: var(--radius-medium);
+  padding: 14px 28px;
+  border-radius: 12px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .btn-primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
 .btn-outline {
   background-color: transparent;
-  color: var(--color-primary);
-  border: 2px solid var(--color-primary);
-  padding: 10px 22px;
-  border-radius: var(--radius-medium);
+  color: #3b82f6;
+  border: 2px solid #3b82f6;
+  padding: 12px 26px;
+  border-radius: 12px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -477,8 +533,10 @@ const goToLogin = () => {
 }
 
 .btn-outline:hover:not(:disabled) {
-  background-color: var(--color-primary);
+  background-color: #3b82f6;
   color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
 }
 
 .btn-outline:disabled {
@@ -489,64 +547,77 @@ const goToLogin = () => {
 .btn-text {
   background: none;
   border: none;
-  color: var(--color-text-light);
-  font-size: 0.9rem;
+  color: #64748b;
+  font-size: 0.95rem;
   cursor: pointer;
-  padding: 8px;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+  border-radius: 6px;
 }
 
 .btn-text:hover {
-  color: var(--color-primary);
-  text-decoration: underline;
+  color: #3b82f6;
+  background: #f1f5f9;
+  text-decoration: none;
 }
 
 .btn-block {
   width: 100%;
   padding: 16px;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 .back-link {
   text-align: center;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
 }
 
 .back-link a {
-  color: var(--color-primary);
-  font-weight: bold;
-  font-size: 1.1rem;
+  color: #3b82f6;
+  font-weight: 600;
+  font-size: 1rem;
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s ease;
 }
 
 .back-link a:hover {
-  text-decoration: underline;
+  color: #1d4ed8;
+  text-decoration: none;
 }
 
 .success-icon {
   font-size: 4rem;
   margin-bottom: 1.5rem;
   text-align: center;
-  animation: bounce 2s infinite var(--transition-bounce);
+  animation: float 3s ease-in-out infinite;
 }
 
 .verification-form h2,
 .form h2 {
   text-align: center;
   font-size: 2rem;
-  color: var(--color-primary);
-  margin-bottom: 0.5rem;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
 }
 
 .verification-form p,
 .form p {
   text-align: center;
-  color: var(--color-text);
+  color: #64748b;
   margin-bottom: 1rem;
   line-height: 1.6;
+  font-size: 1.05rem;
 }
 
 .verification-form strong {
-  color: var(--color-primary);
+  color: #3b82f6;
+  font-weight: 600;
 }
 
 .actions {
@@ -554,23 +625,35 @@ const goToLogin = () => {
   gap: 1rem;
   justify-content: center;
   margin: 2rem 0;
+  flex-wrap: wrap;
 }
 
 .tip {
   font-size: 0.9rem;
-  color: var(--color-text-light);
+  color: #94a3b8;
   margin-top: 2rem;
   text-align: center;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 10px;
+  border-left: 4px solid #3b82f6;
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
 
 @media (max-width: 768px) {
   .container {
     padding: 2rem;
+    margin: 1rem;
+    border-radius: 16px;
   }
   
   .brand h1 {
@@ -584,6 +667,24 @@ const goToLogin = () => {
   .btn-primary,
   .btn-outline {
     width: 100%;
+  }
+  
+  .forgot-password-page {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1.5rem;
+  }
+  
+  .brand h1 {
+    font-size: 1.75rem;
+  }
+  
+  .input-group input {
+    padding: 12px 16px;
   }
 }
 </style>

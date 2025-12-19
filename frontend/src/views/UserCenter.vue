@@ -61,19 +61,6 @@
               </div>
             </div>
 
-            <!-- 学习目标进度 -->
-            <div class="recent-activity" v-if="learningGoals.length > 0">
-              <div class="section-title">当前学习目标</div>
-              <div class="goals-list">
-                <div v-for="goal in learningGoals" :key="goal.goalId" class="activity-item">
-                  <div class="goal-info">
-                    <strong>{{ goal.title }}</strong>: {{ goal.currentValue }} / {{ goal.targetValue }} {{ goal.unit }}
-                    <span class="status-tag" :class="goal.status">{{ goal.status }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <div class="recent-activity">
               <div class="section-title">最近活动日志</div>
               <div class="activity-list">
@@ -535,7 +522,7 @@ onMounted(() => {
 }
 
 .user-header {
-  background-color: white;
+  background-color: #f1f2f6;
   padding: 1.5rem; /* 减小内边距 */
   border-radius: var(--radius-large);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 阴影也适当减小 */
@@ -589,7 +576,7 @@ onMounted(() => {
 
 .user-nav {
   width: 220px; /* 减小宽度 */
-  background-color: white;
+  background-color: #f1f2f6;
   border-radius: var(--radius-large);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 减小 */
   padding: 1.2rem; /* 减小 */
@@ -642,7 +629,7 @@ onMounted(() => {
 
 .user-main {
   flex: 1;
-  background-color: white;
+  background-color: #f1f2f6;
   border-radius: var(--radius-large);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 减小 */
   padding: 2rem; /* 减小 */
@@ -754,7 +741,7 @@ onMounted(() => {
 
 .btn-primary {
   background-color: var(--color-primary);
-  color: white;
+  color: #f1f2f6;
 }
 
 .btn-primary:hover {
@@ -769,12 +756,12 @@ onMounted(() => {
 
 .btn-secondary:hover {
   background-color: var(--color-primary);
-  color: white;
+  color: #f1f2f6;
 }
 
 .btn-danger {
   background-color: var(--color-danger);
-  color: white;
+  color: #f1f2f6;
 }
 
 .btn-danger:hover {
@@ -879,7 +866,7 @@ onMounted(() => {
 /* Subscription Page */
 .subscription-card {
   background-color: var(--color-primary);
-  color: white;
+  color: #f1f2f6;
   padding: 1.5rem; /* 减小 */
   border-radius: var(--radius-large);
   text-align: center;
@@ -910,7 +897,7 @@ onMounted(() => {
 
 .btn-danger {
   background-color: var(--color-danger);
-  color: white;
+  color: #f1f2f6;
   border: 2px solid var(--color-danger);
 }
 
@@ -972,7 +959,7 @@ onMounted(() => {
   width: 14px; /* 减小 */
   left: 3px; /* 减小 */
   bottom: 3px; /* 减小 */
-  background-color: white;
+  background-color: #f1f2f6;
   transition: .4s;
   border-radius: 50%;
 }

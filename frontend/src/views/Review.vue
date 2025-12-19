@@ -329,7 +329,7 @@ onMounted(() => {
   padding: 10px 20px;
   border-radius: var(--radius-medium);
   border: 2px solid var(--color-secondary);
-  background-color: white;
+  background-color: #f1f2f6;
   font-weight: bold;
   cursor: pointer;
 }
@@ -365,7 +365,7 @@ onMounted(() => {
 }
 
 .review-card {
-  background-color: white;
+  background-color: #f1f2f6;
   border-radius: var(--radius-large);
   padding: 3rem;
   border: 5px solid var(--color-primary);
@@ -418,7 +418,7 @@ onMounted(() => {
 .btn-flip {
   padding: 15px 30px;
   background-color: var(--color-accent);
-  color: white;
+  color: #f1f2f6;
   border: none;
   border-radius: var(--radius-large);
   font-size: 1.2rem;
@@ -444,12 +444,12 @@ onMounted(() => {
 
 .btn-know {
   background-color: var(--color-success);
-  color: white;
+  color: #f1f2f6;
 }
 
 .btn-dont-know {
   background-color: var(--color-danger);
-  color: white;
+  color: #f1f2f6;
 }
 
 .btn-skip {
@@ -460,7 +460,7 @@ onMounted(() => {
 .empty-state {
   text-align: center;
   padding: 4rem;
-  background-color: white;
+  background-color: #f1f2f6;
   border-radius: var(--radius-large);
   border: 5px dashed var(--color-secondary);
 }
@@ -474,7 +474,7 @@ onMounted(() => {
 .btn-primary {
   padding: 15px 40px;
   background-color: var(--color-primary);
-  color: white;
+  color: #f1f2f6;
   border: none;
   border-radius: var(--radius-large);
   font-size: 1.5rem;
@@ -492,7 +492,7 @@ onMounted(() => {
   padding: 12px 24px;
   border-radius: var(--radius-medium);
   border: 2px solid var(--color-secondary);
-  background-color: white;
+  background-color: #f1f2f6;
   font-weight: bold;
   cursor: pointer;
 }
@@ -516,7 +516,7 @@ onMounted(() => {
 }
 
 .modal-content {
-  background-color: white;
+  background-color: #f1f2f6;
   padding: 3rem;
   border-radius: var(--radius-large);
   border: 5px solid var(--color-primary);
@@ -566,7 +566,7 @@ onMounted(() => {
 
 .btn-save {
   background-color: var(--color-primary);
-  color: white;
+  color: #f1f2f6;
 }
 
 .btn-cancel {

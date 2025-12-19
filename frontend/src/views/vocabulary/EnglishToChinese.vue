@@ -285,7 +285,7 @@ export default {
 
 .back-btn:hover {
   background-color: var(--primary-color);
-  color: white;
+  color: #f1f2f6;
   transform: translateY(-2px);
 }
 
@@ -383,7 +383,7 @@ export default {
 }
 .option-btn.correct .option-label {
   background: #5cb85c;
-  color: white;
+  color: #f1f2f6;
 }
 
 .option-btn.incorrect {
@@ -393,7 +393,7 @@ export default {
 }
 .option-btn.incorrect .option-label {
   background: #d9534f;
-  color: white;
+  color: #f1f2f6;
 }
 
 .feedback-area {

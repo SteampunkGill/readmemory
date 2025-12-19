@@ -335,8 +335,7 @@ public class ReviewSubmit {
                     "mastery_level = ?, " +
                     "review_count = review_count + 1, " +
                     "last_reviewed_at = ?, " +
-                    "next_review_date = ?, " +
-                    "is_mastered = CASE WHEN mastery_level >= 8 THEN 1 ELSE 0 END " +
+                    "next_review_at = ? " +
                     "WHERE user_vocab_id = ? AND user_id = ?";
 
             int updated = jdbcTemplate.update(updateSql,
@@ -416,7 +415,7 @@ public class ReviewSubmit {
 
             // 检查是否已有今日记录
             String checkSql = "SELECT COUNT(*) FROM daily_learning_stats " +
-                    "WHERE user_id = ? AND learning_date = ?";
+                    "WHERE user_id = ? AND date = ?";
 
             int count = jdbcTemplate.queryForObject(checkSql, Integer.class, userId, dateStr);
 
@@ -427,7 +426,7 @@ public class ReviewSubmit {
                         "words_correct = words_correct + ?, " +
                         "words_incorrect = words_incorrect + ?, " +
                         "updated_at = ? " +
-                        "WHERE user_id = ? AND learning_date = ?";
+                        "WHERE user_id = ? AND date = ?";
 
                 jdbcTemplate.update(updateSql,
                         correctWords + incorrectWords,
@@ -440,7 +439,7 @@ public class ReviewSubmit {
             } else {
                 // 创建新记录
                 String insertSql = "INSERT INTO daily_learning_stats " +
-                        "(user_id, learning_date, words_reviewed, " +
+                        "(user_id, date, words_reviewed, " +
                         "words_correct, words_incorrect, created_at, updated_at) " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
