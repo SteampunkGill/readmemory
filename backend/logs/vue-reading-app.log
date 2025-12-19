@@ -11203,3 +11203,504 @@ Caused by: java.io.IOException: Cannot delete C:\Users\shark\AppData\Local\Temp\
 2025-12-19 16:41:20 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
 2025-12-19 16:41:20 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
 2025-12-19 16:41:20 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:48:51 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/auth/forgot-password", parameters={}
+2025-12-19 16:48:51 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthForgotPassword#forgotPassword(ForgotPasswordRequest)
+2025-12-19 16:48:51 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:48:51 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - POST "/api/v1/auth/forgot-password", parameters={}
+2025-12-19 16:48:51 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthForgotPassword#forgotPassword(ForgotPasswordRequest)
+2025-12-19 16:48:52 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [ForgotPasswordRequest{email='2898311413@qq.com'}]
+2025-12-19 16:48:53 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:48:53 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthForgotPassword$ForgotPasswordResponse@2ca27975]
+2025-12-19 16:48:53 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:49:00 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/auth/verify-code", parameters={}
+2025-12-19 16:49:00 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthForgotPassword#verifyCode(VerifyCodeRequest)
+2025-12-19 16:49:00 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:49:00 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - POST "/api/v1/auth/verify-code", parameters={}
+2025-12-19 16:49:00 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthForgotPassword#verifyCode(VerifyCodeRequest)
+2025-12-19 16:49:00 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [VerifyCodeRequest{email='2898311413@qq.com', code='3017'}]
+2025-12-19 16:49:00 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:49:00 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthForgotPassword$ForgotPasswordResponse@81c7ff8]
+2025-12-19 16:49:00 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:53:38 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - POST "/api/v1/auth/login", parameters={}
+2025-12-19 16:53:38 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthLogin#login(LoginRequest)
+2025-12-19 16:53:38 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.auth.AuthLogin$LoginRequest@40453f70]
+2025-12-19 16:53:38 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:53:38 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthLogin$LoginResponse@43741184]
+2025-12-19 16:53:38 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:53:39 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 16:53:39 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 16:53:39 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 16:53:39 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 16:53:39 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:53:39 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@12ef296a]
+2025-12-19 16:53:39 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:53:39 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:53:39 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 16:53:39 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:55:57 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 16:55:57 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 16:55:57 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 16:55:57 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 16:55:57 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:55:57 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@54e585da]
+2025-12-19 16:55:57 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:55:57 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:55:57 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 16:55:57 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:58:51 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 16:58:51 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 16:58:51 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 16:58:51 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 16:58:51 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:58:51 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@d13afdd]
+2025-12-19 16:58:51 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:58:51 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 16:58:51 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:58:51 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:58:52 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 16:58:52 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 16:58:52 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 16:58:52 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 16:58:52 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:58:52 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@2a7dbb19]
+2025-12-19 16:58:52 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:58:52 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:58:52 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 16:58:52 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:59:04 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/documents/12", parameters={}
+2025-12-19 16:59:04 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGetById#getDocumentById(Integer, String)
+2025-12-19 16:59:04 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:59:04 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents/12", parameters={}
+2025-12-19 16:59:04 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGetById#getDocumentById(Integer, String)
+2025-12-19 16:59:05 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:59:05 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.documents.DocumentsGetById$DocumentDetailResponse@3dcb2612]
+2025-12-19 16:59:05 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:59:06 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 16:59:06 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 16:59:06 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 16:59:06 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 16:59:06 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:59:06 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@482c2bfc]
+2025-12-19 16:59:06 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:59:06 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:59:06 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 16:59:06 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:59:12 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 16:59:12 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 16:59:12 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 16:59:12 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 16:59:12 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:59:12 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@301a5cd1]
+2025-12-19 16:59:12 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 16:59:12 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 16:59:12 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 16:59:12 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:36:40 [HikariPool-13 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-13 - Thread starvation or clock leap detected (housekeeper delta=11m32s930ms864µs800ns).
+2025-12-19 17:37:16 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/documents", parameters={}
+2025-12-19 17:37:16 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/auth/me", parameters={}
+2025-12-19 17:37:16 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 17:37:16 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 17:37:16 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:37:16 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:37:20 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/review/due-words?limit=10", parameters={masked}
+2025-12-19 17:37:20 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.review.ReviewGetDueWords#getDueWords(String, int, String, String, String, String, String)
+2025-12-19 17:37:20 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:37:20 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/review/due-words?limit=10", parameters={masked}
+2025-12-19 17:37:20 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.review.ReviewGetDueWords#getDueWords(String, int, String, String, String, String, String)
+2025-12-19 17:37:21 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 17:37:21 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 17:37:21 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 17:37:21 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 17:37:21 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:37:21 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:37:21 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@10e5ea2f]
+2025-12-19 17:37:21 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 17:37:21 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:37:21 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:37:22 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:37:22 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.review.ReviewGetDueWords$DueWordsResponse@5d7d158b]
+2025-12-19 17:37:22 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:37:22 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/vocabulary/dates", parameters={}
+2025-12-19 17:37:22 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.vocabulary.VocabularyGetDates#getVocabularyDates(String)
+2025-12-19 17:37:22 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:37:22 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/vocabulary/dates", parameters={}
+2025-12-19 17:37:22 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.vocabulary.VocabularyGetDates#getVocabularyDates(String)
+2025-12-19 17:37:22 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:37:22 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.vocabulary.VocabularyGetDates$DateCountResponse@24d156af]
+2025-12-19 17:37:22 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:43:06 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 17:43:06 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 17:43:06 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 17:43:06 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 17:43:06 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:43:06 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:43:06 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@68c5a6ca]
+2025-12-19 17:43:06 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 17:43:06 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:43:06 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:43:17 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 17:43:17 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 17:43:17 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 17:43:17 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 17:43:17 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:43:17 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@245127fe]
+2025-12-19 17:43:17 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:43:17 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:43:17 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 17:43:17 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:46:53 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 17:46:53 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 17:46:53 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 17:46:53 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 17:46:53 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:46:53 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:46:53 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@3e38d8fe]
+2025-12-19 17:46:53 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 17:46:53 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:46:53 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:46:54 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents/12", parameters={}
+2025-12-19 17:46:54 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/documents/12/outline", parameters={}
+2025-12-19 17:46:54 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentOutline#getDocumentOutline(int, String)
+2025-12-19 17:46:54 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGetById#getDocumentById(Integer, String)
+2025-12-19 17:46:54 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/documents/12/notes", parameters={}
+2025-12-19 17:46:54 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetNotes#getNotes(int, int, int, Integer, Integer, String)
+2025-12-19 17:46:54 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:46:54 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:46:54 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:46:54 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.documents.DocumentsGetById$DocumentDetailResponse@13b0ba19]
+2025-12-19 17:46:54 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:46:54 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/outline", parameters={}
+2025-12-19 17:46:54 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/notes", parameters={}
+2025-12-19 17:46:54 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentOutline#getDocumentOutline(int, String)
+2025-12-19 17:46:54 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetNotes#getNotes(int, int, int, Integer, Integer, String)
+2025-12-19 17:46:54 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:46:54 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:46:54 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentOutline$OutlineResponse@69d2ca4a]
+2025-12-19 17:46:54 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetNotes$NotesResponse@11135236]
+2025-12-19 17:46:54 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:46:54 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:46:54 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/documents/12/pages/1", parameters={}
+2025-12-19 17:46:54 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 17:46:54 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:46:54 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/pages/1", parameters={}
+2025-12-19 17:46:54 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 17:46:54 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:46:54 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentPage$PageResponse@1de11dd3]
+2025-12-19 17:46:54 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:00 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/documents/12/reading-progress", parameters={}
+2025-12-19 17:47:00 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/documents/12/pages/2", parameters={}
+2025-12-19 17:47:00 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderUpdateReadingProgress#updateReadingProgress(int, ProgressRequest, String)
+2025-12-19 17:47:00 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 17:47:00 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:00 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:00 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/pages/2", parameters={}
+2025-12-19 17:47:00 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/reader/documents/12/reading-progress", parameters={}
+2025-12-19 17:47:00 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 17:47:00 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderUpdateReadingProgress#updateReadingProgress(int, ProgressRequest, String)
+2025-12-19 17:47:00 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:00 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentPage$PageResponse@3c0091c9]
+2025-12-19 17:47:00 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:00 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressRequest@4f36628d]
+2025-12-19 17:47:00 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:00 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressResponse@19c70c3]
+2025-12-19 17:47:00 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:02 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/reader/documents/12/reading-progress", parameters={}
+2025-12-19 17:47:02 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/documents/12/pages/3", parameters={}
+2025-12-19 17:47:02 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderUpdateReadingProgress#updateReadingProgress(int, ProgressRequest, String)
+2025-12-19 17:47:02 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 17:47:02 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressRequest@c997553]
+2025-12-19 17:47:02 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:02 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/pages/3", parameters={}
+2025-12-19 17:47:02 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 17:47:02 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:02 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentPage$PageResponse@11cc78e2]
+2025-12-19 17:47:02 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:02 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:02 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressResponse@161c31c5]
+2025-12-19 17:47:02 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:03 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/reader/documents/12/reading-progress", parameters={}
+2025-12-19 17:47:03 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/reader/documents/12/pages/4", parameters={}
+2025-12-19 17:47:03 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderUpdateReadingProgress#updateReadingProgress(int, ProgressRequest, String)
+2025-12-19 17:47:03 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 17:47:03 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressRequest@13a13889]
+2025-12-19 17:47:03 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:03 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/pages/4", parameters={}
+2025-12-19 17:47:03 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 17:47:03 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:03 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentPage$PageResponse@7456d1e]
+2025-12-19 17:47:03 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:03 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressResponse@30a9d211]
+2025-12-19 17:47:03 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:03 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:04 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/reader/documents/12/reading-progress", parameters={}
+2025-12-19 17:47:04 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/pages/3", parameters={}
+2025-12-19 17:47:04 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderUpdateReadingProgress#updateReadingProgress(int, ProgressRequest, String)
+2025-12-19 17:47:04 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressRequest@675b048f]
+2025-12-19 17:47:04 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 17:47:04 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:04 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentPage$PageResponse@5b4daba9]
+2025-12-19 17:47:04 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:04 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:04 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressResponse@5823b3a0]
+2025-12-19 17:47:04 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:07 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/pages/2", parameters={}
+2025-12-19 17:47:07 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/reader/documents/12/reading-progress", parameters={}
+2025-12-19 17:47:07 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 17:47:07 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderUpdateReadingProgress#updateReadingProgress(int, ProgressRequest, String)
+2025-12-19 17:47:07 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressRequest@7210303]
+2025-12-19 17:47:07 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:07 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentPage$PageResponse@4aa8a2ab]
+2025-12-19 17:47:07 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:07 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:07 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressResponse@2482f3ce]
+2025-12-19 17:47:07 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:07 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/reader/documents/12/reading-progress", parameters={}
+2025-12-19 17:47:07 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/pages/1", parameters={}
+2025-12-19 17:47:07 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderUpdateReadingProgress#updateReadingProgress(int, ProgressRequest, String)
+2025-12-19 17:47:07 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 17:47:07 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressRequest@4a09056e]
+2025-12-19 17:47:07 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:07 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentPage$PageResponse@23eb35e2]
+2025-12-19 17:47:07 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:07 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:07 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderUpdateReadingProgress$ProgressResponse@23b9db56]
+2025-12-19 17:47:07 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:14 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 17:47:14 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 17:47:14 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 17:47:14 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 17:47:14 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:14 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@71c593b8]
+2025-12-19 17:47:14 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:14 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:14 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 17:47:14 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:22 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents/12", parameters={}
+2025-12-19 17:47:22 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGetById#getDocumentById(Integer, String)
+2025-12-19 17:47:22 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/outline", parameters={}
+2025-12-19 17:47:22 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentOutline#getDocumentOutline(int, String)
+2025-12-19 17:47:22 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:22 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.documents.DocumentsGetById$DocumentDetailResponse@6538b7d9]
+2025-12-19 17:47:22 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:22 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/notes", parameters={}
+2025-12-19 17:47:22 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetNotes#getNotes(int, int, int, Integer, Integer, String)
+2025-12-19 17:47:22 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:22 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetNotes$NotesResponse@9fc96f]
+2025-12-19 17:47:22 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:22 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:22 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentOutline$OutlineResponse@259b28e7]
+2025-12-19 17:47:22 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:22 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/reader/documents/12/pages/1", parameters={}
+2025-12-19 17:47:22 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.reader.ReaderGetDocumentPage#getDocumentPage(int, int, String)
+2025-12-19 17:47:22 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:22 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.reader.ReaderGetDocumentPage$PageResponse@19b39c53]
+2025-12-19 17:47:22 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:27 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 17:47:27 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 17:47:27 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 17:47:27 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 17:47:27 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:27 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@4bae115c]
+2025-12-19 17:47:27 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:47:27 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:47:27 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 17:47:27 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:51:07 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/user/settings/review", parameters={}
+2025-12-19 17:51:07 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/review/due-words?limit=50&mode=spaced", parameters={masked}
+2025-12-19 17:51:07 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.settings.SettingsGetReview#getReviewSettings(String)
+2025-12-19 17:51:07 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.review.ReviewGetDueWords#getDueWords(String, int, String, String, String, String, String)
+2025-12-19 17:51:07 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:51:07 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:51:07 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/review/due-words?limit=50&mode=spaced", parameters={masked}
+2025-12-19 17:51:07 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/user/settings/review", parameters={}
+2025-12-19 17:51:07 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.review.ReviewGetDueWords#getDueWords(String, int, String, String, String, String, String)
+2025-12-19 17:51:07 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.settings.SettingsGetReview#getReviewSettings(String)
+2025-12-19 17:51:08 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:51:08 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.settings.SettingsGetReview$ReviewSettingsResponse@3c4fe0db]
+2025-12-19 17:51:08 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2025-12-19 17:51:10 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:51:10 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.review.ReviewGetDueWords$DueWordsResponse@420136df]
+2025-12-19 17:51:10 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:51:13 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 17:51:13 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 17:51:13 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 17:51:13 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 17:51:13 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:51:13 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@20127d39]
+2025-12-19 17:51:13 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 17:51:13 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 17:51:13 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 17:51:13 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:06:13 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/review/due-words?limit=50&mode=spaced", parameters={masked}
+2025-12-19 18:06:13 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/user/settings/review", parameters={}
+2025-12-19 18:06:13 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.settings.SettingsGetReview#getReviewSettings(String)
+2025-12-19 18:06:13 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.review.ReviewGetDueWords#getDueWords(String, int, String, String, String, String, String)
+2025-12-19 18:06:14 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:14 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.review.ReviewGetDueWords$DueWordsResponse@174d83f2]
+2025-12-19 18:06:14 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:14 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.settings.SettingsGetReview$ReviewSettingsResponse@5acf4d75]
+2025-12-19 18:06:14 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2025-12-19 18:06:14 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 401 UNAUTHORIZED
+2025-12-19 18:06:14 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/review/due-words?limit=10", parameters={masked}
+2025-12-19 18:06:14 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.review.ReviewGetDueWords#getDueWords(String, int, String, String, String, String, String)
+2025-12-19 18:06:14 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:14 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.review.ReviewGetDueWords$DueWordsResponse@6e78cd73]
+2025-12-19 18:06:14 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 401 UNAUTHORIZED
+2025-12-19 18:06:14 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/vocabulary/dates", parameters={}
+2025-12-19 18:06:14 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.vocabulary.VocabularyGetDates#getVocabularyDates(String)
+2025-12-19 18:06:14 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:14 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.vocabulary.VocabularyGetDates$DateCountResponse@72eb63f4]
+2025-12-19 18:06:14 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 401 UNAUTHORIZED
+2025-12-19 18:06:27 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 18:06:27 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 18:06:27 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 18:06:27 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 18:06:27 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:27 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@29f4544b]
+2025-12-19 18:06:27 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 401 UNAUTHORIZED
+2025-12-19 18:06:27 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:27 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=false, message='登录已过期，请重新登录', data=null}]
+2025-12-19 18:06:27 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 401 UNAUTHORIZED
+2025-12-19 18:06:28 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/auth/login", parameters={}
+2025-12-19 18:06:28 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthLogin#login(LoginRequest)
+2025-12-19 18:06:28 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:06:28 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - POST "/api/v1/auth/login", parameters={}
+2025-12-19 18:06:28 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthLogin#login(LoginRequest)
+2025-12-19 18:06:28 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.auth.AuthLogin$LoginRequest@21dde9c1]
+2025-12-19 18:06:29 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:29 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthLogin$LoginResponse@142126fd]
+2025-12-19 18:06:29 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:06:30 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 18:06:30 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 18:06:30 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 18:06:30 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 18:06:30 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:30 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@66f5b17b]
+2025-12-19 18:06:30 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:06:30 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:30 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 18:06:30 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:06:36 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/review/due-words?limit=10", parameters={masked}
+2025-12-19 18:06:36 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.review.ReviewGetDueWords#getDueWords(String, int, String, String, String, String, String)
+2025-12-19 18:06:38 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:38 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.review.ReviewGetDueWords$DueWordsResponse@20ff95f3]
+2025-12-19 18:06:38 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:06:38 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/vocabulary/dates", parameters={}
+2025-12-19 18:06:38 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.vocabulary.VocabularyGetDates#getVocabularyDates(String)
+2025-12-19 18:06:38 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:38 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.vocabulary.VocabularyGetDates$DateCountResponse@6708e9b9]
+2025-12-19 18:06:38 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:06:43 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/review/due-words?limit=50&mode=spaced", parameters={masked}
+2025-12-19 18:06:43 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.review.ReviewGetDueWords#getDueWords(String, int, String, String, String, String, String)
+2025-12-19 18:06:43 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/user/settings/review", parameters={}
+2025-12-19 18:06:43 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.settings.SettingsGetReview#getReviewSettings(String)
+2025-12-19 18:06:43 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:43 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.settings.SettingsGetReview$ReviewSettingsResponse@7394741b]
+2025-12-19 18:06:43 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2025-12-19 18:06:45 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:45 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.review.ReviewGetDueWords$DueWordsResponse@478d763b]
+2025-12-19 18:06:45 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:06:50 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/user/settings/review", parameters={}
+2025-12-19 18:06:50 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.settings.SettingsUpdateReview#updateReviewSettings(String, UpdateReviewRequest)
+2025-12-19 18:06:50 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.settings.SettingsUpdateReview$UpdateReviewRequest@1f7d658f]
+2025-12-19 18:06:50 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:50 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.settings.SettingsUpdateReview$UpdateReviewResponse@5b6874ce]
+2025-12-19 18:06:50 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2025-12-19 18:06:52 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/user/settings/review", parameters={}
+2025-12-19 18:06:52 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.settings.SettingsUpdateReview#updateReviewSettings(String, UpdateReviewRequest)
+2025-12-19 18:06:52 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.settings.SettingsUpdateReview$UpdateReviewRequest@28afa7a6]
+2025-12-19 18:06:52 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:52 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.settings.SettingsUpdateReview$UpdateReviewResponse@1bc1b225]
+2025-12-19 18:06:52 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2025-12-19 18:06:58 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/vocabulary/progress", parameters={}
+2025-12-19 18:06:58 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.vocabulary.VocabularyProgressController#updateProgress(String, UpdateProgressRequest)
+2025-12-19 18:06:58 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:06:58 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - POST "/api/v1/vocabulary/progress", parameters={}
+2025-12-19 18:06:58 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.vocabulary.VocabularyProgressController#updateProgress(String, UpdateProgressRequest)
+2025-12-19 18:06:58 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.vocabulary.VocabularyProgressController$UpdateProgressRequest@19ee7598]
+2025-12-19 18:06:58 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:06:58 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.vocabulary.VocabularyProgressController$ProgressResponse@7e304256]
+2025-12-19 18:06:58 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 404 NOT_FOUND
+2025-12-19 18:07:00 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - POST "/api/v1/vocabulary/progress", parameters={}
+2025-12-19 18:07:00 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.vocabulary.VocabularyProgressController#updateProgress(String, UpdateProgressRequest)
+2025-12-19 18:07:00 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.vocabulary.VocabularyProgressController$UpdateProgressRequest@562e29ad]
+2025-12-19 18:07:00 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:07:00 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.vocabulary.VocabularyProgressController$ProgressResponse@48697ff]
+2025-12-19 18:07:00 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 404 NOT_FOUND
+2025-12-19 18:07:01 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/review/due-words?limit=50&mode=spaced", parameters={masked}
+2025-12-19 18:07:01 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.review.ReviewGetDueWords#getDueWords(String, int, String, String, String, String, String)
+2025-12-19 18:07:03 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:07:03 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.review.ReviewGetDueWords$DueWordsResponse@76044f00]
+2025-12-19 18:07:03 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:08 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - PUT "/api/v1/user/settings/review", parameters={}
+2025-12-19 18:07:08 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.settings.SettingsUpdateReview#updateReviewSettings(String, UpdateReviewRequest)
+2025-12-19 18:07:08 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [com.vue.readingapp.settings.SettingsUpdateReview$UpdateReviewRequest@3755d0a7]
+2025-12-19 18:07:08 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:07:08 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.settings.SettingsUpdateReview$UpdateReviewResponse@4dfa33bc]
+2025-12-19 18:07:08 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2025-12-19 18:07:12 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/user/profile", parameters={}
+2025-12-19 18:07:12 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.user.UserGetProfile#getUserProfile(String)
+2025-12-19 18:07:12 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:12 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/user/profile", parameters={}
+2025-12-19 18:07:12 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.user.UserGetProfile#getUserProfile(String)
+2025-12-19 18:07:12 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:07:12 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.user.UserGetProfile$UserProfileResponse@756b479e]
+2025-12-19 18:07:12 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:12 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/user/learning-stats", parameters={}
+2025-12-19 18:07:12 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.user.UserGetLearningStats#getLearningStats(String, String, String, String, String)
+2025-12-19 18:07:12 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:12 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/user/learning-stats", parameters={}
+2025-12-19 18:07:12 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.user.UserGetLearningStats#getLearningStats(String, String, String, String, String)
+2025-12-19 18:07:12 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:07:12 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.user.UserGetLearningStats$LearningStatsResponse@4f08a53c]
+2025-12-19 18:07:12 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:12 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/user/goals", parameters={}
+2025-12-19 18:07:12 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.user.UserGetLearningGoals#getLearningGoals(String)
+2025-12-19 18:07:12 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:12 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/user/goals", parameters={}
+2025-12-19 18:07:13 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.user.UserGetLearningGoals#getLearningGoals(String)
+2025-12-19 18:07:13 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:07:13 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.user.UserGetLearningGoals$LearningGoalsResponse@20cb9712]
+2025-12-19 18:07:13 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:13 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/user/activity-log", parameters={}
+2025-12-19 18:07:13 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.user.UserGetActivityLog#getUserActivityLog(String, int, int, String, String, String)
+2025-12-19 18:07:13 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:13 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/user/activity-log", parameters={}
+2025-12-19 18:07:13 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.user.UserGetActivityLog#getUserActivityLog(String, int, int, String, String, String)
+2025-12-19 18:07:13 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:07:13 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.user.UserGetActivityLog$ActivityLogResponse@5e478db6]
+2025-12-19 18:07:13 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:13 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/user/achievements", parameters={}
+2025-12-19 18:07:13 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.user.UserGetAchievements#getUserAchievements(String)
+2025-12-19 18:07:13 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:13 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/user/achievements", parameters={}
+2025-12-19 18:07:13 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.user.UserGetAchievements#getUserAchievements(String)
+2025-12-19 18:07:13 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:07:13 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.user.UserGetAchievements$AchievementsResponse@6824ffb7]
+2025-12-19 18:07:13 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:13 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/user/subscription", parameters={}
+2025-12-19 18:07:13 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.user.UserGetSubscriptionInfo#getSubscriptionInfo(String)
+2025-12-19 18:07:13 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:13 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/user/subscription", parameters={}
+2025-12-19 18:07:13 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.user.UserGetSubscriptionInfo#getSubscriptionInfo(String)
+2025-12-19 18:07:13 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:07:13 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.user.UserGetSubscriptionInfo$SubscriptionInfoResponse@11876498]
+2025-12-19 18:07:13 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:20 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/api/v1/user/avatar", parameters={}
+2025-12-19 18:07:20 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.user.UserUpdateAvatar#updateAvatar(String, MultipartFile)
+2025-12-19 18:07:20 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:20 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - POST "/api/v1/user/avatar", parameters={multipart}
+2025-12-19 18:07:20 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.user.UserUpdateAvatar#updateAvatar(String, MultipartFile)
+2025-12-19 18:07:20 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:07:20 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.user.UserUpdateAvatar$UpdateAvatarResponse@11cb4e49]
+2025-12-19 18:07:20 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2025-12-19 18:07:40 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/documents", parameters={}
+2025-12-19 18:07:40 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.documents.DocumentsGet#getDocuments(Integer, Integer, String, String, String, String, String, String, String)
+2025-12-19 18:07:40 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - GET "/api/v1/auth/me", parameters={}
+2025-12-19 18:07:40 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.vue.readingapp.auth.AuthGetCurrentUser#getCurrentUser(HttpServletRequest)
+2025-12-19 18:07:40 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:07:40 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.vue.readingapp.auth.AuthGetCurrentUser$CurrentUserResponse@41753d00]
+2025-12-19 18:07:40 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2025-12-19 18:07:40 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [DocumentsResponse{success=true, message='获取文档列表成功', data=DocumentsData{documents=[DocumentDTO{id=12, (truncated)...]
+2025-12-19 18:07:40 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2025-12-19 18:07:40 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
